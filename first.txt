@@ -1,0 +1,708 @@
+ence bundan sonra yapılacak iş "özellik eklemek" değil, FacilityOS'in teknik spesifikasyonunu (Software Architecture Specification) yazmak.
+
+Şu an ortaya çıkan kapsam artık CMMS seviyesini geçti.
+
+FacilityOS
+
+Enterprise Facility Operating System
+
+"One Platform to Manage Every Physical Asset."
+
+Ben olsam ürünü aşağıdaki katmanlarla tasarlardım.
+
+FACILITYOS
+FacilityOS
+
+├── Core Platform
+├── Facility Management
+├── Asset Management
+├── Maintenance
+├── IoT Platform
+├── Automation
+├── AI
+├── Digital Twin
+├── Reporting
+├── Integration Hub
+├── Marketplace
+└── SDK
+
+Bu yapı yaklaşık 40-60 modül, 300+ entity ve 1000+ API endpoint barındırabilecek şekilde düşünülmeli.
+
+Core Platform
+
+Core hiçbir zaman sektör bilmez.
+
+Sadece platform sağlar.
+
+Identity
+
+Authentication
+
+Authorization
+
+Tenant
+
+Organizations
+
+Users
+
+Teams
+
+Roles
+
+Permissions
+
+Feature Flags
+
+License
+
+Subscription
+
+Audit
+
+Logs
+
+Settings
+
+Localization
+
+Themes
+
+Notifications
+
+Files
+
+Tags
+
+Comments
+
+Approvals
+
+Custom Fields
+
+Workflow Engine
+
+Rule Engine
+
+Automation Engine
+
+API Gateway
+
+Webhooks
+
+Developer API
+
+Plugin Loader
+
+Scheduler
+
+Sync Engine
+
+Search
+
+Backup
+
+Monitoring
+
+Health Check
+
+Secrets
+
+Configuration
+
+Metrics
+Facility Module
+Campus
+
+Building
+
+Floor
+
+Zone
+
+Area
+
+Room
+
+Corridor
+
+Parking
+
+Roof
+
+Basement
+
+Garden
+
+Outdoor
+
+Maps
+
+Floor Plans
+
+GIS
+
+BIM
+
+Digital Twin
+Asset Module
+Asset
+
+Component
+
+Asset Class
+
+Asset Type
+
+Asset Template
+
+Asset Groups
+
+Asset Relationship
+
+Lifecycle
+
+Criticality
+
+Warranty
+
+Depreciation
+
+Calibration
+
+Inspection
+
+Health Score
+
+Energy Profile
+
+Failure History
+
+Documents
+
+QR
+
+Barcode
+
+RFID
+
+NFC
+Maintenance Module
+Corrective Maintenance
+
+Preventive Maintenance
+
+Predictive Maintenance
+
+Condition Based Maintenance
+
+Reliability Centered Maintenance
+
+Autonomous Maintenance
+
+Inspection
+
+Rounds
+
+Checklist
+
+Job Plan
+
+Standard Job
+
+Root Cause Analysis
+
+Failure Codes
+
+Downtime
+
+Shutdown Planning
+
+Commissioning
+
+Decommissioning
+Work Order Module
+Request
+
+Incident
+
+Problem
+
+Change
+
+Emergency
+
+Planned
+
+Reactive
+
+Inspection
+
+Calibration
+
+Cleaning
+
+Audit
+
+Approval
+
+Assignment
+
+Scheduling
+
+Escalation
+
+Completion
+
+Verification
+
+Closure
+Inventory Module
+Warehouse
+
+Stock
+
+Location
+
+Shelf
+
+Bin
+
+Part
+
+Spare Part
+
+Consumable
+
+Tool
+
+Material
+
+Stock Transfer
+
+Reservation
+
+Issue
+
+Return
+
+Receiving
+
+Cycle Count
+
+Vendor
+
+Purchase Request
+
+Purchase Order
+
+Invoice
+
+Contract
+Financial Module
+Budget
+
+Cost Center
+
+Labor Cost
+
+Material Cost
+
+Vendor Cost
+
+Downtime Cost
+
+Energy Cost
+
+Life Cycle Cost
+
+Asset Value
+
+ROI
+
+TCO
+
+CAPEX
+
+OPEX
+Energy Module
+Electricity
+
+Gas
+
+Water
+
+Steam
+
+Compressed Air
+
+Heat
+
+Cooling
+
+Carbon
+
+ESG
+
+Energy KPI
+
+Energy Waste
+
+Peak Demand
+
+Consumption
+
+Efficiency
+IoT Platform
+BACnet/IP
+
+BACnet MSTP
+
+Modbus TCP
+
+Modbus RTU
+
+OPC-UA
+
+MQTT
+
+KNX
+
+SNMP
+
+REST
+
+BLE
+
+LoRaWAN
+
+Zigbee
+
+ESP32
+
+PLC
+
+SCADA
+
+BMS
+
+Telemetry
+
+Edge Gateway
+Automation Engine
+Triggers
+
+Conditions
+
+Actions
+
+Timers
+
+Variables
+
+Loops
+
+Decision
+
+HTTP
+
+Webhook
+
+MQTT
+
+Email
+
+SMS
+
+Telegram
+
+Teams
+
+Slack
+
+SAP
+
+Logo
+
+Oracle
+
+AI
+
+Script
+
+Functions
+AI Platform
+AI Assistant
+
+Knowledge Base
+
+RAG
+
+LLM
+
+Predictive Maintenance
+
+Failure Prediction
+
+Energy Prediction
+
+Inventory Prediction
+
+Scheduling
+
+OCR
+
+Speech To Text
+
+Image Analysis
+
+Root Cause Analysis
+
+Recommendation Engine
+
+Semantic Search
+
+Vector Database
+Digital Twin
+2D Plans
+
+PDF
+
+DWG
+
+IFC
+
+BIM
+
+3D
+
+Live Sensors
+
+Asset Overlay
+
+Alarm Overlay
+
+Energy Overlay
+
+Maintenance Overlay
+
+Occupancy
+
+Navigation
+Analytics
+Dashboard
+
+BI
+
+KPI
+
+MTTR
+
+MTBF
+
+Availability
+
+Reliability
+
+OEE
+
+Downtime
+
+Failure Rate
+
+SLA
+
+Technician KPI
+
+Vendor KPI
+
+Asset KPI
+
+Energy KPI
+
+Executive Dashboard
+Integration Hub
+REST
+
+GraphQL
+
+Webhook
+
+MQTT
+
+Kafka
+
+RabbitMQ
+
+SAP
+
+Oracle
+
+Logo
+
+Microsoft
+
+Google
+
+Azure
+
+AWS
+
+Active Directory
+
+LDAP
+
+SSO
+
+OAuth
+
+SAML
+Mobile Platform
+Offline
+
+Sync
+
+Camera
+
+QR
+
+NFC
+
+RFID
+
+GPS
+
+Voice
+
+Photo
+
+Video
+
+Drawing
+
+Signature
+
+Checklist
+
+Navigation
+
+Push Notification
+Document Management
+PDF
+
+Excel
+
+Word
+
+Images
+
+Videos
+
+CAD
+
+Manuals
+
+Certificates
+
+Reports
+
+Versioning
+
+OCR
+
+Approval
+Compliance
+ISO 55001
+
+ISO 41001
+
+ISO 9001
+
+ISO 14001
+
+ISO 45001
+
+FDA
+
+GMP
+
+IATF
+
+Audit
+
+CAPA
+
+Permit To Work
+
+LOTO
+Security
+RBAC
+
+ABAC
+
+MFA
+
+Passkeys
+
+Encryption
+
+Audit Trail
+
+Immutable Logs
+
+Secrets
+
+IP Restriction
+
+Device Trust
+
+Session Management
+Marketplace
+Plugins
+
+Widgets
+
+Themes
+
+Integrations
+
+Connectors
+
+Reports
+
+Templates
+
+Automation Packs
+Developer Platform
+SDK
+
+CLI
+
+REST API
+
+GraphQL
+
+Webhook API
+
+Plugin SDK
+
+Workflow SDK
+
+Automation SDK
+
+Documentation
+
+Sandbox
+
+Testing
+Bundan sonra bence yapılması gereken sıra
+Software Requirements Specification (SRS) — tüm fonksiyonel gereksinimlerin yazılması.
+Domain Driven Design (DDD) — bounded context'lerin ve entity ilişkilerinin tanımlanması.
+ER Diagram — 300+ entity'nin veri modeli.
+API Specification (OpenAPI/Swagger) — tüm servis sözleşmeleri.
+UI/UX Design System — tasarım dili ve bileşenler.
+Database Architecture — PostgreSQL, InfluxDB, Redis, MinIO gibi katmanların ayrıntılı tasarımı.
+Deployment Architecture — Docker, Kubernetes, CI/CD, gözlemlenebilirlik (OpenTelemetry, Prometheus, Grafana vb.).
+Plugin SDK — üçüncü taraf geliştiricilerin eklenti yazabileceği altyapı.
+
+Ben olsam bu projeyi tek bir doküman olarak değil, yaklaşık 500-1000 sayfalık bir ürün spesifikasyonu şeklinde geliştirirdim. O doküman; veri modeli, iş kuralları, API sözleşmeleri, entegrasyonlar, güvenlik, dağıtım mimarisi ve kullanıcı deneyimi dahil olmak üzere FacilityOS'un tek doğruluk kaynağı (single source of truth) olur. Bu ölçek, ileride ekibe yeni geliştiriciler katıldığında veya ürün farklı sektörlere genişlediğinde mimarinin tutarlı kalmasını sağlar.
