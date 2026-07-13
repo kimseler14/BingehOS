@@ -7,11 +7,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Domain\Incident.cs" />
+    <PackageReference Include="MediatR" Version="12.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.*" />
+    <Compile Remove="Domain\PermitToWork.cs" />
+    <Compile Remove="Domain\RiskAssessment.cs" />
+    <Compile Remove="Domain\LotoProcedure.cs" />
+    <Compile Remove="Domain\Events\PermitToWorkCreatedEvent.cs" />
+    <Compile Remove="Domain\Events\RiskAssessmentCreatedEvent.cs" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -54,9 +54,15 @@ docker-compose up --build
 | GET    | /v1/vendors/{id}                 | Get vendor                         |
 | POST   | /v1/vendors                      | Create vendor                      |
 | PATCH  | /v1/vendors/{id}                 | Update vendor                      |
-| GET    | /v1/incidents/{id}               | Get incident                       |
-| POST   | /v1/incidents                    | Create incident                    |
-| PATCH  | /v1/incidents/{id}               | Update incident                    |
+| GET    | /v1/permits/{id}               | Get permit                         |
+| POST   | /v1/permits                    | Create permit                      |
+| PATCH  | /v1/permits/{id}/approve        | Approve permit                     |
+| PATCH  | /v1/permits/{id}/reject         | Reject permit                      |
+| GET    | /v1/risk-assessments/{id}      | Get risk assessment                 |
+| POST   | /v1/risk-assessments           | Create risk assessment              |
+| GET    | /v1/loto-procedures/{id}       | Get LOTO procedure                  |
+| POST   | /v1/loto-procedures            | Create LOTO procedure               |
+| PATCH  | /v1/loto-procedures/{id}/verify | Verify LOTO procedure              |
 | GET    | /v1/employees/{id}              | Get employee                         |
 | POST   | /v1/employees                   | Create employee                      |
 | PATCH  | /v1/employees/{id}              | Update employee                      |

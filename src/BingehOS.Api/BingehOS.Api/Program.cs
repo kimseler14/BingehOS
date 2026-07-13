@@ -102,8 +102,12 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreatePartCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(Vendor).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateVendorCommand).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(Incident).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(CreateIncidentCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(PermitToWork).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreatePermitToWorkCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(RiskAssessment).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateRiskAssessmentCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(LotoProcedure).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateLotoProcedureCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(Employee).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateEmployeeCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(SgkRecord).Assembly);

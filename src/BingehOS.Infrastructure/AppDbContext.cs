@@ -30,7 +30,9 @@ public class AppDbContext : DbContext
     public DbSet<Facility> Facilities => Set<Facility>();
     public DbSet<Part> Parts => Set<Part>();
     public DbSet<Vendor> Vendors => Set<Vendor>();
-    public DbSet<Incident> Incidents => Set<Incident>();
+    public DbSet<PermitToWork> PermitsToWork => Set<PermitToWork>();
+    public DbSet<RiskAssessment> RiskAssessments => Set<RiskAssessment>();
+    public DbSet<LotoProcedure> LotoProcedures => Set<LotoProcedure>();
     public DbSet<Employee> Employees => Set<Employee>();
     public DbSet<SgkRecord> SgkRecords => Set<SgkRecord>();
     public DbSet<Subcontractor> Subcontractors => Set<Subcontractor>();
