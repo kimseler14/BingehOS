@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\FacilityOS.Shared\FacilityOS.Shared.csproj" />
+    <ProjectReference Include="..\..\FacilityOS.Infrastructure\FacilityOS.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.*" />
   </ItemGroup>
 
   <PropertyGroup>
