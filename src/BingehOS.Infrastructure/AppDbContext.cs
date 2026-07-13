@@ -5,6 +5,7 @@ using BingehOS.Modules.Facility.Domain;
 using BingehOS.Modules.Finance.Domain;
 using BingehOS.Modules.HSE.Domain;
 using BingehOS.Modules.Inventory.Domain;
+using BingehOS.Modules.Identity.Domain;
 using BingehOS.Modules.Maintenance.Domain;
 using BingehOS.Modules.Personnel.Domain;
 using BingehOS.Modules.Vendor.Domain;
@@ -42,6 +43,11 @@ public class AppDbContext : DbContext
     public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
     public DbSet<KvkkConsent> KvkkConsents => Set<KvkkConsent>();
     public DbSet<JobPlanTemplate> JobPlanTemplates => Set<JobPlanTemplate>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
