@@ -36,6 +36,7 @@
     <ProjectReference Include="..\modules\Finance.Domain\BingehOS.Modules.Finance.Domain.csproj" />
     <ProjectReference Include="..\modules\Compliance.Domain\BingehOS.Modules.Compliance.Domain.csproj" />
     <ProjectReference Include="..\modules\Identity.Domain\BingehOS.Modules.Identity.Domain.csproj" />
+    <ProjectReference Include="..\modules\Audit.Domain\BingehOS.Modules.Audit.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using BingehOS.Modules.Audit.Domain;
 using BingehOS.Modules.Asset.Domain;
 using BingehOS.Modules.Compliance.Domain;
 using BingehOS.Modules.Facility.Domain;
@@ -48,10 +49,11 @@ public class AppDbContext : DbContext
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(new TenantInterceptor(this), new TenantConnectionInterceptor(this));
+        optionsBuilder.AddInterceptors(new TenantInterceptor(this), new TenantConnectionInterceptor(this), new AuditInterceptor(this));
         base.OnConfiguring(optionsBuilder);
     }
 
