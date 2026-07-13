@@ -24,6 +24,7 @@
     <ProjectReference Include="..\modules\Facility.Domain\FacilityOS.Modules.Facility.Domain.csproj" />
     <ProjectReference Include="..\modules\Inventory.Domain\FacilityOS.Modules.Inventory.Domain.csproj" />
     <ProjectReference Include="..\modules\Vendor.Domain\FacilityOS.Modules.Vendor.Domain.csproj" />
+    <ProjectReference Include="..\modules\HSE.Domain\FacilityOS.Modules.HSE.Domain.csproj" />
   </ItemGroup>
 
 </Project>
