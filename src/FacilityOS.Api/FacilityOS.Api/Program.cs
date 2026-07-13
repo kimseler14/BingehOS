@@ -1,6 +1,7 @@
 using FacilityOS.Api.Filters;
 using FacilityOS.Api.Middleware;
 using FacilityOS.Infrastructure;
+using FacilityOS.Modules.Maintenance.Application;
 using FacilityOS.Modules.Maintenance.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,13 @@ var conn = builder.Configuration.GetConnectionString("Postgres")
            ?? "Host=localhost;Port=5432;Database=facilityos;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql(conn));
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(WorkOrder).Assembly));
+{
+    // WorkOrder lives in FacilityOS.Modules.Maintenance.Domain; the command
+    // handlers live in FacilityOS.Modules.Maintenance (Application). Both
+    // assemblies must be scanned or MediatR will not register the handlers.
+    cfg.RegisterServicesFromAssembly(typeof(WorkOrder).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateWorkOrderCommand).Assembly);
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<FacilityOS.Infrastructure.ITenantProvider, FacilityOS.Api.TenantProvider>();
 
