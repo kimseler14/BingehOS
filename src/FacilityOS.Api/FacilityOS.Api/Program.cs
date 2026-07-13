@@ -1,6 +1,8 @@
 using FacilityOS.Api.Filters;
 using FacilityOS.Api.Middleware;
 using FacilityOS.Infrastructure;
+using FacilityOS.Modules.Asset.Application;
+using FacilityOS.Modules.Asset.Domain;
 using FacilityOS.Modules.Maintenance.Application;
 using FacilityOS.Modules.Maintenance.Domain;
 using MediatR;
@@ -22,6 +24,8 @@ builder.Services.AddMediatR(cfg =>
     // assemblies must be scanned or MediatR will not register the handlers.
     cfg.RegisterServicesFromAssembly(typeof(WorkOrder).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateWorkOrderCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(Asset).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateAssetCommand).Assembly);
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<FacilityOS.Infrastructure.ITenantProvider, FacilityOS.Api.TenantProvider>();
