@@ -1,4 +1,5 @@
 using BingehOS.Modules.Asset.Application;
+using BingehOS.Modules.Identity.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ public class AssetsController : ControllerBase
     public AssetsController(IMediator mediator) => _mediator = mediator;
 
     [HttpPost]
+    [HasPermission("assets.write")]
     public async Task<IActionResult> Create([FromBody] CreateAssetCommand cmd)
     {
         var id = await _mediator.Send(cmd);
@@ -28,5 +30,17 @@ public class AssetsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id) => Ok(new { success = true, data = new { id } });
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var item = await _mediator.Send(new GetAssetQuery(id));
+        if (item == null) return NotFound(new { success = false, error = "not found" });
+        return Ok(new { success = true, data = item });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
+    {
+        var items = await _mediator.Send(new GetAssetsQuery(skip, take));
+        return Ok(new { success = true, data = items });
+    }
 }

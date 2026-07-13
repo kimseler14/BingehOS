@@ -23,6 +23,7 @@ using BingehOS.Modules.Personnel.Application;
 using BingehOS.Modules.Personnel.Domain;
 using BingehOS.Modules.Vendor.Application;
 using BingehOS.Modules.Vendor.Domain;
+using BingehOS.Modules.Identity.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -85,7 +86,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("HasPermission", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new PermissionRequirement(string.Empty));
+    });
+});
+builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
            ?? "Host=localhost;Port=5432;Database=bingehos;Username=postgres;Password=postgres";
@@ -127,6 +136,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(JobPlanTemplate).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateJobPlanTemplateCommand).Assembly);
 });
+builder.Services.AddIdentityModule();
 builder.Services.AddSingleton<PluginLoader>();
 builder.Services.AddHostedService<PluginLoaderHostedService>();
 builder.Services.AddHttpContextAccessor();

@@ -28,6 +28,7 @@
     <ProjectReference Include="..\..\modules\Personnel\BingehOS.Modules.Personnel.csproj" />
     <ProjectReference Include="..\..\modules\Finance\BingehOS.Modules.Finance.csproj" />
     <ProjectReference Include="..\..\modules\Compliance\BingehOS.Modules.Compliance.csproj" />
+    <ProjectReference Include="..\..\modules\Identity\BingehOS.Modules.Identity.csproj" />
   </ItemGroup>
 
 </Project>
