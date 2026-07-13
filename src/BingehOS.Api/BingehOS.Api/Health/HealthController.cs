@@ -12,7 +12,7 @@ public class HealthController : ControllerBase
     public HealthController(IServiceProvider services) => _services = services;
 
     [HttpGet]
-    public async Task<IActionResult> Get(CancellationToken ct)
+    public IActionResult Get(CancellationToken ct)
     {
         var checks = new List<(string Name, HealthStatus Status, string? Description)>
         {

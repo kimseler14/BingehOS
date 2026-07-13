@@ -20,7 +20,7 @@ public class WorkOrdersController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(Guid id)
+    public IActionResult Get(Guid id)
     {
         return Ok(new { success = true, data = new { id } });
     }
