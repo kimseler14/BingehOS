@@ -6,6 +6,7 @@ namespace FacilityOS.Api.Api;
 
 [ApiController]
 [Route("v1/assets")]
+[Authorize]
 public class AssetsController : ControllerBase
 {
     private readonly IMediator _mediator;

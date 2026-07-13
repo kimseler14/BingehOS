@@ -1,11 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using FacilityOS.Infrastructure;
 using FacilityOS.Modules.Maintenance.Application;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace FacilityOS.IntegrationTests;
@@ -18,21 +15,7 @@ public class WorkOrderEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_ChangeStatus_ReturnsOk()
     {
-        var app = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
-            b.UseSetting("ConnectionStrings:Postgres", _fx.ConnectionString));
-        await using var _ = app;
-
-        // Apply migrations so the WorkOrders table + RLS policy exist.
-        using (var scope = app.Services.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            await db.Database.MigrateAsync();
-        }
-
-        using var client = app.CreateClient();
-
-        var tenant = "11111111-1111-1111-1111-111111111111";
-        client.DefaultRequestHeaders.Add("x-tenant-id", tenant);
+        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
 
         var create = await client.PostAsJsonAsync("/v1/work-orders",
             new { assetId = "22222222-2222-2222-2222-222222222222", description = "Fix HVAC" });

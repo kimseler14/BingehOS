@@ -6,6 +6,7 @@ namespace FacilityOS.Api.Api;
 
 [ApiController]
 [Route("v1/compliance-records")]
+[Authorize]
 public class ComplianceRecordsController : ControllerBase
 {
     private readonly IMediator _mediator;

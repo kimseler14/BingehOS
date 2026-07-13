@@ -3,8 +3,6 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using FacilityOS.Modules.Asset.Application;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace FacilityOS.IntegrationTests;
@@ -17,18 +15,7 @@ public class AssetEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_Update_ReturnsOk()
     {
-        var app = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
-            b.UseSetting("ConnectionStrings:Postgres", _fx.ConnectionString));
-        await using var _ = app;
-
-        using (var scope = app.Services.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<FacilityOS.Infrastructure.AppDbContext>();
-            await db.Database.MigrateAsync();
-        }
-
-        using var client = app.CreateClient();
-        client.DefaultRequestHeaders.Add("x-tenant-id", "11111111-1111-1111-1111-111111111111");
+        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
 
         var create = await client.PostAsJsonAsync("/v1/assets",
             new CreateAssetCommand("Pump A", "SN-1", "B1", FacilityOS.Modules.Asset.Domain.AssetCriticality.High));

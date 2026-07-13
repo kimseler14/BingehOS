@@ -1,3 +1,4 @@
+using FacilityOS.Api.Auth;
 using FacilityOS.Api.Filters;
 using FacilityOS.Api.Middleware;
 using FacilityOS.Infrastructure;
@@ -19,14 +20,69 @@ using FacilityOS.Modules.Personnel.Application;
 using FacilityOS.Modules.Personnel.Domain;
 using FacilityOS.Modules.Vendor.Application;
 using FacilityOS.Modules.Vendor.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Bearer {token}",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
+            Array.Empty<string>()
+        }
+    });
+});
 builder.Services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
+
+var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "dev-secret-change-me-in-production-please-32chars";
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "FacilityOS";
+var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "FacilityOS.Client";
+builder.Services.Configure<JwtSettings>(opt =>
+{
+    opt.Secret = jwtSecret;
+    opt.Issuer = jwtIssuer;
+    opt.Audience = jwtAudience;
+    opt.ExpiresInSeconds = 3600;
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.FromSeconds(30)
+    };
+});
+
+builder.Services.AddAuthorization();
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
            ?? "Host=localhost;Port=5432;Database=facilityos;Username=postgres;Password=postgres";

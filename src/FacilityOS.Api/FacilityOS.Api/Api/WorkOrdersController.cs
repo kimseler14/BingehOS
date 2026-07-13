@@ -6,6 +6,7 @@ namespace FacilityOS.Api.Api;
 
 [ApiController]
 [Route("v1/work-orders")]
+[Authorize]
 public class WorkOrdersController : ControllerBase
 {
     private readonly IMediator _mediator;
