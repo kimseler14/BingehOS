@@ -22,7 +22,7 @@ public class VendorsEndpointTests : IClassFixture<TestContainerFixture>
         Assert.Equal(HttpStatusCode.Created, create.StatusCode);
 
         var body = await create.Content.ReadFromJsonAsync<JsonElement>();
-        var id = body.GetProperty("id").GetGuid();
+        var id = body.GetProperty("data").GetProperty("id").GetGuid();
 
         var patch = await client.PatchAsJsonAsync($"/v1/vendors/{id}",
             new UpdateVendorCommand(id, "Acme Renamed", "info@acme.test", "+90 555 000 00 00", false));

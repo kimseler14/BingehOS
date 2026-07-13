@@ -22,7 +22,7 @@ public class WorkOrderCostsEndpointTests : IClassFixture<TestContainerFixture>
         Assert.Equal(HttpStatusCode.Created, create.StatusCode);
 
         var body = await create.Content.ReadFromJsonAsync<JsonElement>();
-        var id = body.GetProperty("id").GetGuid();
+        var id = body.GetProperty("data").GetProperty("id").GetGuid();
 
         var patch = await client.PatchAsJsonAsync($"/v1/work-order-costs/{id}/approve", new { });
         Assert.Equal(HttpStatusCode.OK, patch.StatusCode);

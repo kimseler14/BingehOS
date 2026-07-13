@@ -22,7 +22,7 @@ public class WorkOrderEndpointTests : IClassFixture<TestContainerFixture>
         Assert.Equal(HttpStatusCode.Created, create.StatusCode);
 
         var body = await create.Content.ReadFromJsonAsync<JsonElement>();
-        var id = body.GetProperty("id").GetGuid();
+        var id = body.GetProperty("data").GetProperty("id").GetGuid();
 
         var patch = await client.PatchAsJsonAsync($"/v1/work-orders/{id}/status",
             new ChangeWorkOrderStatusCommand(id, "Requested", false, false));

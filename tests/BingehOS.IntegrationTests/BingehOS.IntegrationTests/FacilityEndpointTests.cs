@@ -22,7 +22,7 @@ public class FacilityEndpointTests : IClassFixture<TestContainerFixture>
         Assert.Equal(HttpStatusCode.Created, create.StatusCode);
 
         var body = await create.Content.ReadFromJsonAsync<JsonElement>();
-        var id = body.GetProperty("id").GetGuid();
+        var id = body.GetProperty("data").GetProperty("id").GetGuid();
 
         var patch = await client.PatchAsJsonAsync($"/v1/facilities/{id}",
             new UpdateFacilityCommand(id, "HQ Renamed", "Ankara", "Europe/Istanbul", null));

@@ -22,7 +22,7 @@ public class ComplianceRecordsEndpointTests : IClassFixture<TestContainerFixture
         Assert.Equal(HttpStatusCode.Created, create.StatusCode);
 
         var body = await create.Content.ReadFromJsonAsync<JsonElement>();
-        var id = body.GetProperty("id").GetGuid();
+        var id = body.GetProperty("data").GetProperty("id").GetGuid();
 
         var patch = await client.PatchAsJsonAsync($"/v1/compliance-records/{id}",
             new UpdateComplianceRecordCommand(id, "ISO Audit Updated", "Annual ISO 55001 audit", "Completed", DateTime.UtcNow.AddDays(30)));

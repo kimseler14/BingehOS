@@ -22,7 +22,7 @@ public class WorkersEndpointTests : IClassFixture<TestContainerFixture>
         Assert.Equal(HttpStatusCode.Created, create.StatusCode);
 
         var body = await create.Content.ReadFromJsonAsync<JsonElement>();
-        var id = body.GetProperty("id").GetGuid();
+        var id = body.GetProperty("data").GetProperty("id").GetGuid();
 
         var patch = await client.PatchAsJsonAsync($"/v1/workers/{id}",
             new UpdateWorkerCommand(id, "Ali", "Veli", "+90 555 000 00 00", false));
