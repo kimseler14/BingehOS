@@ -31,7 +31,9 @@ public class AppDbContext : DbContext
     public DbSet<Part> Parts => Set<Part>();
     public DbSet<Vendor> Vendors => Set<Vendor>();
     public DbSet<Incident> Incidents => Set<Incident>();
-    public DbSet<Worker> Workers => Set<Worker>();
+    public DbSet<Employee> Employees => Set<Employee>();
+    public DbSet<SgkRecord> SgkRecords => Set<SgkRecord>();
+    public DbSet<Subcontractor> Subcontractors => Set<Subcontractor>();
     public DbSet<WorkOrderCost> WorkOrderCosts => Set<WorkOrderCost>();
     public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
     public DbSet<KvkkConsent> KvkkConsents => Set<KvkkConsent>();

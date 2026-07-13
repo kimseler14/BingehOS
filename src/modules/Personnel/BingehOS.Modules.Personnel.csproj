@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <Compile Remove="Domain\Worker.cs" />
+    <Compile Remove="Domain\Employee.cs" />
+    <Compile Remove="Domain\SgkRecord.cs" />
+    <Compile Remove="Domain\Subcontractor.cs" />
+    <Compile Remove="Domain\Events\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

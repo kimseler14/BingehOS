@@ -57,9 +57,14 @@ docker-compose up --build
 | GET    | /v1/incidents/{id}               | Get incident                       |
 | POST   | /v1/incidents                    | Create incident                    |
 | PATCH  | /v1/incidents/{id}               | Update incident                    |
-| GET    | /v1/workers/{id}                 | Get worker                         |
-| POST   | /v1/workers                      | Create worker                      |
-| PATCH  | /v1/workers/{id}                 | Update worker                      |
+| GET    | /v1/employees/{id}              | Get employee                         |
+| POST   | /v1/employees                   | Create employee                      |
+| PATCH  | /v1/employees/{id}              | Update employee                      |
+| GET    | /v1/sgk-records/{id}            | Get SGK record                       |
+| POST   | /v1/sgk-records                 | Create SGK record                    |
+| GET    | /v1/subcontractors/{id}         | Get subcontractor                    |
+| POST   | /v1/subcontractors              | Create subcontractor                 |
+| PATCH  | /v1/subcontractors/{id}         | Update subcontractor                 |
 | GET    | /v1/work-order-costs/{id}        | Get work order cost                |
 | POST   | /v1/work-order-costs             | Create work order cost             |
 | PATCH  | /v1/work-order-costs/{id}/approve| Approve work order cost            |
