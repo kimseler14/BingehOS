@@ -3,6 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\FacilityOS.Shared\FacilityOS.Shared.csproj" />
     <ProjectReference Include="..\..\FacilityOS.Infrastructure\FacilityOS.Infrastructure.csproj" />
+    <ProjectReference Include="..\Maintenance.Domain\FacilityOS.Modules.Maintenance.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Domain\WorkOrder.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,6 +17,7 @@ builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql(conn));
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(WorkOrder).Assembly));
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<FacilityOS.Infrastructure.ITenantProvider, FacilityOS.Api.TenantProvider>();
 
 var app = builder.Build();
 

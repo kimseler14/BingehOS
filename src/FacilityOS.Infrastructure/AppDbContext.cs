@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using FacilityOS.Modules.Maintenance.Domain;
 using FacilityOS.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -11,9 +12,16 @@ public class AppDbContext : DbContext
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+    public AppDbContext(DbContextOptions<AppDbContext> options, ITenantProvider tenant) : base(options)
+    {
+        CurrentTenantId = tenant.CurrentTenantId;
+    }
+
+    public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(new TenantInterceptor(this));
+        optionsBuilder.AddInterceptors(new TenantInterceptor(this), new TenantConnectionInterceptor(this));
         base.OnConfiguring(optionsBuilder);
     }
 
