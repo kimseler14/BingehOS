@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Compliance.Application;
+namespace BingehOS.Modules.Compliance.Application;
 
 public class UpdateComplianceRecordHandler : IRequestHandler<UpdateComplianceRecordCommand, ComplianceRecordDto>
 {

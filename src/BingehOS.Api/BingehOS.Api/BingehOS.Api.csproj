@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.*" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.28" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.*" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.*" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.*" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BingehOS.Shared\BingehOS.Shared.csproj" />
+    <ProjectReference Include="..\..\BingehOS.Infrastructure\BingehOS.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\modules\Maintenance\BingehOS.Modules.Maintenance.csproj" />
+    <ProjectReference Include="..\..\modules\Asset\BingehOS.Modules.Asset.csproj" />
+    <ProjectReference Include="..\..\modules\Facility\BingehOS.Modules.Facility.csproj" />
+    <ProjectReference Include="..\..\modules\Inventory\BingehOS.Modules.Inventory.csproj" />
+    <ProjectReference Include="..\..\modules\Vendor\BingehOS.Modules.Vendor.csproj" />
+    <ProjectReference Include="..\..\modules\HSE\BingehOS.Modules.HSE.csproj" />
+    <ProjectReference Include="..\..\modules\Personnel\BingehOS.Modules.Personnel.csproj" />
+    <ProjectReference Include="..\..\modules\Finance\BingehOS.Modules.Finance.csproj" />
+    <ProjectReference Include="..\..\modules\Compliance\BingehOS.Modules.Compliance.csproj" />
+  </ItemGroup>
+
+</Project>

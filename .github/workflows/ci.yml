@@ -18,13 +18,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore
-        run: dotnet restore FacilityOS.sln
+        run: dotnet restore BingehOS.sln
 
       - name: Build
-        run: dotnet build FacilityOS.sln --no-restore --configuration Release
+        run: dotnet build BingehOS.sln --no-restore --configuration Release
 
       - name: Unit tests
-        run: dotnet test tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj --no-build --configuration Release --verbosity normal
+        run: dotnet test tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj --no-build --configuration Release --verbosity normal
 
       - name: Integration tests (Testcontainers needs Docker, available on runner)
-        run: dotnet test tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
+        run: dotnet test tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj --no-build --configuration Release --verbosity normal

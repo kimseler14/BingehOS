@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
-using FacilityOS.Modules.Asset.Domain;
+using BingehOS.Infrastructure;
+using BingehOS.Modules.Asset.Domain;
 using MediatR;
 
-namespace FacilityOS.Modules.Asset.Application;
+namespace BingehOS.Modules.Asset.Application;
 
 public class CreateAssetHandler : IRequestHandler<CreateAssetCommand, Guid>
 {

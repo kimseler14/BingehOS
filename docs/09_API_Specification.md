@@ -1,7 +1,7 @@
 # API Specification & OpenAPI
 
 ## 1. API Standartları (RESTful JSON)
-* FacilityOS yalnızca REST tabanlı JSON API sunar (GraphQL projeden çıkarılmıştır).
+* BingehOS yalnızca REST tabanlı JSON API sunar (GraphQL projeden çıkarılmıştır).
 * Dil Desteği: İsteklerde HTTP header'ı kullanılarak i18n çevirileri sunulur.
 
 ## 2. OpenAPI 3.0 Spesifikasyon Örneği
@@ -10,10 +10,10 @@
 ```yaml
 openapi: 3.0.3
 info:
-  title: FacilityOS API
+  title: BingehOS API
   version: 1.0.0
 servers:
-  - url: https://api.facilityos.com/v1
+  - url: https://api.bingehos.com/v1
 paths:
   /work-orders:
     get:

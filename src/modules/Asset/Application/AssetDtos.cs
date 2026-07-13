@@ -1,7 +1,7 @@
-using FacilityOS.Modules.Asset.Domain;
+using BingehOS.Modules.Asset.Domain;
 using MediatR;
 
-namespace FacilityOS.Modules.Asset.Application;
+namespace BingehOS.Modules.Asset.Application;
 
 public record AssetDto(Guid Id, string Name, string? SerialNumber, string? LocationCode, string Criticality);
 

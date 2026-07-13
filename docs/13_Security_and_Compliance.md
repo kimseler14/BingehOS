@@ -1,7 +1,7 @@
 # Security & Compliance
 
 ## 1. Compliance (Uyumluluk Standartları)
-FacilityOS, çok uluslu kurumlar için sertifikasyon süreçlerine uygundur:
+BingehOS, çok uluslu kurumlar için sertifikasyon süreçlerine uygundur:
 * **ISO 55001:** Varlık Yönetimi ve yaşam döngüsü denetimi.
 * **ISO 27001:** Bilgi Güvenliği.
 * **ISO 41001:** Tesis Yönetimi standartları.
@@ -21,7 +21,7 @@ FacilityOS, çok uluslu kurumlar için sertifikasyon süreçlerine uygundur:
 * **Sorun:** Audit logları "Immutable" (değiştirilemez) 5 yıl saklanmak zorundadır, ancak GDPR "Unutulma Hakkı" kişisel verilerin silinmesini ister.
 * **Çözüm (Data Anonymization / Pseudonymization):** Sistemde yanlış etiketlenen *Crypto-Shredding* (Her kullanıcıya özel DEK anahtarı atayıp, silinince anahtarı yok etme) mimarisine girmeden, maliyet/performans açısından daha verimli olan **Anonimleştirme** yöntemi seçilmiştir:
   * Sistemdeki hiçbir Audit loguna kullanıcı adı/eposta (PII) basılmaz; sadece `User UUID` saklanır.
-  * Bir kullanıcı GDPR/KVKK talebiyle silindiğinde, `users` tablosundaki orijinal kaydı silinmez ancak tüm kişisel verileri maskelenir (`name: "deleted_user_123"`, `email: "anon_123@facilityos.com"`).
+  * Bir kullanıcı GDPR/KVKK talebiyle silindiğinde, `users` tablosundaki orijinal kaydı silinmez ancak tüm kişisel verileri maskelenir (`name: "deleted_user_123"`, `email: "anon_123@bingehos.com"`).
   * Sonuç olarak; Audit logları (veri bütünlüğü) bozulmaz, ancak UUID artık hiçbir gerçek insana bağlanamayacağı için yasal uyumluluk (Unutulma Hakkı) sağlanmış olur.
 
 ## 5. KVKK Rıza Yönetimi (KvkkConsent)

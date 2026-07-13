@@ -1,7 +1,7 @@
 # UI/UX Design System & Developer Platform
 
 ## 1. UI/UX Design System (Arayüz ve Deneyim Sistemi)
-FacilityOS gibi veri yoğun ve ekranı çok olan uygulamalarda tutarlılığı sağlamak için kendi "Design System"ini (Bileşen kütüphanesini) kurmak şarttır.
+BingehOS gibi veri yoğun ve ekranı çok olan uygulamalarda tutarlılığı sağlamak için kendi "Design System"ini (Bileşen kütüphanesini) kurmak şarttır.
 
 ### 1.1. Görsel Dil ve Temalar
 * **Kurumsal ve Temiz Arayüz:** Aşırı renk karmaşasından uzak, okunabilirliği yüksek (Veri tabloları, yoğun formlar) bir arayüz.
@@ -13,7 +13,7 @@ FacilityOS gibi veri yoğun ve ekranı çok olan uygulamalarda tutarlılığı s
 * **DataGrid (Tablo) Yetenekleri:** Tüm listeleme ekranlarında kolon gizleme/gösterme, çoklu sıralama (multi-sort), gelişmiş filtreleme ve Excel'e aktarım standart bileşen özelliği olmalıdır.
 
 ## 2. Developer Platform (SDK ve Eklentiler)
-FacilityOS'in sadece bir ürün değil, bir "Platform" olmasını sağlayan özelliktir.
+BingehOS'in sadece bir ürün değil, bir "Platform" olmasını sağlayan özelliktir.
 
 ### 2.1. Marketplace & Plugins (Eklentiler)
 * Sistemin çekirdek koduna dokunmadan üçüncü parti geliştiricilerin özellik ekleyebilmesi gerekir.
@@ -21,5 +21,5 @@ FacilityOS'in sadece bir ürün değil, bir "Platform" olmasını sağlayan öze
 * **Mimarisi:** Sistemde "Hook" veya "Event" noktaları (Örn: İş emri kaydedilmeden hemen önce) tanımlanmalı, eklentiler bu noktalara bağlanarak (Interceptors) araya girebilmelidir.
 
 ### 2.2. Public API ve SDK
-* Müşterilerin kendi yazılım ekiplerinin entegrasyon yapabilmesi için OpenAPI 3.0 standartlarında, Swagger destekli dökümantasyon portalı (Örn: `developers.facilityos.com`) hazırlanmalıdır.
+* Müşterilerin kendi yazılım ekiplerinin entegrasyon yapabilmesi için OpenAPI 3.0 standartlarında, Swagger destekli dökümantasyon portalı (Örn: `developers.bingehos.com`) hazırlanmalıdır.
 * Popüler diller (Python, JavaScript, C#) için hazır API Wrapper (SDK) paketleri sağlanmalıdır.

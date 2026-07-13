@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.Vendor.Application;
+namespace BingehOS.Modules.Vendor.Application;
 
 public record VendorDto(Guid Id, string Name, string? TaxNumber, string? ContactEmail, string? Phone, bool IsActive);
 

@@ -9,7 +9,7 @@ Modüler Monolit yapı için test stratejisi üç katmandan oluşur (Test Pirami
 * **Performance Testing:** k6 kütüphanesi kullanılarak API uçlarına ve WebSocket/IoT telemetri uçlarına yük testi yapılır.
 
 ## 2. Migration Strategy (Eski Sistemlerden Geçiş)
-Geleneksel CMMS'lerden FacilityOS'e geçiş için standartlaştırılmış bir ETL (Extract, Transform, Load) aracı hazırlanacaktır.
+Geleneksel CMMS'lerden BingehOS'e geçiş için standartlaştırılmış bir ETL (Extract, Transform, Load) aracı hazırlanacaktır.
 
 * **Excel/CSV Import Aracı:** Kullanıcıların Asset, Location ve Parts verilerini şablon Excel dosyalarıyla sisteme yüklemesini sağlayan bir arayüz. Yükleme sırasında veri doğrulama (Validation) yapılır.
-* **Legacy API Konektörleri:** SAP PM, IBM Maximo gibi sistemlerden tarihi Work Order verilerini çekip FacilityOS formatına dönüştüren arka plan (Background Worker) servisleri. Veri aktarımı sırasında tenant isolation kuralları %100 işletilir.
+* **Legacy API Konektörleri:** SAP PM, IBM Maximo gibi sistemlerden tarihi Work Order verilerini çekip BingehOS formatına dönüştüren arka plan (Background Worker) servisleri. Veri aktarımı sırasında tenant isolation kuralları %100 işletilir.

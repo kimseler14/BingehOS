@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.HSE.Domain;
+namespace BingehOS.Modules.HSE.Domain;
 
 public class Incident : BaseEntity
 {

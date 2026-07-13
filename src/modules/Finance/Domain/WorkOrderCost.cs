@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Finance.Domain;
+namespace BingehOS.Modules.Finance.Domain;
 
 public class WorkOrderCost : BaseEntity
 {

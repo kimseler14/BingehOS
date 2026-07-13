@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Finance.Application;
+namespace BingehOS.Modules.Finance.Application;
 
 public class ApproveWorkOrderCostHandler : IRequestHandler<ApproveWorkOrderCostCommand, WorkOrderCostDto>
 {

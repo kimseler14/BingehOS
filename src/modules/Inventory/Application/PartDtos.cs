@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.Inventory.Application;
+namespace BingehOS.Modules.Inventory.Application;
 
 public record PartDto(Guid Id, string PartNumber, string Name, string? Description, string UnitOfMeasure, bool IsActive);
 

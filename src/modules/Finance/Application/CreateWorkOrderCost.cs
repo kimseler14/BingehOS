@@ -1,7 +1,7 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 
-namespace FacilityOS.Modules.Finance.Application;
+namespace BingehOS.Modules.Finance.Application;
 
 public class CreateWorkOrderCostHandler : IRequestHandler<CreateWorkOrderCostCommand, Guid>
 {

@@ -2,7 +2,7 @@
 
 ## 1. Mimari Karar: Strict Modular Monolith (.NET 8)
 Proje kesin olarak **Modüler Monolit** mimarisinde, C# ve .NET 8 kullanılarak geliştirilecektir. 
-Çelişkili "mikroservis" kavramları terk edilmiştir. Sistem fiziksel olarak tek bir işlem (Single Process) olarak ayağa kalkar, ancak mantıksal olarak Domain bazlı (örn: `FacilityOS.Modules.Asset`, `FacilityOS.Modules.WorkOrder`) projelere ayrılır.
+Çelişkili "mikroservis" kavramları terk edilmiştir. Sistem fiziksel olarak tek bir işlem (Single Process) olarak ayağa kalkar, ancak mantıksal olarak Domain bazlı (örn: `BingehOS.Modules.Asset`, `BingehOS.Modules.WorkOrder`) projelere ayrılır.
 
 Modüller birbirlerinin veritabanı tablolarına doğrudan `JOIN` atamazlar. Veri iletişimi C# `MediatR` kütüphanesi üzerinden In-Memory Domain Event'ler ile sağlanır.
 

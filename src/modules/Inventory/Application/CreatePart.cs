@@ -1,7 +1,7 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 
-namespace FacilityOS.Modules.Inventory.Application;
+namespace BingehOS.Modules.Inventory.Application;
 
 public class CreatePartHandler : IRequestHandler<CreatePartCommand, Guid>
 {

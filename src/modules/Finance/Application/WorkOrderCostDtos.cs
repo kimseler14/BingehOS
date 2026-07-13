@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.Finance.Application;
+namespace BingehOS.Modules.Finance.Application;
 
 public record WorkOrderCostDto(Guid Id, Guid WorkOrderId, long AmountMinor, string Currency, string Status, bool IsApproved);
 

@@ -1,7 +1,7 @@
 # Software Requirements Specification (SRS) - AI, Analytics & Digital Twin Modules
 
 ## 1. Giriş
-Bu doküman, FacilityOS'in veriyi bilgiye, bilgiyi ise öngörüye dönüştürdüğü ileri düzey teknoloji modüllerini kapsar: Yapay Zeka (AI), Gelişmiş Analitik ve Dijital İkiz (Digital Twin).
+Bu doküman, BingehOS'in veriyi bilgiye, bilgiyi ise öngörüye dönüştürdüğü ileri düzey teknoloji modüllerini kapsar: Yapay Zeka (AI), Gelişmiş Analitik ve Dijital İkiz (Digital Twin).
 
 ---
 

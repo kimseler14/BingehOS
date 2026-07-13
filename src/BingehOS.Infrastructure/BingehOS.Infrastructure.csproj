@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.*">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.*" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BingehOS.Shared\BingehOS.Shared.csproj" />
+    <ProjectReference Include="..\modules\Maintenance.Domain\BingehOS.Modules.Maintenance.Domain.csproj" />
+    <ProjectReference Include="..\modules\Asset.Domain\BingehOS.Modules.Asset.Domain.csproj" />
+    <ProjectReference Include="..\modules\Facility.Domain\BingehOS.Modules.Facility.Domain.csproj" />
+    <ProjectReference Include="..\modules\Inventory.Domain\BingehOS.Modules.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\modules\Vendor.Domain\BingehOS.Modules.Vendor.Domain.csproj" />
+    <ProjectReference Include="..\modules\HSE.Domain\BingehOS.Modules.HSE.Domain.csproj" />
+    <ProjectReference Include="..\modules\Personnel.Domain\BingehOS.Modules.Personnel.Domain.csproj" />
+    <ProjectReference Include="..\modules\Finance.Domain\BingehOS.Modules.Finance.Domain.csproj" />
+    <ProjectReference Include="..\modules\Compliance.Domain\BingehOS.Modules.Compliance.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

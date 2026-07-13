@@ -3,7 +3,7 @@
 > **⚠️ PHASE 2 BACKLOG:** Bu doküman **PHASE 2 BACKLOG**'dur. MVP kapsamı **Doküman 01-16**'dır. Burada listelenen tüm gelişmiş özellikler (Advanced Features) ve **Turkey Compliance Pack**, MVP tamamlandıktan sonraki Phase 2 aşamasında ele alınacaktır.
 
 ## 1. Giriş
-Bu doküman, FacilityOS'in global enterprise (kurumsal) özelliklerinin (Advanced Features) yanı sıra, Türkiye pazarına özel olarak geliştirilecek olan **"Turkey Compliance Pack" (Türkiye Yerel Mevzuat ve Uyum Paketi)** gereksinimlerini listeler.
+Bu doküman, BingehOS'in global enterprise (kurumsal) özelliklerinin (Advanced Features) yanı sıra, Türkiye pazarına özel olarak geliştirilecek olan **"Turkey Compliance Pack" (Türkiye Yerel Mevzuat ve Uyum Paketi)** gereksinimlerini listeler.
 
 ## 2. Advanced Enterprise Features (Gelişmiş Platform Özellikleri)
 Sistemin standart bir CMMS'in ötesine geçmesini sağlayan katma değerli özellikler:
@@ -19,7 +19,7 @@ Sistemin standart bir CMMS'in ötesine geçmesini sağlayan katma değerli özel
 * **Portallar:** Misafirler için Otel/Oda arıza bildirim ekranı, Taşeronlar için Contractor Portal, Ziyaretçi takip sistemi (Visitor Management).
 
 ## 3. Turkey Compliance Pack (Türkiye Uyum Paketi)
-> **Önemli:** Turkey Compliance Pack, FacilityOS çekirdeğine (core) **gömülmez**; **Doküman 12 (Developer Platform, SDK & Plugins)** kapsamında bir **Marketplace plugin'i** olarak paketlenir. Core, sektör ve ülke bilgisi taşımaz; tüm Türkiye'ye özel yasal gereksinimler bu plugin aracılığıyla (Anti-Corruption Layer üzerinden) sağlanır. Böylece aynı model diğer ülke paketleri için de kullanılabilir (Bkz. Doküman 12, Bölüm 3).
+> **Önemli:** Turkey Compliance Pack, BingehOS çekirdeğine (core) **gömülmez**; **Doküman 12 (Developer Platform, SDK & Plugins)** kapsamında bir **Marketplace plugin'i** olarak paketlenir. Core, sektör ve ülke bilgisi taşımaz; tüm Türkiye'ye özel yasal gereksinimler bu plugin aracılığıyla (Anti-Corruption Layer üzerinden) sağlanır. Böylece aynı model diğer ülke paketleri için de kullanılabilir (Bkz. Doküman 12, Bölüm 3).
 
 Türkiye operasyonlarında yasal zorunlulukları karşılayan modüller:
 
@@ -132,7 +132,7 @@ Aşağıdaki tablo, kullanıcı ham özellik listesindeki her maddenin hangi dok
 | Technician Performance Analytics | 03 + 04 | — |
 | Cost Center Management | 04 + 07 | Finance & Tax (CostCenter) |
 | Sustainability Module | 05 | — (Energy/IoT) |
-| FacilityOS SDK | 12 | — |
+| BingehOS SDK | 12 | — |
 | White Label | 12 + 10 | — |
 | API First | 09 + 12 | — |
 | Otel/Oda Misafir Arıza Bildirimi | 01 | — (Portal) |

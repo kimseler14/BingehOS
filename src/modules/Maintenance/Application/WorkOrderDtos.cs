@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.Maintenance.Application;
+namespace BingehOS.Modules.Maintenance.Application;
 
 public record WorkOrderDto(Guid Id, Guid AssetId, string Description, string Status);
 

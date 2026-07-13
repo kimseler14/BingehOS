@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Inventory.Application;
+namespace BingehOS.Modules.Inventory.Application;
 
 public class UpdatePartHandler : IRequestHandler<UpdatePartCommand, PartDto>
 {

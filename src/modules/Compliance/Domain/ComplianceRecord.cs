@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Compliance.Domain;
+namespace BingehOS.Modules.Compliance.Domain;
 
 public class ComplianceRecord : BaseEntity
 {

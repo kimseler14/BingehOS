@@ -1,7 +1,7 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 
-namespace FacilityOS.Modules.Compliance.Application;
+namespace BingehOS.Modules.Compliance.Application;
 
 public class CreateComplianceRecordHandler : IRequestHandler<CreateComplianceRecordCommand, Guid>
 {

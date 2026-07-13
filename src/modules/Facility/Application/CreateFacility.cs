@@ -1,7 +1,7 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 
-namespace FacilityOS.Modules.Facility.Application;
+namespace BingehOS.Modules.Facility.Application;
 
 public class CreateFacilityHandler : IRequestHandler<CreateFacilityCommand, Guid>
 {

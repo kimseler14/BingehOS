@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Maintenance.Domain;
+namespace BingehOS.Modules.Maintenance.Domain;
 
 public enum WorkOrderStatus
 {

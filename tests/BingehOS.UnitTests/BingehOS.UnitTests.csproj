@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BingehOS.Shared\BingehOS.Shared.csproj" />
+    <ProjectReference Include="..\..\src\modules\Maintenance\BingehOS.Modules.Maintenance.csproj" />
+    <ProjectReference Include="..\..\src\modules\Asset.Domain\BingehOS.Modules.Asset.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Facility.Domain\BingehOS.Modules.Facility.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Inventory.Domain\BingehOS.Modules.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Vendor.Domain\BingehOS.Modules.Vendor.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\HSE.Domain\BingehOS.Modules.HSE.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Personnel.Domain\BingehOS.Modules.Personnel.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Finance.Domain\BingehOS.Modules.Finance.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Compliance.Domain\BingehOS.Modules.Compliance.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

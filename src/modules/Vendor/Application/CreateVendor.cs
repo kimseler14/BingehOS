@@ -1,7 +1,7 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 
-namespace FacilityOS.Modules.Vendor.Application;
+namespace BingehOS.Modules.Vendor.Application;
 
 public class CreateVendorHandler : IRequestHandler<CreateVendorCommand, Guid>
 {

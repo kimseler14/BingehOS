@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Facility.Application;
+namespace BingehOS.Modules.Facility.Application;
 
 public class UpdateFacilityHandler : IRequestHandler<UpdateFacilityCommand, FacilityDto>
 {

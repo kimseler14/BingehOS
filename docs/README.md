@@ -1,6 +1,6 @@
-# FacilityOS - Software Architecture Specification
+# BingehOS - Software Architecture Specification
 
-Bu dokümantasyon dizini, FacilityOS (Enterprise Facility Operating System) projesinin tüm mimari, tasarım ve gereksinim kararlarını barındıran **Tek Doğruluk Kaynağıdır (Single Source of Truth)**.
+Bu dokümantasyon dizini, BingehOS (Enterprise Facility Operating System) projesinin tüm mimari, tasarım ve gereksinim kararlarını barındıran **Tek Doğruluk Kaynağıdır (Single Source of Truth)**.
 
 Tüm "Acaba?" soruları ortadan kaldırılmış, teknoloji yığını kesinleşmiştir:
 * **Mimari:** Modüler Monolit

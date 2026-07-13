@@ -1,10 +1,10 @@
 // src/modules/Maintenance/Application/ChangeWorkOrderStatus.cs
-using FacilityOS.Infrastructure;
-using FacilityOS.Modules.Maintenance.Domain;
+using BingehOS.Infrastructure;
+using BingehOS.Modules.Maintenance.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Maintenance.Application;
+namespace BingehOS.Modules.Maintenance.Application;
 
 public class ChangeWorkOrderStatusHandler : IRequestHandler<ChangeWorkOrderStatusCommand, WorkOrderDto>
 {

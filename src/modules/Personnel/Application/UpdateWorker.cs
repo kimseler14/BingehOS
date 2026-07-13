@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Personnel.Application;
+namespace BingehOS.Modules.Personnel.Application;
 
 public class UpdateWorkerHandler : IRequestHandler<UpdateWorkerCommand, WorkerDto>
 {

@@ -1,7 +1,7 @@
 # Domain Driven Design (DDD) - Bounded Contexts
 
 ## 1. Giriş
-FacilityOS, iş alanlarına (Bounded Context) bölünmüş bir mimari benimser.
+BingehOS, iş alanlarına (Bounded Context) bölünmüş bir mimari benimser.
 
 ## 2. Bounded Context'ler
 

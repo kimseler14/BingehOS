@@ -1,8 +1,8 @@
-ence bundan sonra yapılacak iş "özellik eklemek" değil, FacilityOS'in teknik spesifikasyonunu (Software Architecture Specification) yazmak.
+ence bundan sonra yapılacak iş "özellik eklemek" değil, BingehOS'in teknik spesifikasyonunu (Software Architecture Specification) yazmak.
 
 Şu an ortaya çıkan kapsam artık CMMS seviyesini geçti.
 
-FacilityOS
+BingehOS
 
 Enterprise Facility Operating System
 
@@ -10,8 +10,8 @@ Enterprise Facility Operating System
 
 Ben olsam ürünü aşağıdaki katmanlarla tasarlardım.
 
-FACILITYOS
-FacilityOS
+BINGEHOS
+BingehOS
 
 ├── Core Platform
 ├── Facility Management
@@ -705,4 +705,4 @@ Database Architecture — PostgreSQL, InfluxDB, Redis, MinIO gibi katmanların a
 Deployment Architecture — Docker, Kubernetes, CI/CD, gözlemlenebilirlik (OpenTelemetry, Prometheus, Grafana vb.).
 Plugin SDK — üçüncü taraf geliştiricilerin eklenti yazabileceği altyapı.
 
-Ben olsam bu projeyi tek bir doküman olarak değil, yaklaşık 500-1000 sayfalık bir ürün spesifikasyonu şeklinde geliştirirdim. O doküman; veri modeli, iş kuralları, API sözleşmeleri, entegrasyonlar, güvenlik, dağıtım mimarisi ve kullanıcı deneyimi dahil olmak üzere FacilityOS'un tek doğruluk kaynağı (single source of truth) olur. Bu ölçek, ileride ekibe yeni geliştiriciler katıldığında veya ürün farklı sektörlere genişlediğinde mimarinin tutarlı kalmasını sağlar.
+Ben olsam bu projeyi tek bir doküman olarak değil, yaklaşık 500-1000 sayfalık bir ürün spesifikasyonu şeklinde geliştirirdim. O doküman; veri modeli, iş kuralları, API sözleşmeleri, entegrasyonlar, güvenlik, dağıtım mimarisi ve kullanıcı deneyimi dahil olmak üzere BingehOS'un tek doğruluk kaynağı (single source of truth) olur. Bu ölçek, ileride ekibe yeni geliştiriciler katıldığında veya ürün farklı sektörlere genişlediğinde mimarinin tutarlı kalmasını sağlar.

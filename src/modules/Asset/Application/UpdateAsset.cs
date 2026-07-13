@@ -1,9 +1,9 @@
-using FacilityOS.Infrastructure;
-using FacilityOS.Modules.Asset.Domain;
+using BingehOS.Infrastructure;
+using BingehOS.Modules.Asset.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Asset.Application;
+namespace BingehOS.Modules.Asset.Application;
 
 public class UpdateAssetHandler : IRequestHandler<UpdateAssetCommand, AssetDto>
 {

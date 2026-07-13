@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.HSE.Application;
+namespace BingehOS.Modules.HSE.Application;
 
 public class UpdateIncidentHandler : IRequestHandler<UpdateIncidentCommand, IncidentDto>
 {

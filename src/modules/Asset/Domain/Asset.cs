@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Asset.Domain;
+namespace BingehOS.Modules.Asset.Domain;
 
 public enum AssetCriticality
 {

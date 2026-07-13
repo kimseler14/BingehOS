@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.HSE.Application;
+namespace BingehOS.Modules.HSE.Application;
 
 public record IncidentDto(Guid Id, string Title, string Description, string Severity, DateTime OccurredAt, bool IsResolved);
 

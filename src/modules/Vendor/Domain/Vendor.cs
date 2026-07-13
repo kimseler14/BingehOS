@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Vendor.Domain;
+namespace BingehOS.Modules.Vendor.Domain;
 
 public class Vendor : BaseEntity
 {

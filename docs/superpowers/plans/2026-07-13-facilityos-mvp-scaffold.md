@@ -1,10 +1,10 @@
-# FacilityOS MVP Scaffold Implementation Plan
+# BingehOS MVP Scaffold Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a .NET 8 modular monolith skeleton with multi-tenant RLS, EF Core + PostgreSQL, MediatR domain events, and a working `/work-orders` REST API for the Maintenance module — the first runnable slice of the FacilityOS blueprint (Doküman 01-17, MVP scope per Doküman 18).
+**Goal:** Build a .NET 8 modular monolith skeleton with multi-tenant RLS, EF Core + PostgreSQL, MediatR domain events, and a working `/work-orders` REST API for the Maintenance module — the first runnable slice of the BingehOS blueprint (Doküman 01-17, MVP scope per Doküman 18).
 
-**Architecture:** Single `FacilityOS.sln` with `src/` (shared Domain/Infrastructure/Api) plus `src/modules/<BoundedContext>/` projects, one per bounded context. Cross-module communication via MediatR `INotification`. Tenant isolation enforced by PostgreSQL Row-Level Security driven from a `tenant_id` column on every table, set automatically via an EF Core `SaveChangesInterceptor`. Per-task TDD; integration tests use Testcontainers (PostgreSQL + Redis).
+**Architecture:** Single `BingehOS.sln` with `src/` (shared Domain/Infrastructure/Api) plus `src/modules/<BoundedContext>/` projects, one per bounded context. Cross-module communication via MediatR `INotification`. Tenant isolation enforced by PostgreSQL Row-Level Security driven from a `tenant_id` column on every table, set automatically via an EF Core `SaveChangesInterceptor`. Per-task TDD; integration tests use Testcontainers (PostgreSQL + Redis).
 
 **Tech Stack:** .NET 8 (C#), EF Core 8 + Npgsql, PostgreSQL 16 (TimescaleDB later), Redis (later), RabbitMQ (later), MediatR, xUnit + Testcontainers + Respawn, Swashbuckle (OpenAPI).
 
@@ -18,7 +18,7 @@
 - Money: integer **minor-unit** + ISO 4217 `CHAR(3)` (e.g. `1550` = 15.50 TRY). No `decimal`/`float` for money.
 - State machine: WorkOrder status uses **9 transitions** (DRAFT→REQUESTED→APPROVED→[REJECTED]→ASSIGNED→IN_PROGRESS→ON_HOLD→COMPLETED→VERIFIED→CLOSED) with **E-İmza required** for VERIFIED→CLOSED and **Permit to Work approved** required for ASSIGNED→IN_PROGRESS (Doküman 03).
 - Commit convention: `feat(scope): ...`, `test(scope): ...`, `chore: ...` (frequent commits, one per task).
-- Project naming: `FacilityOS.Shared`, `FacilityOS.Infrastructure`, `FacilityOS.Api`, `FacilityOS.Modules.<Context>`.
+- Project naming: `BingehOS.Shared`, `BingehOS.Infrastructure`, `BingehOS.Api`, `BingehOS.Modules.<Context>`.
 
 ---
 
@@ -26,25 +26,25 @@
 
 ```
 /home/halil/Masaüstü/cmms/
-├── FacilityOS.sln
+├── BingehOS.sln
 ├── src/
-│   ├── FacilityOS.Shared/
+│   ├── BingehOS.Shared/
 │   │   ├── BaseEntity.cs              # Id (UUID), TenantId, CreatedAt, UpdatedAt, IsDeleted
 │   │   ├── ValueObjects/MonetaryAmount.cs
 │   │   ├── Abstractions/IRepository.cs
-│   │   └── FacilityOS.Shared.csproj
-│   ├── FacilityOS.Infrastructure/
+│   │   └── BingehOS.Shared.csproj
+│   ├── BingehOS.Infrastructure/
 │   │   ├── AppDbContext.cs            # DbSets + OnModelCreating (tenant_id, soft delete, RLS convention)
 │   │   ├── TenantInterceptor.cs       # sets TenantId on save; throws if missing on insert
 │   │   ├── Rls/EnableRlsMigration.cs  # helper to emit ALTER TABLE ... ENABLE ROW LEVEL SECURITY + policy
 │   │   ├── Repositories/Repository.cs
-│   │   └── FacilityOS.Infrastructure.csproj
-│   ├── FacilityOS.Api/
+│   │   └── BingehOS.Infrastructure.csproj
+│   ├── BingehOS.Api/
 │   │   ├── Program.cs                 # builder, DI, middleware, Swagger
 │   │   ├── appsettings.json
 │   │   ├── Middleware/TenantResolutionMiddleware.cs  # reads x-tenant-id -> HttpContext.Items
 │   │   ├── Filters/GlobalExceptionFilter.cs
-│   │   └── FacilityOS.Api.csproj
+│   │   └── BingehOS.Api.csproj
 │   └── modules/
 │       ├── Identity/                  # (later) Users/Roles/Tenants
 │       └── Maintenance/
@@ -55,10 +55,10 @@
 │           │   └── WorkOrderDtos.cs
 │           ├── Infrastructure/MaintenanceDbConfiguration.cs (part of AppDbContext)
 │           ├── Api/WorkOrdersController.cs
-│           └── FacilityOS.Modules.Maintenance.csproj
+│           └── BingehOS.Modules.Maintenance.csproj
 └── tests/
-    ├── FacilityOS.UnitTests/          # domain state machine + value object tests
-    └── FacilityOS.IntegrationTests/   # Testcontainers PG + endpoint tests
+    ├── BingehOS.UnitTests/          # domain state machine + value object tests
+    └── BingehOS.IntegrationTests/   # Testcontainers PG + endpoint tests
 ```
 
 ---
@@ -66,28 +66,28 @@
 ### Task 1: Solution + Shared project skeleton
 
 **Files:**
-- Create: `FacilityOS.sln`
-- Create: `src/FacilityOS.Shared/FacilityOS.Shared.csproj`
-- Create: `src/FacilityOS.Shared/BaseEntity.cs`
+- Create: `BingehOS.sln`
+- Create: `src/BingehOS.Shared/BingehOS.Shared.csproj`
+- Create: `src/BingehOS.Shared/BaseEntity.cs`
 
 **Interfaces:**
 - Produces: `BaseEntity` base class consumed by all modules and Infrastructure.
 
 - [ ] **Step 1: Create solution file**
 ```bash
-cd /home/halil/Masaüstü/cmms && dotnet new sln -n FacilityOS
+cd /home/halil/Masaüstü/cmms && dotnet new sln -n BingehOS
 ```
 
 - [ ] **Step 2: Create Shared class library**
 ```bash
-mkdir -p src/FacilityOS.Shared && cd src/FacilityOS.Shared && dotnet new classlib -n FacilityOS.Shared -f net8.0 && cd /home/halil/Masaüstü/cmms
-dotnet sln add src/FacilityOS.Shared/FacilityOS.Shared.csproj
+mkdir -p src/BingehOS.Shared && cd src/BingehOS.Shared && dotnet new classlib -n BingehOS.Shared -f net8.0 && cd /home/halil/Masaüstü/cmms
+dotnet sln add src/BingehOS.Shared/BingehOS.Shared.csproj
 ```
 
 - [ ] **Step 3: Write BaseEntity**
 ```csharp
-// src/FacilityOS.Shared/BaseEntity.cs
-namespace FacilityOS.Shared;
+// src/BingehOS.Shared/BaseEntity.cs
+namespace BingehOS.Shared;
 
 public abstract class BaseEntity
 {
@@ -101,7 +101,7 @@ public abstract class BaseEntity
 
 - [ ] **Step 4: Build to verify**
 ```bash
-dotnet build src/FacilityOS.Shared/FacilityOS.Shared.csproj
+dotnet build src/BingehOS.Shared/BingehOS.Shared.csproj
 ```
 Expected: Build succeeded.
 
@@ -116,27 +116,27 @@ git add -A && git commit -m "chore: scaffold solution and shared base entity"
 ### Task 2: MonetaryAmount value object + unit tests
 
 **Files:**
-- Create: `src/FacilityOS.Shared/ValueObjects/MonetaryAmount.cs`
-- Create: `tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj`
-- Create: `tests/FacilityOS.UnitTests/MonetaryAmountTests.cs`
+- Create: `src/BingehOS.Shared/ValueObjects/MonetaryAmount.cs`
+- Create: `tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj`
+- Create: `tests/BingehOS.UnitTests/MonetaryAmountTests.cs`
 
 **Interfaces:**
 - Produces: `MonetaryAmount` (record struct) used by Finance module later and any cost field.
 
 - [ ] **Step 1: Create unit test project**
 ```bash
-mkdir -p tests/FacilityOS.UnitTests && cd tests/FacilityOS.UnitTests && dotnet new xunit -n FacilityOS.UnitTests -f net8.0 && cd /home/halil/Masaüstü/cmms
-dotnet add tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj reference src/FacilityOS.Shared/FacilityOS.Shared.csproj
-dotnet sln add tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj
+mkdir -p tests/BingehOS.UnitTests && cd tests/BingehOS.UnitTests && dotnet new xunit -n BingehOS.UnitTests -f net8.0 && cd /home/halil/Masaüstü/cmms
+dotnet add tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj reference src/BingehOS.Shared/BingehOS.Shared.csproj
+dotnet sln add tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj
 ```
 
 - [ ] **Step 2: Write the failing test**
 ```csharp
-// tests/FacilityOS.UnitTests/MonetaryAmountTests.cs
-using FacilityOS.Shared.ValueObjects;
+// tests/BingehOS.UnitTests/MonetaryAmountTests.cs
+using BingehOS.Shared.ValueObjects;
 using Xunit;
 
-namespace FacilityOS.UnitTests;
+namespace BingehOS.UnitTests;
 
 public class MonetaryAmountTests
 {
@@ -169,14 +169,14 @@ public class MonetaryAmountTests
 
 - [ ] **Step 3: Run test, verify FAIL**
 ```bash
-dotnet test tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj
+dotnet test tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj
 ```
 Expected: error CS0246 `MonetaryAmount` not found.
 
 - [ ] **Step 4: Implement MonetaryAmount**
 ```csharp
-// src/FacilityOS.Shared/ValueObjects/MonetaryAmount.cs
-namespace FacilityOS.Shared.ValueObjects;
+// src/BingehOS.Shared/ValueObjects/MonetaryAmount.cs
+namespace BingehOS.Shared.ValueObjects;
 
 public readonly record struct MonetaryAmount(long MinorAmount, string Currency)
 {
@@ -196,7 +196,7 @@ public readonly record struct MonetaryAmount(long MinorAmount, string Currency)
 
 - [ ] **Step 5: Run test, verify PASS**
 ```bash
-dotnet test tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj
+dotnet test tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj
 ```
 Expected: Passed! 3 tests.
 
@@ -210,10 +210,10 @@ git add -A && git commit -m "feat(shared): add MonetaryAmount minor-unit value o
 ### Task 3: Infrastructure project — AppDbContext + TenantInterceptor
 
 **Files:**
-- Create: `src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj`
-- Create: `src/FacilityOS.Infrastructure/AppDbContext.cs`
-- Create: `src/FacilityOS.Infrastructure/TenantInterceptor.cs`
-- Create: `src/FacilityOS.Infrastructure/Repositories/Repository.cs`
+- Create: `src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj`
+- Create: `src/BingehOS.Infrastructure/AppDbContext.cs`
+- Create: `src/BingehOS.Infrastructure/TenantInterceptor.cs`
+- Create: `src/BingehOS.Infrastructure/Repositories/Repository.cs`
 
 **Interfaces:**
 - Consumes: `BaseEntity` (Task 1).
@@ -221,23 +221,23 @@ git add -A && git commit -m "feat(shared): add MonetaryAmount minor-unit value o
 
 - [ ] **Step 1: Create Infrastructure project + add EF Core + MediatR**
 ```bash
-mkdir -p src/FacilityOS.Infrastructure && cd src/FacilityOS.Infrastructure && dotnet new classlib -n FacilityOS.Infrastructure -f net8.0 && cd /home/halil/Masaüstü/cmms
-dotnet add src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj package Microsoft.EntityFrameworkCore  --version 8.*
-dotnet add src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj package Microsoft.EntityFrameworkCore.Relational --version 8.*
-dotnet add src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj package Npgsql.EntityFrameworkCore.PostgreSQL --version 8.*
-dotnet add src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj package MediatR --version 12.*
-dotnet add src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj reference src/FacilityOS.Shared/FacilityOS.Shared.csproj
-dotnet sln add src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj
+mkdir -p src/BingehOS.Infrastructure && cd src/BingehOS.Infrastructure && dotnet new classlib -n BingehOS.Infrastructure -f net8.0 && cd /home/halil/Masaüstü/cmms
+dotnet add src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj package Microsoft.EntityFrameworkCore  --version 8.*
+dotnet add src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj package Microsoft.EntityFrameworkCore.Relational --version 8.*
+dotnet add src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj package Npgsql.EntityFrameworkCore.PostgreSQL --version 8.*
+dotnet add src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj package MediatR --version 12.*
+dotnet add src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj reference src/BingehOS.Shared/BingehOS.Shared.csproj
+dotnet sln add src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj
 ```
 
 - [ ] **Step 2: Write AppDbContext**
 ```csharp
-// src/FacilityOS.Infrastructure/AppDbContext.cs
-using FacilityOS.Shared;
+// src/BingehOS.Infrastructure/AppDbContext.cs
+using BingehOS.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace FacilityOS.Infrastructure;
+namespace BingehOS.Infrastructure;
 
 public class AppDbContext : DbContext
 {
@@ -277,11 +277,11 @@ public class AppDbContext : DbContext
 
 - [ ] **Step 3: Write TenantInterceptor**
 ```csharp
-// src/FacilityOS.Infrastructure/TenantInterceptor.cs
-using FacilityOS.Shared;
+// src/BingehOS.Infrastructure/TenantInterceptor.cs
+using BingehOS.Shared;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace FacilityOS.Infrastructure;
+namespace BingehOS.Infrastructure;
 
 public class TenantInterceptor : SaveChangesInterceptor
 {
@@ -308,11 +308,11 @@ public class TenantInterceptor : SaveChangesInterceptor
 
 - [ ] **Step 4: Write generic Repository**
 ```csharp
-// src/FacilityOS.Infrastructure/Repositories/Repository.cs
-using FacilityOS.Shared;
+// src/BingehOS.Infrastructure/Repositories/Repository.cs
+using BingehOS.Shared;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Infrastructure;
+namespace BingehOS.Infrastructure;
 
 public interface IRepository<T> where T : BaseEntity
 {
@@ -341,7 +341,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
 - [ ] **Step 5: Build**
 ```bash
-dotnet build src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj
+dotnet build src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj
 ```
 Expected: Build succeeded.
 
@@ -355,9 +355,9 @@ git add -A && git commit -m "feat(infra): add AppDbContext, tenant interceptor, 
 ### Task 4: RLS helper + WorkOrder domain (aggregate + state machine)
 
 **Files:**
-- Create: `src/modules/Maintenance/FacilityOS.Modules.Maintenance.csproj`
+- Create: `src/modules/Maintenance/BingehOS.Modules.Maintenance.csproj`
 - Create: `src/modules/Maintenance/Domain/WorkOrder.cs`
-- Create: `tests/FacilityOS.UnitTests/WorkOrderStateMachineTests.cs`
+- Create: `tests/BingehOS.UnitTests/WorkOrderStateMachineTests.cs`
 
 **Interfaces:**
 - Consumes: `BaseEntity` (Task 1).
@@ -365,18 +365,18 @@ git add -A && git commit -m "feat(infra): add AppDbContext, tenant interceptor, 
 
 - [ ] **Step 1: Create Maintenance module project**
 ```bash
-mkdir -p src/modules/Maintenance && cd src/modules/Maintenance && dotnet new classlib -n FacilityOS.Modules.Maintenance -f net8.0 && cd /home/halil/Masaüstü/cmms
-dotnet add src/modules/Maintenance/FacilityOS.Modules.Maintenance.csproj reference src/FacilityOS.Shared/FacilityOS.Shared.csproj
-dotnet sln add src/modules/Maintenance/FacilityOS.Modules.Maintenance.csproj
+mkdir -p src/modules/Maintenance && cd src/modules/Maintenance && dotnet new classlib -n BingehOS.Modules.Maintenance -f net8.0 && cd /home/halil/Masaüstü/cmms
+dotnet add src/modules/Maintenance/BingehOS.Modules.Maintenance.csproj reference src/BingehOS.Shared/BingehOS.Shared.csproj
+dotnet sln add src/modules/Maintenance/BingehOS.Modules.Maintenance.csproj
 ```
 
 - [ ] **Step 2: Write failing state machine test**
 ```csharp
-// tests/FacilityOS.UnitTests/WorkOrderStateMachineTests.cs
-using FacilityOS.Modules.Maintenance.Domain;
+// tests/BingehOS.UnitTests/WorkOrderStateMachineTests.cs
+using BingehOS.Modules.Maintenance.Domain;
 using Xunit;
 
-namespace FacilityOS.UnitTests;
+namespace BingehOS.UnitTests;
 
 public class WorkOrderStateMachineTests
 {
@@ -416,16 +416,16 @@ public class WorkOrderStateMachineTests
 
 - [ ] **Step 3: Run test, verify FAIL**
 ```bash
-dotnet test tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj
+dotnet test tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj
 ```
 Expected: CS0246 `WorkOrder`/`WorkOrderStatus` not found.
 
 - [ ] **Step 4: Implement WorkOrder domain**
 ```csharp
 // src/modules/Maintenance/Domain/WorkOrder.cs
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Maintenance.Domain;
+namespace BingehOS.Modules.Maintenance.Domain;
 
 public enum WorkOrderStatus
 {
@@ -478,7 +478,7 @@ public class WorkOrder : BaseEntity
 
 - [ ] **Step 5: Run test, verify PASS**
 ```bash
-dotnet test tests/FacilityOS.UnitTests/FacilityOS.UnitTests.csproj
+dotnet test tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj
 ```
 Expected: Passed! 5 tests (3 from Task 2 + 5 here... note: 5 domain + 3 money = 8 total).
 
@@ -503,7 +503,7 @@ git add -A && git commit -m "feat(maintenance): add WorkOrder aggregate and stat
 - [ ] **Step 1: Write DTOs**
 ```csharp
 // src/modules/Maintenance/Application/WorkOrderDtos.cs
-namespace FacilityOS.Modules.Maintenance.Application;
+namespace BingehOS.Modules.Maintenance.Application;
 
 public record WorkOrderDto(Guid Id, Guid AssetId, string Description, string Status);
 
@@ -514,11 +514,11 @@ public record ChangeWorkOrderStatusCommand(Guid Id, string NewStatus, bool Permi
 - [ ] **Step 2: Write CreateWorkOrder handler**
 ```csharp
 // src/modules/Maintenance/Application/CreateWorkOrder.cs
-using FacilityOS.Infrastructure;
-using FacilityOS.Modules.Maintenance.Domain;
+using BingehOS.Infrastructure;
+using BingehOS.Modules.Maintenance.Domain;
 using MediatR;
 
-namespace FacilityOS.Modules.Maintenance.Application;
+namespace BingehOS.Modules.Maintenance.Application;
 
 public class CreateWorkOrderHandler : IRequestHandler<CreateWorkOrderCommand, Guid>
 {
@@ -538,11 +538,11 @@ public class CreateWorkOrderHandler : IRequestHandler<CreateWorkOrderCommand, Gu
 - [ ] **Step 3: Write ChangeWorkOrderStatus handler**
 ```csharp
 // src/modules/Maintenance/Application/ChangeWorkOrderStatus.cs
-using FacilityOS.Infrastructure;
-using FacilityOS.Modules.Maintenance.Domain;
+using BingehOS.Infrastructure;
+using BingehOS.Modules.Maintenance.Domain;
 using MediatR;
 
-namespace FacilityOS.Modules.Maintenance.Application;
+namespace BingehOS.Modules.Maintenance.Application;
 
 public class ChangeWorkOrderStatusHandler : IRequestHandler<ChangeWorkOrderStatusCommand, WorkOrderDto>
 {
@@ -569,7 +569,7 @@ public class ChangeWorkOrderStatusHandler : IRequestHandler<ChangeWorkOrderStatu
 
 - [ ] **Step 4: Build**
 ```bash
-dotnet build src/modules/Maintenance/FacilityOS.Modules.Maintenance.csproj
+dotnet build src/modules/Maintenance/BingehOS.Modules.Maintenance.csproj
 ```
 Expected: Build succeeded.
 
@@ -583,12 +583,12 @@ git add -A && git commit -m "feat(maintenance): add work order commands and hand
 ### Task 6: API project — Program.cs, tenant middleware, controller, Swagger
 
 **Files:**
-- Create: `src/FacilityOS.Api/FacilityOS.Api.csproj`
-- Create: `src/FacilityOS.Api/Program.cs`
-- Create: `src/FacilityOS.Api/appsettings.json`
-- Create: `src/FacilityOS.Api/Middleware/TenantResolutionMiddleware.cs`
-- Create: `src/FacilityOS.Api/Filters/GlobalExceptionFilter.cs`
-- Create: `src/FacilityOS.Api/Api/WorkOrdersController.cs`
+- Create: `src/BingehOS.Api/BingehOS.Api.csproj`
+- Create: `src/BingehOS.Api/Program.cs`
+- Create: `src/BingehOS.Api/appsettings.json`
+- Create: `src/BingehOS.Api/Middleware/TenantResolutionMiddleware.cs`
+- Create: `src/BingehOS.Api/Filters/GlobalExceptionFilter.cs`
+- Create: `src/BingehOS.Api/Api/WorkOrdersController.cs`
 
 **Interfaces:**
 - Consumes: `CreateWorkOrderCommand`/`ChangeWorkOrderStatusCommand` (Task 5), `AppDbContext` (Task 3).
@@ -596,21 +596,21 @@ git add -A && git commit -m "feat(maintenance): add work order commands and hand
 
 - [ ] **Step 1: Create API project + packages**
 ```bash
-mkdir -p src/FacilityOS.Api && cd src/FacilityOS.Api && dotnet new webapi -n FacilityOS.Api -f net8.0 --no-https=false && cd /home/halil/Masaüstü/cmms
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj package Microsoft.EntityFrameworkCore  --version 8.*
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj package Npgsql.EntityFrameworkCore.PostgreSQL --version 8.*
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj package MediatR --version 12.*
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj package Swashbuckle.AspNetCore --version 6.*
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj reference src/FacilityOS.Shared/FacilityOS.Shared.csproj
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj reference src/FacilityOS.Infrastructure/FacilityOS.Infrastructure.csproj
-dotnet add src/FacilityOS.Api/FacilityOS.Api.csproj reference src/modules/Maintenance/FacilityOS.Modules.Maintenance.csproj
-dotnet sln add src/FacilityOS.Api/FacilityOS.Api.csproj
+mkdir -p src/BingehOS.Api && cd src/BingehOS.Api && dotnet new webapi -n BingehOS.Api -f net8.0 --no-https=false && cd /home/halil/Masaüstü/cmms
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj package Microsoft.EntityFrameworkCore  --version 8.*
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj package Npgsql.EntityFrameworkCore.PostgreSQL --version 8.*
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj package MediatR --version 12.*
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj package Swashbuckle.AspNetCore --version 6.*
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj reference src/BingehOS.Shared/BingehOS.Shared.csproj
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj reference src/BingehOS.Infrastructure/BingehOS.Infrastructure.csproj
+dotnet add src/BingehOS.Api/BingehOS.Api.csproj reference src/modules/Maintenance/BingehOS.Modules.Maintenance.csproj
+dotnet sln add src/BingehOS.Api/BingehOS.Api.csproj
 ```
 
 - [ ] **Step 2: Write tenant middleware**
 ```csharp
-// src/FacilityOS.Api/Middleware/TenantResolutionMiddleware.cs
-namespace FacilityOS.Api.Middleware;
+// src/BingehOS.Api/Middleware/TenantResolutionMiddleware.cs
+namespace BingehOS.Api.Middleware;
 
 public class TenantResolutionMiddleware
 {
@@ -631,11 +631,11 @@ public class TenantResolutionMiddleware
 
 - [ ] **Step 3: Write global exception filter**
 ```csharp
-// src/FacilityOS.Api/Filters/GlobalExceptionFilter.cs
+// src/BingehOS.Api/Filters/GlobalExceptionFilter.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace FacilityOS.Api.Filters;
+namespace BingehOS.Api.Filters;
 
 public class GlobalExceptionFilter : IExceptionFilter
 {
@@ -659,12 +659,12 @@ public class GlobalExceptionFilter : IExceptionFilter
 
 - [ ] **Step 4: Write controller**
 ```csharp
-// src/FacilityOS.Api/Api/WorkOrdersController.cs
-using FacilityOS.Modules.Maintenance.Application;
+// src/BingehOS.Api/Api/WorkOrdersController.cs
+using BingehOS.Modules.Maintenance.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FacilityOS.Api.Api;
+namespace BingehOS.Api.Api;
 
 [ApiController]
 [Route("v1/work-orders")]
@@ -699,10 +699,10 @@ public class WorkOrdersController : ControllerBase
 
 - [ ] **Step 5: Write Program.cs**
 ```csharp
-// src/FacilityOS.Api/Program.cs
-using FacilityOS.Api.Filters;
-using FacilityOS.Api.Middleware;
-using FacilityOS.Infrastructure;
+// src/BingehOS.Api/Program.cs
+using BingehOS.Api.Filters;
+using BingehOS.Api.Middleware;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -713,7 +713,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
-           ?? "Host=localhost;Port=5432;Database=facilityos;Username=postgres;Password=postgres";
+           ?? "Host=localhost;Port=5432;Database=bingehos;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql(conn));
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(WorkOrder).Assembly));
@@ -738,7 +738,7 @@ public partial class Program { }
 ```json
 {
   "ConnectionStrings": {
-    "Postgres": "Host=localhost;Port=5432;Database=facilityos;Username=postgres;Password=postgres"
+    "Postgres": "Host=localhost;Port=5432;Database=bingehos;Username=postgres;Password=postgres"
   },
   "Logging": { "LogLevel": { "Default": "Information" } }
 }
@@ -746,8 +746,8 @@ public partial class Program { }
 
 - [ ] **Step 7: Build + run smoke test**
 ```bash
-dotnet build src/FacilityOS.Api/FacilityOS.Api.csproj
-dotnet run --project src/FacilityOS.Api/FacilityOS.Api.csproj &
+dotnet build src/BingehOS.Api/BingehOS.Api.csproj
+dotnet run --project src/BingehOS.Api/BingehOS.Api.csproj &
 sleep 5
 curl -s -X POST https://localhost:5001/v1/work-orders \
   -H "x-tenant-id: 11111111-1111-1111-1111-111111111111" \
@@ -766,10 +766,10 @@ git add -A && git commit -m "feat(api): add work-orders endpoints, tenant middle
 ### Task 7: RLS migration + integration test (Testcontainers)
 
 **Files:**
-- Create: `src/FacilityOS.Infrastructure/Migrations/InitialMigration.cs` (EF migration; generate via CLI)
-- Create: `tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj`
-- Create: `tests/FacilityOS.IntegrationTests/WorkOrderEndpointTests.cs`
-- Create: `tests/FacilityOS.IntegrationTests/TestContainerFixture.cs`
+- Create: `src/BingehOS.Infrastructure/Migrations/InitialMigration.cs` (EF migration; generate via CLI)
+- Create: `tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj`
+- Create: `tests/BingehOS.IntegrationTests/WorkOrderEndpointTests.cs`
+- Create: `tests/BingehOS.IntegrationTests/TestContainerFixture.cs`
 
 **Interfaces:**
 - Consumes: `AppDbContext`, `WorkOrdersController` wiring (Tasks 3,5,6).
@@ -777,23 +777,23 @@ git add -A && git commit -m "feat(api): add work-orders endpoints, tenant middle
 
 - [ ] **Step 1: Create integration test project + packages**
 ```bash
-mkdir -p tests/FacilityOS.IntegrationTests && cd tests/FacilityOS.IntegrationTests && dotnet new xunit -n FacilityOS.IntegrationTests -f net8.0 && cd /home/halil/Masaüstü/cmms
-dotnet add tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj package Microsoft.AspNetCore.Mvc.Testing --version 8.*
-dotnet add tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj package Testcontainers.PostgreSql --version 3.*
-dotnet add tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj package Respawn --version 6.*
-dotnet add tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj reference src/FacilityOS.Api/FacilityOS.Api.csproj
-dotnet sln add tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj
+mkdir -p tests/BingehOS.IntegrationTests && cd tests/BingehOS.IntegrationTests && dotnet new xunit -n BingehOS.IntegrationTests -f net8.0 && cd /home/halil/Masaüstü/cmms
+dotnet add tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj package Microsoft.AspNetCore.Mvc.Testing --version 8.*
+dotnet add tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj package Testcontainers.PostgreSql --version 3.*
+dotnet add tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj package Respawn --version 6.*
+dotnet add tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj reference src/BingehOS.Api/BingehOS.Api.csproj
+dotnet sln add tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj
 ```
 
 - [ ] **Step 2: Generate EF migration**
 ```bash
 dotnet tool install --global dotnet-ef --version 8.*
-dotnet ef migrations add InitialCreate --project src/FacilityOS.Infrastructure --startup-project src/FacilityOS.Api --output-dir Migrations
+dotnet ef migrations add InitialCreate --project src/BingehOS.Infrastructure --startup-project src/BingehOS.Api --output-dir Migrations
 ```
 Expected: `Migrations/InitialCreate.cs` + `InitialCreate.Design.cs` + `AppDbContextModelSnapshot.cs` created.
 
 - [ ] **Step 3: Add RLS enable + policy to migration**
-Open the generated `src/FacilityOS.Infrastructure/Migrations/<Timestamp>_InitialCreate.cs`. In `Up(migrationBuilder)`, append after `migrationBuilder.CreateTable(...)` calls:
+Open the generated `src/BingehOS.Infrastructure/Migrations/<Timestamp>_InitialCreate.cs`. In `Up(migrationBuilder)`, append after `migrationBuilder.CreateTable(...)` calls:
 ```csharp
 // Enable RLS on every created table and add tenant isolation policy.
 // (Loop over known tables; example for WorkOrder — repeat per table.)
@@ -804,18 +804,18 @@ Repeat the two `Sql(...)` lines for every table created (Assets, Vendors, Contra
 
 - [ ] **Step 4: Write Testcontainers fixture**
 ```csharp
-// tests/FacilityOS.IntegrationTests/TestContainerFixture.cs
+// tests/BingehOS.IntegrationTests/TestContainerFixture.cs
 using System.Threading.Tasks;
 using Testcontainers.PostgreSql;
 using Xunit;
 
-namespace FacilityOS.IntegrationTests;
+namespace BingehOS.IntegrationTests;
 
 public class TestContainerFixture : IAsyncLifetime
 {
     public PostgreSqlContainer Container { get; } = new PostgreSqlBuilder()
         .WithImage("postgres:16-alpine")
-        .WithUsername("postgres").WithPassword("postgres").WithDatabase("facilityos")
+        .WithUsername("postgres").WithPassword("postgres").WithDatabase("bingehos")
         .Build();
 
     public string ConnectionString => Container.GetConnectionString();
@@ -827,14 +827,14 @@ public class TestContainerFixture : IAsyncLifetime
 
 - [ ] **Step 5: Write endpoint integration test**
 ```csharp
-// tests/FacilityOS.IntegrationTests/WorkOrderEndpointTests.cs
+// tests/BingehOS.IntegrationTests/WorkOrderEndpointTests.cs
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using FacilityOS.Modules.Maintenance.Application;
+using BingehOS.Modules.Maintenance.Application;
 using Xunit;
 
-namespace FacilityOS.IntegrationTests;
+namespace BingehOS.IntegrationTests;
 
 public class WorkOrderEndpointTests : IClassFixture<TestContainerFixture>
 {
@@ -867,7 +867,7 @@ public class WorkOrderEndpointTests : IClassFixture<TestContainerFixture>
 
 - [ ] **Step 6: Run integration tests**
 ```bash
-dotnet test tests/FacilityOS.IntegrationTests/FacilityOS.IntegrationTests.csproj
+dotnet test tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj
 ```
 Expected: Passed! (endpoint creates + transitions DRAFT→REQUESTED in isolated tenant DB).
 

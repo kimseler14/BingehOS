@@ -29,7 +29,7 @@ Bu modül, depolardaki malzemelerin giriş, çıkış ve transfer süreçlerini 
 ---
 
 ## 3. Financial (Maliyet ve Finans) Modülü
-FacilityOS'te yapılan her işlemin bir maliyeti (TCO - Toplam Sahip Olma Maliyeti) hesaplanmalıdır.
+BingehOS'te yapılan her işlemin bir maliyeti (TCO - Toplam Sahip Olma Maliyeti) hesaplanmalıdır.
 
 ### 3.1. Maliyet Kalemleri
 * **Labor Cost (İşçilik Maliyeti):** Teknisyenin saatlik ücreti x İş Emri Süresi.

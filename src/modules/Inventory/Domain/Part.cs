@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Inventory.Domain;
+namespace BingehOS.Modules.Inventory.Domain;
 
 public class Part : BaseEntity
 {

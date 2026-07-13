@@ -1,8 +1,8 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FacilityOS.Modules.Vendor.Application;
+namespace BingehOS.Modules.Vendor.Application;
 
 public class UpdateVendorHandler : IRequestHandler<UpdateVendorCommand, VendorDto>
 {

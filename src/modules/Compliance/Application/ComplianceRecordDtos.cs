@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.Compliance.Application;
+namespace BingehOS.Modules.Compliance.Application;
 
 public record ComplianceRecordDto(Guid Id, string Title, string Description, string Status, DateTime DueDate);
 

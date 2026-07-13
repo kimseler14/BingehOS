@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace FacilityOS.Modules.Facility.Application;
+namespace BingehOS.Modules.Facility.Application;
 
 public record FacilityDto(Guid Id, string Name, string? Code, string? Address, string? TimeZone, Guid? ParentFacilityId);
 

@@ -1,6 +1,6 @@
-using FacilityOS.Shared;
+using BingehOS.Shared;
 
-namespace FacilityOS.Modules.Personnel.Domain;
+namespace BingehOS.Modules.Personnel.Domain;
 
 public class Worker : BaseEntity
 {

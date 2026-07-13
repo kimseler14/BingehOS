@@ -1,7 +1,7 @@
-using FacilityOS.Infrastructure;
+using BingehOS.Infrastructure;
 using MediatR;
 
-namespace FacilityOS.Modules.Personnel.Application;
+namespace BingehOS.Modules.Personnel.Application;
 
 public class CreateWorkerHandler : IRequestHandler<CreateWorkerCommand, Guid>
 {
