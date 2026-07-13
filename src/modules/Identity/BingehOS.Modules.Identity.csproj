@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BingehOS.Shared\BingehOS.Shared.csproj" />
+    <ProjectReference Include="..\..\BingehOS.Infrastructure\BingehOS.Infrastructure.csproj" />
+    <ProjectReference Include="..\Identity.Domain\BingehOS.Modules.Identity.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.*" />
+  </ItemGroup>
+</Project>
