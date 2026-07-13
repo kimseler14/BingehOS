@@ -26,6 +26,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using BingehOS.Infrastructure.Storage;
+using BingehOS.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,6 +115,10 @@ builder.Services.AddMediatR(cfg =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BingehOS.Infrastructure.ITenantProvider, BingehOS.Api.TenantProvider>();
+builder.Services.AddMinIO();
+builder.Services.AddHostedService<BucketInitializer>();
+builder.Services.AddSingleton<IEventPublisher, RabbitMqEventPublisher>();
+builder.Services.AddHostedService<RabbitMqEventPublisher>();
 
 var app = builder.Build();
 
