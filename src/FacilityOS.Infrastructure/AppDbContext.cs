@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using FacilityOS.Modules.Asset.Domain;
+using FacilityOS.Modules.Facility.Domain;
 using FacilityOS.Modules.Maintenance.Domain;
 using FacilityOS.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ public class AppDbContext : DbContext
 
     public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
     public DbSet<Asset> Assets => Set<Asset>();
+    public DbSet<Facility> Facilities => Set<Facility>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

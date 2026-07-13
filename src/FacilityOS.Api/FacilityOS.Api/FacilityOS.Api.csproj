@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\FacilityOS.Infrastructure\FacilityOS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Maintenance\FacilityOS.Modules.Maintenance.csproj" />
     <ProjectReference Include="..\..\modules\Asset\FacilityOS.Modules.Asset.csproj" />
+    <ProjectReference Include="..\..\modules\Facility\FacilityOS.Modules.Facility.csproj" />
   </ItemGroup>
 
 </Project>
