@@ -30,6 +30,9 @@
     <ProjectReference Include="..\..\src\modules\Inventory.Domain\FacilityOS.Modules.Inventory.Domain.csproj" />
     <ProjectReference Include="..\..\src\modules\Vendor.Domain\FacilityOS.Modules.Vendor.Domain.csproj" />
     <ProjectReference Include="..\..\src\modules\HSE.Domain\FacilityOS.Modules.HSE.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Personnel.Domain\FacilityOS.Modules.Personnel.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Finance.Domain\FacilityOS.Modules.Finance.Domain.csproj" />
+    <ProjectReference Include="..\..\src\modules\Compliance.Domain\FacilityOS.Modules.Compliance.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,12 @@
 using System.Linq.Expressions;
 using FacilityOS.Modules.Asset.Domain;
+using FacilityOS.Modules.Compliance.Domain;
 using FacilityOS.Modules.Facility.Domain;
+using FacilityOS.Modules.Finance.Domain;
 using FacilityOS.Modules.HSE.Domain;
 using FacilityOS.Modules.Inventory.Domain;
 using FacilityOS.Modules.Maintenance.Domain;
+using FacilityOS.Modules.Personnel.Domain;
 using FacilityOS.Modules.Vendor.Domain;
 using FacilityOS.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +31,9 @@ public class AppDbContext : DbContext
     public DbSet<Part> Parts => Set<Part>();
     public DbSet<Vendor> Vendors => Set<Vendor>();
     public DbSet<Incident> Incidents => Set<Incident>();
+    public DbSet<Worker> Workers => Set<Worker>();
+    public DbSet<WorkOrderCost> WorkOrderCosts => Set<WorkOrderCost>();
+    public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
