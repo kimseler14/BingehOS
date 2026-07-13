@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F10CDF56-C20
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityOS.Shared", "src\FacilityOS.Shared\FacilityOS.Shared.csproj", "{5A32A446-F7AD-4917-88B7-BB1E89F8FE27}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{873BCBDD-0455-4D05-928A-28485498178A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityOS.UnitTests", "tests\FacilityOS.UnitTests\FacilityOS.UnitTests.csproj", "{04F19BA9-C59D-462E-A402-E37A6023ADF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacilityOS.Infrastructure", "src\FacilityOS.Infrastructure\FacilityOS.Infrastructure.csproj", "{8D1515F6-BCB1-4ACF-AF0E-4B2D970815D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +26,18 @@ Global
 		{5A32A446-F7AD-4917-88B7-BB1E89F8FE27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A32A446-F7AD-4917-88B7-BB1E89F8FE27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A32A446-F7AD-4917-88B7-BB1E89F8FE27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04F19BA9-C59D-462E-A402-E37A6023ADF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04F19BA9-C59D-462E-A402-E37A6023ADF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04F19BA9-C59D-462E-A402-E37A6023ADF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04F19BA9-C59D-462E-A402-E37A6023ADF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D1515F6-BCB1-4ACF-AF0E-4B2D970815D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D1515F6-BCB1-4ACF-AF0E-4B2D970815D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D1515F6-BCB1-4ACF-AF0E-4B2D970815D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D1515F6-BCB1-4ACF-AF0E-4B2D970815D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5A32A446-F7AD-4917-88B7-BB1E89F8FE27} = {F10CDF56-C200-4836-8CC2-355EFFD00EE8}
+		{04F19BA9-C59D-462E-A402-E37A6023ADF5} = {873BCBDD-0455-4D05-928A-28485498178A}
+		{8D1515F6-BCB1-4ACF-AF0E-4B2D970815D1} = {F10CDF56-C200-4836-8CC2-355EFFD00EE8}
 	EndGlobalSection
 EndGlobal
