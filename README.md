@@ -65,7 +65,10 @@ docker-compose up --build
 | PATCH  | /v1/work-order-costs/{id}/approve| Approve work order cost            |
 | GET    | /v1/compliance-records/{id}      | Get compliance record              |
 | POST   | /v1/compliance-records           | Create compliance record           |
-| PATCH  | /v1/compliance-records/{id}      | Update compliance record           |
+| PATCH  | /v1/compliance-records/{id}      | Update compliance record              |
+| GET    | /v1/job-plan-templates/{id}      | Get job plan template                 |
+| POST   | /v1/job-plan-templates           | Create job plan template              |
+| PATCH  | /v1/job-plan-templates/{id}      | Update job plan template              |
 
 ## Testing
 
