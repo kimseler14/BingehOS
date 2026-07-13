@@ -69,6 +69,9 @@ docker-compose up --build
 | GET    | /v1/job-plan-templates/{id}      | Get job plan template                 |
 | POST   | /v1/job-plan-templates           | Create job plan template              |
 | PATCH  | /v1/job-plan-templates/{id}      | Update job plan template              |
+| GET    | /v1/kvkk-consents/{id}           | Get KVKK consent                      |
+| POST   | /v1/kvkk-consents                | Grant KVKK consent                    |
+| PATCH  | /v1/kvkk-consents/{id}/revoke    | Revoke KVKK consent                   |
 
 ## Testing
 

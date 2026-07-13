@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="Domain\ComplianceRecord.cs" />
+    <Compile Remove="Domain\KvkkConsent.cs" />
   </ItemGroup>
 
   <ItemGroup>

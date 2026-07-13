@@ -110,6 +110,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateWorkOrderCostCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ComplianceRecord).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateComplianceRecordCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(KvkkConsent).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateKvkkConsentCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(JobPlanTemplate).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateJobPlanTemplateCommand).Assembly);
 });
