@@ -2,6 +2,9 @@ using BingehOS.Api.Auth;
 using BingehOS.Api.Filters;
 using BingehOS.Api.Middleware;
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Plugins;
+using BingehOS.Infrastructure.Storage;
+using BingehOS.Infrastructure.Messaging;
 using BingehOS.Modules.Asset.Application;
 using BingehOS.Modules.Asset.Domain;
 using BingehOS.Modules.Compliance.Application;
@@ -26,8 +29,6 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using BingehOS.Infrastructure.Storage;
-using BingehOS.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,9 +92,6 @@ var conn = builder.Configuration.GetConnectionString("Postgres")
 builder.Services.AddDbContext<AppDbContext>(o => o.UseNpgsql(conn));
 builder.Services.AddMediatR(cfg =>
 {
-    // WorkOrder lives in BingehOS.Modules.Maintenance.Domain; the command
-    // handlers live in BingehOS.Modules.Maintenance (Application). Both
-    // assemblies must be scanned or MediatR will not register the handlers.
     cfg.RegisterServicesFromAssembly(typeof(WorkOrder).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateWorkOrderCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(Asset).Assembly);
@@ -115,6 +113,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(JobPlanTemplate).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateJobPlanTemplateCommand).Assembly);
 });
+builder.Services.AddSingleton<PluginLoader>();
+builder.Services.AddHostedService<PluginLoaderHostedService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BingehOS.Infrastructure.ITenantProvider, BingehOS.Api.TenantProvider>();
 builder.Services.AddMinIO();
