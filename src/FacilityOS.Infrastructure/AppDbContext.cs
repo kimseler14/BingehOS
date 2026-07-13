@@ -3,6 +3,7 @@ using FacilityOS.Modules.Asset.Domain;
 using FacilityOS.Modules.Facility.Domain;
 using FacilityOS.Modules.Inventory.Domain;
 using FacilityOS.Modules.Maintenance.Domain;
+using FacilityOS.Modules.Vendor.Domain;
 using FacilityOS.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -24,6 +25,7 @@ public class AppDbContext : DbContext
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<Facility> Facilities => Set<Facility>();
     public DbSet<Part> Parts => Set<Part>();
+    public DbSet<Vendor> Vendors => Set<Vendor>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

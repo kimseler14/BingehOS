@@ -23,6 +23,7 @@
     <ProjectReference Include="..\modules\Asset.Domain\FacilityOS.Modules.Asset.Domain.csproj" />
     <ProjectReference Include="..\modules\Facility.Domain\FacilityOS.Modules.Facility.Domain.csproj" />
     <ProjectReference Include="..\modules\Inventory.Domain\FacilityOS.Modules.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\modules\Vendor.Domain\FacilityOS.Modules.Vendor.Domain.csproj" />
   </ItemGroup>
 
 </Project>

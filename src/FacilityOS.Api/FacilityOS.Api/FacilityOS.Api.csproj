@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\modules\Asset\FacilityOS.Modules.Asset.csproj" />
     <ProjectReference Include="..\..\modules\Facility\FacilityOS.Modules.Facility.csproj" />
     <ProjectReference Include="..\..\modules\Inventory\FacilityOS.Modules.Inventory.csproj" />
+    <ProjectReference Include="..\..\modules\Vendor\FacilityOS.Modules.Vendor.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,8 @@ using FacilityOS.Modules.Inventory.Application;
 using FacilityOS.Modules.Inventory.Domain;
 using FacilityOS.Modules.Maintenance.Application;
 using FacilityOS.Modules.Maintenance.Domain;
+using FacilityOS.Modules.Vendor.Application;
+using FacilityOS.Modules.Vendor.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +36,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateFacilityCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(Part).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreatePartCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(Vendor).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateVendorCommand).Assembly);
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<FacilityOS.Infrastructure.ITenantProvider, FacilityOS.Api.TenantProvider>();
