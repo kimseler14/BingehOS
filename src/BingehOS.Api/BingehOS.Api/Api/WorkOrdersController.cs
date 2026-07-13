@@ -16,14 +16,13 @@ public class WorkOrdersController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateWorkOrderCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { id });
+        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        // Read handled in integration test; minimal read path here.
-        return Ok(new { id });
+        return Ok(new { success = true, data = new { id } });
     }
 
     [HttpPatch("{id}/status")]

@@ -16,7 +16,7 @@ public class WorkOrderCostsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateWorkOrderCostCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { id });
+        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
     }
 
     [HttpPatch("{id}/approve")]
@@ -27,5 +27,5 @@ public class WorkOrderCostsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id) => Ok(new { id });
+    public IActionResult Get(Guid id) => Ok(new { success = true, data = new { id } });
 }

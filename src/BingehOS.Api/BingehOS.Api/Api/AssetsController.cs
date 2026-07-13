@@ -16,7 +16,7 @@ public class AssetsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateAssetCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { id });
+        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
     }
 
     [HttpPatch("{id}")]
@@ -28,5 +28,5 @@ public class AssetsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id) => Ok(new { id });
+    public IActionResult Get(Guid id) => Ok(new { success = true, data = new { id } });
 }
