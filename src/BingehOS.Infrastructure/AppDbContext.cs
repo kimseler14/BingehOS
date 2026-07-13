@@ -34,6 +34,7 @@ public class AppDbContext : DbContext
     public DbSet<Worker> Workers => Set<Worker>();
     public DbSet<WorkOrderCost> WorkOrderCosts => Set<WorkOrderCost>();
     public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
+    public DbSet<JobPlanTemplate> JobPlanTemplates => Set<JobPlanTemplate>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

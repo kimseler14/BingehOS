@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="Domain\WorkOrder.cs" />
+    <Compile Remove="Domain\JobPlanTemplate.cs" />
   </ItemGroup>
 
   <ItemGroup>

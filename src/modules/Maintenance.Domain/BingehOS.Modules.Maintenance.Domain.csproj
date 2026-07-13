@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\Maintenance\Domain\WorkOrder.cs" />
+    <Compile Include="..\Maintenance\Domain\JobPlanTemplate.cs" />
   </ItemGroup>
 
   <ItemGroup>

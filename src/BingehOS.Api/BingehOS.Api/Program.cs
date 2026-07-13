@@ -112,13 +112,15 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateWorkOrderCostCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ComplianceRecord).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateComplianceRecordCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(JobPlanTemplate).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateJobPlanTemplateCommand).Assembly);
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BingehOS.Infrastructure.ITenantProvider, BingehOS.Api.TenantProvider>();
 builder.Services.AddMinIO();
 builder.Services.AddHostedService<BucketInitializer>();
 builder.Services.AddSingleton<IEventPublisher, RabbitMqEventPublisher>();
-builder.Services.AddHostedService<RabbitMqEventPublisher>();
+builder.Services.AddHostedService(sp => (RabbitMqEventPublisher)sp.GetRequiredService<IEventPublisher>());
 
 var app = builder.Build();
 
