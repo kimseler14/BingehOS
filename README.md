@@ -71,9 +71,14 @@ docker-compose up --build
 | GET    | /v1/subcontractors/{id}         | Get subcontractor                    |
 | POST   | /v1/subcontractors              | Create subcontractor                 |
 | PATCH  | /v1/subcontractors/{id}         | Update subcontractor                 |
-| GET    | /v1/work-order-costs/{id}        | Get work order cost                |
-| POST   | /v1/work-order-costs             | Create work order cost             |
-| PATCH  | /v1/work-order-costs/{id}/approve| Approve work order cost            |
+| GET    | /v1/invoices/{id}              | Get invoice                          |
+| POST   | /v1/invoices                   | Create invoice                       |
+| PATCH  | /v1/invoices/{id}              | Update invoice                       |
+| GET    | /v1/tax-records/{id}            | Get tax record                       |
+| POST   | /v1/tax-records                 | Create tax record                    |
+| GET    | /v1/cost-centers/{id}           | Get cost center                      |
+| POST   | /v1/cost-centers                | Create cost center                   |
+| PATCH  | /v1/cost-centers/{id}           | Update cost center                   |
 | GET    | /v1/compliance-records/{id}      | Get compliance record              |
 | POST   | /v1/compliance-records           | Create compliance record           |
 | PATCH  | /v1/compliance-records/{id}      | Update compliance record              |

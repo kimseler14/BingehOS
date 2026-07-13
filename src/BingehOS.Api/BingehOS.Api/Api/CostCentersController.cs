@@ -5,24 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 namespace BingehOS.Api.Api;
 
 [ApiController]
-[Route("v1/work-order-costs")]
+[Route("v1/cost-centers")]
 [Authorize]
-public class WorkOrderCostsController : ControllerBase
+public class CostCentersController : ControllerBase
 {
     private readonly IMediator _mediator;
-    public WorkOrderCostsController(IMediator mediator) => _mediator = mediator;
+    public CostCentersController(IMediator mediator) => _mediator = mediator;
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateWorkOrderCostCommand cmd)
+    public async Task<IActionResult> Create([FromBody] CreateCostCenterCommand cmd)
     {
         var id = await _mediator.Send(cmd);
         return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
     }
 
-    [HttpPatch("{id}/approve")]
-    public async Task<IActionResult> Approve(Guid id)
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCostCenterCommand cmd)
     {
-        var dto = await _mediator.Send(new ApproveWorkOrderCostCommand(id));
+        if (cmd.Id != id) return BadRequest(new { error = "id mismatch" });
+        var dto = await _mediator.Send(cmd);
         return Ok(new { success = true, data = dto });
     }
 

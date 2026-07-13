@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="Domain\WorkOrderCost.cs" />
+    <Compile Remove="Domain\Events\WorkOrderCostCreatedEvent.cs" />
+    <Compile Remove="Domain\Invoice.cs" />
+    <Compile Remove="Domain\TaxRecord.cs" />
+    <Compile Remove="Domain\CostCenter.cs" />
+    <Compile Remove="Domain\Events\InvoiceCreatedEvent.cs" />
   </ItemGroup>
 
   <ItemGroup>
