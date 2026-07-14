@@ -28,8 +28,9 @@ public static class TestAuthHelper
         // the JWT claim derived from it drives tenant resolution on later requests.
         client.DefaultRequestHeaders.Add("x-tenant-id", "11111111-1111-1111-1111-111111111111");
 
-        var login = await client.PostAsJsonAsync("/v1/auth/login", new { email = "admin@system", password = "admin" });
-        Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+        var login = await client.PostAsJsonAsync("/v1/auth/login", new { Email = "admin@system", Password = "admin" });
+        var loginBody = await login.Content.ReadAsStringAsync();
+        Assert.Equal(HttpStatusCode.OK, login.StatusCode, loginBody);
 
         var body = await login.Content.ReadFromJsonAsync<JsonElement>();
         var token = body.GetProperty("data").GetProperty("accessToken").GetString()!;
