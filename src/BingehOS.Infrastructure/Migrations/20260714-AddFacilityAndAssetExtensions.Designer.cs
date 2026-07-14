@@ -1504,6 +1504,76 @@ namespace BingehOS.Infrastructure.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("BingehOS.Modules.Asset.Domain.AssetTemplate", b =>
+                {
+                    b.HasOne("BingehOS.Modules.Asset.Domain.AssetType", "AssetType")
+                        .WithMany("AssetTemplates")
+                        .HasForeignKey("AssetTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssetType");
+                });
+
+            modelBuilder.Entity("BingehOS.Modules.Asset.Domain.AssetType", b =>
+                {
+                    b.HasOne("BingehOS.Modules.Asset.Domain.AssetClass", "AssetClass")
+                        .WithMany("AssetTypes")
+                        .HasForeignKey("AssetClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssetClass");
+                });
+
+            modelBuilder.Entity("BingehOS.Modules.Facility.Domain.Building", b =>
+                {
+                    b.HasOne("BingehOS.Modules.Facility.Domain.Campus", "Campus")
+                        .WithMany("Buildings")
+                        .HasForeignKey("CampusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Campus");
+                });
+
+            modelBuilder.Entity("BingehOS.Modules.Facility.Domain.Floor", b =>
+                {
+                    b.HasOne("BingehOS.Modules.Facility.Domain.Building", "Building")
+                        .WithMany("Floors")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("BingehOS.Modules.Facility.Domain.Room", b =>
+                {
+                    b.HasOne("BingehOS.Modules.Facility.Domain.Floor", "Floor")
+                        .WithMany("Rooms")
+                        .HasForeignKey("FloorId");
+
+                    b.HasOne("BingehOS.Modules.Facility.Domain.Zone", "Zone")
+                        .WithMany("Rooms")
+                        .HasForeignKey("ZoneId");
+
+                    b.Navigation("Floor");
+
+                    b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("BingehOS.Modules.Facility.Domain.Zone", b =>
+                {
+                    b.HasOne("BingehOS.Modules.Facility.Domain.Floor", "Floor")
+                        .WithMany("Zones")
+                        .HasForeignKey("FloorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Floor");
+                });
+
             modelBuilder.Entity("BingehOS.Modules.Asset.Domain.AssetClass", b =>
                 {
                     b.Navigation("AssetTypes");
