@@ -4,7 +4,6 @@ namespace BingehOS.Modules.Audit.Domain;
 
 public class AuditLog : BaseEntity
 {
-    public Guid TenantId { get; private set; }
     public string EntityName { get; private set; } = string.Empty;
     public Guid EntityId { get; private set; }
     public AuditAction Action { get; private set; }

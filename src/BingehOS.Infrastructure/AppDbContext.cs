@@ -36,6 +36,7 @@ public class AppDbContext : DbContext
     public DbSet<RiskAssessment> RiskAssessments => Set<RiskAssessment>();
     public DbSet<LotoProcedure> LotoProcedures => Set<LotoProcedure>();
     public DbSet<Employee> Employees => Set<Employee>();
+    public DbSet<Worker> Workers => Set<Worker>();
     public DbSet<SgkRecord> SgkRecords => Set<SgkRecord>();
     public DbSet<Subcontractor> Subcontractors => Set<Subcontractor>();
     public DbSet<Invoice> Invoices => Set<Invoice>();
