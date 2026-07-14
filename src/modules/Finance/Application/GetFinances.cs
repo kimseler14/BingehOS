@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Finance.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,12 +39,10 @@ public class GetCostCentersHandler : IRequestHandler<GetCostCentersQuery, IReadO
 
     public async Task<IReadOnlyList<CostCenterListItem>> Handle(GetCostCentersQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<CostCenter>().AsQueryable();
         if (q.activeOnly.HasValue) query = query.Where(e => e.IsActive == q.activeOnly.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new CostCenterListItem(e.Id, e.Code, e.Name, e.ParentCostCenterId, e.BudgetMinor, e.Currency, e.IsActive))
             .ToListAsync(ct);
     }
@@ -69,10 +68,7 @@ public class GetInvoicesHandler : IRequestHandler<GetInvoicesQuery, IReadOnlyLis
 
     public async Task<IReadOnlyList<InvoiceListItem>> Handle(GetInvoicesQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
-
-        return await _db.Set<Invoice>().OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await _db.Set<Invoice>().OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new InvoiceListItem(e.Id, e.InvoiceNumber, e.InvoiceDate, e.DueDate, e.TotalAmountMinor, e.Currency, e.Status, e.Type))
             .ToListAsync(ct);
     }
@@ -98,12 +94,10 @@ public class GetTaxRecordsHandler : IRequestHandler<GetTaxRecordsQuery, IReadOnl
 
     public async Task<IReadOnlyList<TaxRecordListItem>> Handle(GetTaxRecordsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<TaxRecord>().AsQueryable();
         if (q.invoiceId.HasValue) query = query.Where(e => e.InvoiceId == q.invoiceId.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new TaxRecordListItem(e.Id, e.InvoiceId, e.TaxType, e.TaxRate, e.TaxAmountMinor, e.Currency))
             .ToListAsync(ct);
     }

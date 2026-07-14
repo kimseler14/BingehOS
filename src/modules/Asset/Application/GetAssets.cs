@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Asset.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,13 +31,9 @@ public class GetAssetsHandler : IRequestHandler<GetAssetsQuery, IReadOnlyList<As
 
     public async Task<IReadOnlyList<AssetListItem>> Handle(GetAssetsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
-
         return await _db.Set<Domain.Asset>()
             .OrderByDescending(e => e.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .Select(e => new AssetListItem(e.Id, e.Name, e.SerialNumber, e.LocationCode, e.Criticality.ToString()))
             .ToListAsync(ct);
     }

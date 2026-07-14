@@ -15,7 +15,8 @@ public class InvoicesEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_Get_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/invoices",
             new CreateInvoiceCommand("INV-001", DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddDays(30), null, 150000, "TRY", "Draft", "Purchase"));

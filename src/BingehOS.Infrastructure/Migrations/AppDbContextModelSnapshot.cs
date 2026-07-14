@@ -1945,6 +1945,52 @@ namespace BingehOS.Infrastructure.Migrations
                     b.ToTable("Subcontractors");
                 });
 
+            modelBuilder.Entity("BingehOS.Modules.Personnel.Domain.Worker", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Trade")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Workers");
+                });
+
             modelBuilder.Entity("BingehOS.Modules.Vendor.Domain.Vendor", b =>
                 {
                     b.Property<Guid>("Id")

@@ -15,7 +15,8 @@ public class WorkOrderEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_ChangeStatus_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/work-orders",
             new { assetId = "22222222-2222-2222-2222-222222222222", description = "Fix HVAC" });

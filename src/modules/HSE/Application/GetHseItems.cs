@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.HSE.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,12 +39,10 @@ public class GetPermitsToWorkHandler : IRequestHandler<GetPermitsToWorkQuery, IR
 
     public async Task<IReadOnlyList<PermitToWorkListItem>> Handle(GetPermitsToWorkQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<PermitToWork>().AsQueryable();
         if (!string.IsNullOrWhiteSpace(q.status)) query = query.Where(e => e.Status == q.status);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new PermitToWorkListItem(e.Id, e.Title, e.Status, e.FacilityId, e.WorkOrderId, e.ApproverId))
             .ToListAsync(ct);
     }
@@ -69,12 +68,10 @@ public class GetLotoProceduresHandler : IRequestHandler<GetLotoProceduresQuery, 
 
     public async Task<IReadOnlyList<LotoProcedureListItem>> Handle(GetLotoProceduresQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<LotoProcedure>().AsQueryable();
         if (q.permitToWorkId.HasValue) query = query.Where(e => e.PermitToWorkId == q.permitToWorkId.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new LotoProcedureListItem(e.Id, e.Steps, e.IsVerified, e.VerifiedBy, e.VerifiedAt, e.PermitToWorkId))
             .ToListAsync(ct);
     }
@@ -100,12 +97,10 @@ public class GetRiskAssessmentsHandler : IRequestHandler<GetRiskAssessmentsQuery
 
     public async Task<IReadOnlyList<RiskAssessmentListItem>> Handle(GetRiskAssessmentsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<RiskAssessment>().AsQueryable();
         if (q.permitToWorkId.HasValue) query = query.Where(e => e.PermitToWorkId == q.permitToWorkId.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new RiskAssessmentListItem(e.Id, e.Title, e.Level, e.PermitToWorkId))
             .ToListAsync(ct);
     }
