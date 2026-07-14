@@ -22,7 +22,7 @@ const config: EntityConfig = {
   ],
   editFields: [
     { name: "fullName", label: "Ad soyad", required: true },
-    { name: "isActive", label: "Aktif", type: "checkbox" },
+    { name: "isActive", label: "Aktif", type: "checkbox", defaultValue: true },
   ],
 };
 

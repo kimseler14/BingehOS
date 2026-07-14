@@ -23,7 +23,7 @@ const config: EntityConfig = {
     { name: "trade", label: "Uzmanlık / zanaat" },
     { name: "department", label: "Departman" },
     { name: "phone", label: "Telefon" },
-    { name: "isActive", label: "Aktif", type: "checkbox" },
+    { name: "isActive", label: "Aktif", type: "checkbox", defaultValue: true },
   ],
 };
 

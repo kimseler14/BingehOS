@@ -1,3 +1,5 @@
+"use client";
+
 import { EntityListPage, EntityConfig } from "../../../components/EntityListPage";
 
 const config: EntityConfig = {
@@ -8,6 +10,7 @@ const config: EntityConfig = {
   basePath: "/admin/roles",
   singular: "rol",
   deletable: true,
+  canDelete: (item) => item.isSystem !== true,
   columns: [
     { key: "name", label: "Rol" },
     { key: "description", label: "Açıklama" },
@@ -17,7 +20,7 @@ const config: EntityConfig = {
   createFields: [
     { name: "name", label: "Rol adı", required: true },
     { name: "description", label: "Açıklama", type: "textarea" },
-    { name: "isSystem", label: "Sistem rolü", type: "checkbox" },
+    { name: "isSystem", label: "Sistem rolü", type: "checkbox", defaultValue: false },
   ],
   editFields: [
     { name: "name", label: "Rol adı", required: true },

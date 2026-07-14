@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch, ApiError } from "../../lib/api";
 import type { LoginResponse } from "../../lib/types";
@@ -15,10 +15,11 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (ready && user) {
-    router.replace("/dashboard");
-    return null;
-  }
+  useEffect(() => {
+    if (ready && user) router.replace("/dashboard");
+  }, [ready, router, user]);
+
+  if (ready && user) return null;
 
   async function submit(event: FormEvent) {
     event.preventDefault();

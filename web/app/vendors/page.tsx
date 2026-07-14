@@ -20,7 +20,7 @@ const config: EntityConfig = {
     { name: "taxNumber", label: "Vergi numarası" },
     { name: "contactEmail", label: "E-posta", type: "text" },
     { name: "phone", label: "Telefon" },
-    { name: "isActive", label: "Aktif", type: "checkbox" },
+    { name: "isActive", label: "Aktif", type: "checkbox", defaultValue: true },
   ],
   editFields: [
     { name: "name", label: "Firma adı", required: true },

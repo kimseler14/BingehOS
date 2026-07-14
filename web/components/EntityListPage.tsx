@@ -12,6 +12,7 @@ export type FieldConfig = {
   required?: boolean;
   placeholder?: string;
   options?: string[];
+  defaultValue?: boolean;
 };
 
 export type ColumnConfig = {
@@ -33,13 +34,14 @@ export type EntityConfig = {
   activeFilter?: boolean;
   deletable?: boolean;
   canCreate?: boolean;
+  canDelete?: (item: Record<string, unknown>) => boolean;
 };
 
 type FormValue = string | number | boolean;
 
 function emptyValues(fields: FieldConfig[]) {
   return fields.reduce<Record<string, FormValue>>((values, field) => {
-    values[field.name] = field.type === "checkbox" ? true : "";
+    values[field.name] = field.type === "checkbox" ? field.defaultValue ?? false : "";
     return values;
   }, {});
 }
@@ -80,7 +82,7 @@ function FormFields({
 }
 
 function cleanPayload(values: Record<string, FormValue>) {
-  return Object.fromEntries(Object.entries(values).filter(([, value]) => value !== ""));
+  return Object.fromEntries(Object.entries(values).filter(([, value]) => value !== "" && !(typeof value === "number" && !Number.isFinite(value))));
 }
 
 export function EntityListPage({ config }: { config: EntityConfig }) {
@@ -124,7 +126,7 @@ export function EntityListPage({ config }: { config: EntityConfig }) {
   const openEdit = (item: Record<string, unknown>) => {
     const editFields = config.editFields || config.createFields;
     setValues(editFields.reduce<Record<string, FormValue>>((result, field) => {
-      result[field.name] = (item[field.name] as FormValue | undefined) ?? (field.type === "checkbox" ? true : "");
+      result[field.name] = (item[field.name] as FormValue | undefined) ?? (field.type === "checkbox" ? field.defaultValue ?? false : "");
       return result;
     }, {}));
     setSelected(item);
@@ -137,7 +139,9 @@ export function EntityListPage({ config }: { config: EntityConfig }) {
     setSaving(true);
     setError("");
     try {
-      const payload = cleanPayload(values);
+      const payload = modal === "edit"
+        ? Object.fromEntries(Object.entries(values).filter(([, value]) => !(typeof value === "number" && !Number.isFinite(value))))
+        : cleanPayload(values);
       if (modal === "create") {
         await apiFetch(config.endpoint, { method: "POST", body: JSON.stringify(payload) });
         setNotice(`${config.singular} oluşturuldu.`);
@@ -192,7 +196,7 @@ export function EntityListPage({ config }: { config: EntityConfig }) {
                     })}
                     <td className="whitespace-nowrap px-5 py-4 text-right" onClick={(event) => event.stopPropagation()}>
                       <button className="mr-2 text-xs font-bold text-teal hover:underline" onClick={() => openEdit(item)}>Düzenle</button>
-                      {config.deletable && <button className="text-xs font-bold text-rose-600 hover:underline" onClick={() => void remove(item)}>Sil</button>}
+                      {config.deletable && config.canDelete?.(item) !== false && <button className="text-xs font-bold text-rose-600 hover:underline" onClick={() => void remove(item)}>Sil</button>}
                     </td>
                   </tr>
                 ))}

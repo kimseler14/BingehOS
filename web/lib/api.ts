@@ -19,7 +19,7 @@ export async function apiFetch<T>(
   init: RequestInit = {},
 ): Promise<T> {
   const headers = new Headers(init.headers);
-  headers.set("Content-Type", "application/json");
+  if (init.body !== undefined) headers.set("Content-Type", "application/json");
   if (typeof window !== "undefined") {
     const token = window.localStorage.getItem("bingehos.accessToken");
     if (token) headers.set("Authorization", `Bearer ${token}`);
@@ -35,6 +35,7 @@ export async function apiFetch<T>(
     window.localStorage.removeItem("bingehos.accessToken");
     window.localStorage.removeItem("bingehos.user");
     window.location.assign("/login");
+    return new Promise<T>(() => {});
   }
 
   if (!response.ok || body.success === false) {

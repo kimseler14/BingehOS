@@ -27,12 +27,7 @@ export function WorkOrdersPage() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const [orders, assetData] = await Promise.all([
-        apiFetch<WorkOrder[]>(queryPath("/v1/work-orders", { skip, take: 12 })),
-        apiFetch<Asset[]>(queryPath("/v1/assets", { skip: 0, take: 100 })),
-      ]);
-      setItems(orders);
-      setAssets(assetData);
+      setItems(await apiFetch<WorkOrder[]>(queryPath("/v1/work-orders", { skip, take: 12 })));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "İş emirleri yüklenemedi.");
     } finally {
@@ -41,6 +36,11 @@ export function WorkOrdersPage() {
   }, [skip]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    void apiFetch<Asset[]>(queryPath("/v1/assets", { skip: 0, take: 100 }))
+      .then(setAssets)
+      .catch((cause) => setError(cause instanceof Error ? cause.message : "Varlıklar yüklenemedi."));
+  }, []);
 
   async function create(event: React.FormEvent) {
     event.preventDefault();
@@ -77,14 +77,14 @@ export function WorkOrdersPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Bakım operasyonu" title="İş Emirleri" description="Bakım taleplerini durum akışıyla yönetin; izin ve e-imza gereksinimlerini takip edin." action={<button className="primary-button" onClick={() => setModal("create")}>+ Yeni iş emri</button>} />
+      <PageHeader eyebrow="Bakım operasyonu" title="İş Emirleri" description="Bakım taleplerini durum akışıyla yönetin; izin ve e-imza gereksinimlerini takip edin." action={<button className="primary-button" onClick={() => { setAssetId(""); setDescription(""); setModal("create"); }}>+ Yeni iş emri</button>} />
       {notice && <button className="mb-4 w-full rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-left text-sm text-emerald-700" onClick={() => setNotice("")}>{notice} ×</button>}
       {error && <div className="mb-4"><ErrorNotice message={error} /></div>}
       <div className="card overflow-hidden">
-        {loading ? <div className="flex justify-center py-16 text-teal"><Spinner /></div> : items.length === 0 ? <EmptyState label="Henüz iş emri bulunmuyor." /> : <div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500"><tr><th className="px-5 py-3">Açıklama</th><th className="px-5 py-3">Varlık ID</th><th className="px-5 py-3">Durum</th><th className="px-5 py-3" /></tr></thead><tbody className="divide-y divide-slate-100">{items.map((item) => <tr key={item.id} className="hover:bg-slate-50"><td className="px-5 py-4 font-semibold text-ink"><Link href={`/work-orders/${item.id}`} className="hover:text-teal">{item.description}</Link></td><td className="max-w-xs truncate px-5 py-4 text-xs text-slate-500">{item.assetId}</td><td className="px-5 py-4"><StatusPill value={item.status} /></td><td className="px-5 py-4 text-right"><button className="text-xs font-bold text-teal hover:underline" onClick={() => { setSelected(item); setNewStatus(item.status); setModal("status"); }}>Durum güncelle</button></td></tr>)}</tbody></table></div>}
+        {loading ? <div className="flex justify-center py-16 text-teal"><Spinner /></div> : items.length === 0 ? <EmptyState label="Henüz iş emri bulunmuyor." /> : <div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500"><tr><th className="px-5 py-3">Açıklama</th><th className="px-5 py-3">Varlık ID</th><th className="px-5 py-3">Durum</th><th className="px-5 py-3" /></tr></thead><tbody className="divide-y divide-slate-100">{items.map((item) => <tr key={item.id} className="hover:bg-slate-50"><td className="px-5 py-4 font-semibold text-ink"><Link href={`/work-orders/${item.id}`} className="hover:text-teal">{item.description}</Link></td><td className="max-w-xs truncate px-5 py-4 text-xs text-slate-500">{item.assetId}</td><td className="px-5 py-4"><StatusPill value={item.status} /></td><td className="px-5 py-4 text-right"><button className="text-xs font-bold text-teal hover:underline" onClick={() => { setSelected(item); setNewStatus(item.status); setPermitApproved(false); setESignatureCaptured(false); setModal("status"); }}>Durum güncelle</button></td></tr>)}</tbody></table></div>}
         <div className="flex items-center justify-between border-t border-slate-100 px-5 py-4"><button className="secondary-button text-xs" disabled={skip === 0} onClick={() => setSkip(Math.max(0, skip - 12))}>← Önceki</button><span className="text-xs text-slate-400">Sayfa {skip / 12 + 1}</span><button className="secondary-button text-xs" disabled={items.length < 12} onClick={() => setSkip(skip + 12)}>Sonraki →</button></div>
       </div>
-      {modal === "create" && <Modal title="Yeni iş emri" onClose={() => setModal(null)}><form className="space-y-5" onSubmit={create}><label className="block text-sm font-semibold text-ink">Varlık<select className="field mt-2" required value={assetId} onChange={(event) => setAssetId(event.target.value)}><option value="">Varlık seçin</option>{assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.name} · {asset.id.slice(0, 8)}</option>)}</select></label><label className="block text-sm font-semibold text-ink">Açıklama<textarea className="field mt-2 min-h-28" required value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Arıza, planlı bakım veya talep açıklaması" /></label><div className="flex justify-end gap-3"><button type="button" className="secondary-button" onClick={() => setModal(null)}>Vazgeç</button><button className="primary-button" disabled={saving}>{saving && <Spinner />} Oluştur</button></div></form></Modal>}
+      {modal === "create" && <Modal title="Yeni iş emri" onClose={() => { setModal(null); setAssetId(""); setDescription(""); }}><form className="space-y-5" onSubmit={create}><label className="block text-sm font-semibold text-ink">Varlık<select className="field mt-2" required value={assetId} onChange={(event) => setAssetId(event.target.value)}><option value="">Varlık seçin</option>{assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.name} · {asset.id.slice(0, 8)}</option>)}</select></label><label className="block text-sm font-semibold text-ink">Açıklama<textarea className="field mt-2 min-h-28" required value={description} onChange={(event) => setDescription(event.target.value)} placeholder="Arıza, planlı bakım veya talep açıklaması" /></label><div className="flex justify-end gap-3"><button type="button" className="secondary-button" onClick={() => { setModal(null); setAssetId(""); setDescription(""); }}>Vazgeç</button><button className="primary-button" disabled={saving}>{saving && <Spinner />} Oluştur</button></div></form></Modal>}
       {modal === "status" && selected && <Modal title="İş emri durumunu güncelle" onClose={() => setModal(null)}><form className="space-y-5" onSubmit={updateStatus}><p className="rounded-xl bg-slate-50 p-3 text-sm text-slate-600">{selected.description}</p><label className="block text-sm font-semibold text-ink">Yeni durum<select className="field mt-2" value={newStatus} onChange={(event) => setNewStatus(event.target.value)}>{statuses.map((status) => <option key={status}>{status}</option>)}</select></label><label className="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" checked={permitApproved} onChange={(event) => setPermitApproved(event.target.checked)} /> Permit onaylandı</label><label className="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" checked={eSignatureCaptured} onChange={(event) => setESignatureCaptured(event.target.checked)} /> E-imza alındı</label><div className="flex justify-end gap-3"><button type="button" className="secondary-button" onClick={() => setModal(null)}>Vazgeç</button><button className="primary-button" disabled={saving}>{saving && <Spinner />} Güncelle</button></div></form></Modal>}
     </>
   );
