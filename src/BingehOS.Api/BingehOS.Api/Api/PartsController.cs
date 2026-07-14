@@ -1,3 +1,4 @@
+using BingehOS.Infrastructure.Authorization;
 using BingehOS.Modules.Inventory.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -39,5 +40,32 @@ public class PartsController : ControllerBase
     {
         var items = await _mediator.Send(new GetPartsQuery(skip, take, activeOnly));
         return this.OkWithData(items);
+    }
+
+    [HttpPost("{id}/receive")]
+    [HasPermission("inventory-transactions.write")]
+    public async Task<IActionResult> Receive(Guid id, [FromBody] ReceivePartCommand cmd)
+    {
+        if (cmd.PartId != id) return this.IdMismatch();
+        var dto = await _mediator.Send(cmd);
+        return this.OkWithData(dto);
+    }
+
+    [HttpPost("{id}/issue")]
+    [HasPermission("inventory-transactions.write")]
+    public async Task<IActionResult> Issue(Guid id, [FromBody] IssuePartCommand cmd)
+    {
+        if (cmd.PartId != id) return this.IdMismatch();
+        var dto = await _mediator.Send(cmd);
+        return this.OkWithData(dto);
+    }
+
+    [HttpPost("{id}/return")]
+    [HasPermission("inventory-transactions.write")]
+    public async Task<IActionResult> Return(Guid id, [FromBody] ReturnPartCommand cmd)
+    {
+        if (cmd.PartId != id) return this.IdMismatch();
+        var dto = await _mediator.Send(cmd);
+        return this.OkWithData(dto);
     }
 }
