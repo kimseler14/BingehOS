@@ -97,3 +97,22 @@ export type Permission = {
   name: string;
   description?: string | null;
 };
+
+export type AutomationRule = {
+  id: string;
+  name: string;
+  description?: string | null;
+  isEnabled: boolean;
+  triggerType: string;
+  conditionJson: string;
+  actionType: string;
+  actionParametersJson: string;
+};
+
+export type AutomationRuleExecution = {
+  id: string;
+  ruleId: string;
+  executedAt: string;
+  success: boolean;
+  detail: string;
+};
