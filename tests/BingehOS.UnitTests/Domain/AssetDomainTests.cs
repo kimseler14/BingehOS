@@ -91,9 +91,10 @@ public class AssetDomainTests
 
         var before = DateTimeOffset.UtcNow;
         meter.RecordReading(123.5);
+        var after = DateTimeOffset.UtcNow;
         Assert.Equal(123.5, meter.LastReadingValue);
         Assert.NotNull(meter.LastReadingAt);
-        Assert.True(meter.LastReadingAt >= before);
+        Assert.InRange(meter.LastReadingAt.Value, before, after);
     }
 
     [Fact]
@@ -130,9 +131,11 @@ public class AssetDomainTests
         var firstCalc = score.CalculatedAt;
         Assert.NotEqual(default, firstCalc);
 
+        var beforeUpdate = DateTimeOffset.UtcNow;
         score.UpdateScore(55, "degraded");
+        var afterUpdate = DateTimeOffset.UtcNow;
         Assert.Equal(55, score.Score);
         Assert.Equal("degraded", score.CalculationDetails);
-        Assert.True(score.CalculatedAt >= firstCalc);
+        Assert.InRange(score.CalculatedAt, beforeUpdate, afterUpdate);
     }
 }

@@ -60,6 +60,7 @@ public class InventoryDomainTests
         var poId = Guid.NewGuid();
         var before = DateTimeOffset.UtcNow;
         var tx = InventoryTransaction.Create(tenant, partId, binId, TransactionType.Issue, 5, "pcs", woId, poId, "note");
+        var after = DateTimeOffset.UtcNow;
 
         Assert.Equal(partId, tx.PartId);
         Assert.Equal(binId, tx.BinId);
@@ -69,7 +70,7 @@ public class InventoryDomainTests
         Assert.Equal(woId, tx.RelatedWorkOrderId);
         Assert.Equal(poId, tx.RelatedPurchaseOrderId);
         Assert.Equal("note", tx.Notes);
-        Assert.True(tx.TransactionDate >= before);
+        Assert.InRange(tx.TransactionDate, before, after);
     }
 
     [Fact]
@@ -110,10 +111,11 @@ public class InventoryDomainTests
         var approver = Guid.NewGuid();
         var before = DateTimeOffset.UtcNow;
         pr.Approve(approver);
+        var after = DateTimeOffset.UtcNow;
         Assert.Equal(PurchaseRequestStatus.Approved, pr.Status);
         Assert.Equal(approver, pr.ApprovedByUserId);
         Assert.NotNull(pr.ApprovedAt);
-        Assert.True(pr.ApprovedAt >= before);
+        Assert.InRange(pr.ApprovedAt.Value, before, after);
     }
 
     [Fact]
