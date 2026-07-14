@@ -5,7 +5,7 @@ namespace BingehOS.Modules.Identity.Application;
 
 public class HasPermissionAttribute : AuthorizeAttribute
 {
-    public HasPermissionAttribute(string permission) : base("HasPermission")
+    public HasPermissionAttribute(string permission) : base($"HasPermission:{permission}")
     {
         Permission = permission;
     }

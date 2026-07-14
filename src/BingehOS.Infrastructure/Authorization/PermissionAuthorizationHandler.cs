@@ -45,8 +45,8 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
             .Where(ur => ur.UserId == userId && ur.TenantId == tenantId)
             .SelectMany(ur => _db.Set<RolePermission>()
                 .Where(rp => rp.RoleId == ur.RoleId && rp.TenantId == tenantId)
-                .Select(rp => rp.Permission))
-            .AnyAsync(p => p.Name == requirement.PermissionName);
+                .Select(rp => rp.Permission!.Name))
+            .AnyAsync(name => name == requirement.PermissionName);
 
         if (hasPermission)
         {
