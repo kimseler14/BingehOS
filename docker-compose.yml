@@ -62,6 +62,8 @@ services:
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      # Local/dev default only. Set JWT_SECRET (>=32 bytes) in .env / your environment for production.
+      Jwt__Secret: ${JWT_SECRET:-local-dev-jwt-secret-key-at-least-32-bytes-long}
       ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-bingehos};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
       RabbitMq__ConnectionString: "amqp://${RABBITMQ_DEFAULT_USER:-admin}:${RABBITMQ_DEFAULT_PASS:-admin}@rabbitmq:5672"
       Minio__Endpoint: "http://minio:9000"
