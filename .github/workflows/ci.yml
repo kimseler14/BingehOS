@@ -26,5 +26,14 @@ jobs:
       - name: Unit tests
         run: dotnet test tests/BingehOS.UnitTests/BingehOS.UnitTests.csproj --no-build --configuration Release --verbosity normal
 
+      - name: Start integration dependencies
+        run: docker compose up -d --wait rabbitmq minio
+
       - name: Integration tests (Testcontainers needs Docker, available on runner)
+        env:
+          RabbitMq__ConnectionString: amqp://admin:admin@localhost:5672
         run: dotnet test tests/BingehOS.IntegrationTests/BingehOS.IntegrationTests/BingehOS.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
+
+      - name: Stop integration dependencies
+        if: always()
+        run: docker compose down -v
