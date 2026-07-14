@@ -10,7 +10,7 @@ Modüller birbirlerinin veritabanı tablolarına doğrudan `JOIN` atamazlar. Ver
 * **Backend:** C# (.NET 8), Entity Framework Core
 * **Database:** PostgreSQL 16
 * **Time-Series:** TimescaleDB (Postgres extension)
-* **Cache & Locks:** Redis
+* **Cache & Locks:** Şu anda runtime cache/lock servisi provision edilmemiştir
 * **Message Broker:** RabbitMQ (Sistem dışı entegrasyonlar veya arka plan worker'ları için)
 * **Storage:** MinIO
 * **Search:** Elasticsearch

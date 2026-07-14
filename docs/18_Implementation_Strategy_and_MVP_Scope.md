@@ -10,7 +10,7 @@ Bu doküman, BingehOS blueprint'inin (Doküman 01-17) kodlamaya geçişi öncesi
 BingehOS.sln
 ├── src/
 │   ├── BingehOS.Domain/           (ortak: Tenant, User, ValueObjects)
-│   ├── BingehOS.Infrastructure/   (ortak: DbContext, RLS, Redis, RabbitMQ, MinIO)
+│   ├── BingehOS.Infrastructure/   (ortak: DbContext, RLS, RabbitMQ, MinIO)
 │   ├── BingehOS.Api/              (entry point, middleware, DI, global filters)
 │   └── modules/
 │       ├── Identity/                (Identity & Access)
@@ -36,7 +36,7 @@ Modüller arası iletişim `MediatR` `INotification`/`INotificationHandler` (Dom
 5. **Mobile'i ikinci tur yap** — Önce Web API + Core domain'ler. WatermelonDB offline sync çakışma çözümü domain'i bozabilir; web API olmadan mobile testi 2x efor.
 6. **Plugin altyapısını ilk sprint'te sadece yükle** — `IPlugin` interface + AssemblyLoadContext yükleme/çıkarma; Turkey Pack'i ikinci turda ekle.
 7. **İlk migration'a tüm ER'yi yerleştir** — Çekirdek + Phase 2 tabloları tek seferde; sonradan eklemek versiyon/rollback'i zorlaştırır.
-8. **Test piramidini solution'a göm** — `BingehOS.UnitTests` / `IntegrationTests` (Testcontainers PG+Redis, `IClassFixture`) / `E2ETests` (Playwright). %80+ unit coverage hedefi.
+8. **Test piramidini solution'a göm** — `BingehOS.UnitTests` / `IntegrationTests` (Testcontainers PostgreSQL, `IClassFixture`) / `E2ETests` (Playwright). %80+ unit coverage hedefi.
 9. **Observability'yi baştan kur** — Serilog/OpenTelemetry → Loki; `ActivitySource` tracing; `/health` + `/metrics` (Prometheus). Production'a çıkmadan önce zorunlu.
 10. **MVP kapsamını sıkı tut** — Aşağıdaki kesim.
 
@@ -50,6 +50,12 @@ Modüller arası iletişim `MediatR` `INotification`/`INotificationHandler` (Dom
 - Inventory (Receiving, Issue, Return — e-Fatura hariç)
 - Temel raporlama (dashboard değil, basit listeler)
 - Multi-tenant RLS, logging, health/metrics
+
+### Mevcut MVP uygulama durumu
+
+- Workers: `/v1/workers` listeleme, detay, oluşturma ve güncelleme uçları uygulanmıştır.
+- Identity yönetimi: `/v1/users`, `/v1/roles` ve `/v1/permissions` yönetimi ile rol-izin atama/kaldırma uçları uygulanmıştır; yönetim uçları `admin.access` ile korunur.
+- Inventory: parça receiving, issue ve return akışları ile `/v1/inventory/transactions` listeleme ucu uygulanmıştır; stok negatif değerlere düşürülemez.
 
 ### Ertelenen (Phase 2 / Plugin / Turkey Pack)
 - Turkey Compliance Pack tamamı (KVKK rıza UI, SGK, e-Fatura/e-Arşiv/e-İrsaliye, MERSİS, Türk Takvimi mesai)
