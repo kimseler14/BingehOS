@@ -16,6 +16,11 @@ public class CalendarController : ControllerBase
     public IActionResult Holidays([FromQuery] int? year = null)
     {
         var requestedYear = year ?? DateTime.UtcNow.Year;
+        if (requestedYear is < 1 or > 9999)
+        {
+            return BadRequest(new { success = false, error = "year must be between 1 and 9999" });
+        }
+
         return this.OkWithData(new
         {
             year = requestedYear,

@@ -86,6 +86,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<CalibrationRecord>()
+            .HasIndex(e => new { e.TenantId, e.AssetId });
+
         // Global filter: never return soft-deleted rows.
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
