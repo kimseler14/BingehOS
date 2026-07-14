@@ -23,8 +23,11 @@ export function EntityDetailPage({
 
   useEffect(() => {
     let active = true;
-    setItem(null);
-    setError("");
+    queueMicrotask(() => {
+      if (!active) return;
+      setItem(null);
+      setError("");
+    });
     void apiFetch<Record<string, unknown>>(endpoint)
       .then((data) => { if (active) setItem(data); })
       .catch((cause) => { if (active) setError(cause instanceof Error ? cause.message : "Detay yüklenemedi."); });

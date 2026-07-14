@@ -114,7 +114,20 @@ export function EntityListPage({ config }: { config: EntityConfig }) {
     }
   }, [activeOnly, config.activeFilter, config.endpoint, skip]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const data = await apiFetch<Record<string, unknown>[]>(queryPath(config.endpoint, { skip, take: 12, activeOnly: config.activeFilter ? activeOnly : undefined }));
+        if (active) setItems(data);
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "Kayıtlar yüklenemedi.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => { active = false; };
+  }, [activeOnly, config.activeFilter, config.endpoint, skip]);
 
   const openCreate = () => {
     setValues(emptyValues(config.createFields));

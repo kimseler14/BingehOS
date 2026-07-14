@@ -35,11 +35,32 @@ export function WorkOrdersPage() {
     }
   }, [skip]);
 
-  useEffect(() => { void load(); }, [load]);
   useEffect(() => {
-    void apiFetch<Asset[]>(queryPath("/v1/assets", { skip: 0, take: 100 }))
-      .then(setAssets)
-      .catch((cause) => setError(cause instanceof Error ? cause.message : "Varlıklar yüklenemedi."));
+    let active = true;
+    void (async () => {
+      setLoading(true);
+      try {
+        const orders = await apiFetch<WorkOrder[]>(queryPath("/v1/work-orders", { skip, take: 12 }));
+        if (active) setItems(orders);
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "İş emirleri yüklenemedi.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => { active = false; };
+  }, [skip]);
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const assetData = await apiFetch<Asset[]>(queryPath("/v1/assets", { skip: 0, take: 100 }));
+        if (active) setAssets(assetData);
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "Varlıklar yüklenemedi.");
+      }
+    })();
+    return () => { active = false; };
   }, []);
 
   async function create(event: React.FormEvent) {

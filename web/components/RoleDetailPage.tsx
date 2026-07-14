@@ -23,7 +23,24 @@ export function RoleDetailPage({ id }: { id: string }) {
     }
   }, [id]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const [role, permissions] = await Promise.all([
+          apiFetch<Role>(`/v1/roles/${id}`),
+          apiFetch<Permission[]>("/v1/permissions"),
+        ]);
+        if (active) {
+          setRole(role);
+          setPermissions(permissions);
+        }
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "Rol detayları yüklenemedi.");
+      }
+    })();
+    return () => { active = false; };
+  }, [id]);
 
   async function changePermission(permissionId: string, remove = false) {
     try {

@@ -17,15 +17,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem("bingehos.user");
-    if (raw) {
-      try {
-        setUser(JSON.parse(raw) as LoginResponse);
-      } catch {
-        window.localStorage.removeItem("bingehos.user");
+    queueMicrotask(() => {
+      const raw = window.localStorage.getItem("bingehos.user");
+      if (raw) {
+        try {
+          setUser(JSON.parse(raw) as LoginResponse);
+        } catch {
+          window.localStorage.removeItem("bingehos.user");
+        }
       }
-    }
-    setReady(true);
+      setReady(true);
+    });
   }, []);
 
   const value = useMemo(

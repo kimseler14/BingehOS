@@ -48,8 +48,39 @@ export function InventoryPage() {
     }
   }, [partIdFilter]);
 
-  useEffect(() => { void loadParts(); }, [loadParts]);
-  useEffect(() => { void loadTransactions(); }, [loadTransactions]);
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      setLoading(true);
+      try {
+        const [partData, allPartData] = await Promise.all([
+          apiFetch<Part[]>(queryPath("/v1/parts", { skip, take: 12 })),
+          apiFetch<Part[]>(queryPath("/v1/parts", { skip: 0, take: 1000 })),
+        ]);
+        if (active) {
+          setParts(partData);
+          setAllParts(allPartData);
+        }
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "Parçalar yüklenemedi.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => { active = false; };
+  }, [skip]);
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      try {
+        const tx = await apiFetch<InventoryTransaction[]>(queryPath("/v1/inventory/transactions", { skip: 0, take: 30, partId: partIdFilter || undefined }));
+        if (active) setTransactions(tx);
+      } catch (cause) {
+        if (active) setError(cause instanceof Error ? cause.message : "Stok hareketleri yüklenemedi.");
+      }
+    })();
+    return () => { active = false; };
+  }, [partIdFilter]);
 
   function openCreate() {
     setForm({ partNumber: "", name: "", description: "", unitOfMeasure: "pcs", isActive: true });
