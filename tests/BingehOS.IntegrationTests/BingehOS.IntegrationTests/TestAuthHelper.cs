@@ -90,6 +90,28 @@ public class AuthenticatedClient : IAsyncDisposable
         await db.SaveChangesAsync();
     }
 
+    public async Task<string> CreateBearerTokenAsync(Guid tenantId, Guid userId)
+    {
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BingehOS.Infrastructure.AppDbContext>();
+        var tokenService = scope.ServiceProvider.GetRequiredService<BingehOS.Infrastructure.Security.ITokenService>();
+
+        db.CurrentTenantId = tenantId;
+
+        var user = await db.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .FirstAsync(u => u.Id == userId && u.TenantId == tenantId && !u.IsDeleted);
+
+        var roleNames = user.UserRoles
+            .Where(ur => !ur.IsDeleted && ur.Role != null && !ur.Role.IsDeleted)
+            .Select(ur => ur.Role!.Name)
+            .Distinct()
+            .ToList();
+
+        return tokenService.GenerateToken(user.Id, user.Email, roleNames, tenantId).AccessToken;
+    }
+
     public ValueTask DisposeAsync()
     {
         Client.Dispose();

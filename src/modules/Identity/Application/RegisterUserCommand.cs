@@ -27,7 +27,7 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Register
         var tenantId = _db.CurrentTenantId;
 
         var exists = await _db.Set<User>()
-            .AnyAsync(u => u.TenantId == tenantId && u.Email == cmd.Request.Email, ct);
+            .AnyAsync(u => u.TenantId == tenantId && u.Email == cmd.Request.Email && !u.IsDeleted, ct);
 
         if (exists)
             throw new InvalidOperationException("Email already exists in this tenant.");
@@ -37,7 +37,7 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Register
         _db.Set<User>().Add(user);
 
         var defaultRole = await _db.Set<Role>()
-            .FirstOrDefaultAsync(r => r.TenantId == tenantId && r.Name == "User", ct);
+            .FirstOrDefaultAsync(r => r.TenantId == tenantId && r.Name == "User" && !r.IsDeleted, ct);
 
         if (defaultRole != null)
         {

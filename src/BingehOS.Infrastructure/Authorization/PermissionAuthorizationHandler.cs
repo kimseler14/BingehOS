@@ -42,9 +42,9 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
         }
 
         var hasPermission = await _db.Set<UserRole>()
-            .Where(ur => ur.UserId == userId && ur.TenantId == tenantId)
+            .Where(ur => ur.UserId == userId && ur.TenantId == tenantId && !ur.IsDeleted && !ur.User!.IsDeleted && !ur.Role!.IsDeleted)
             .SelectMany(ur => _db.Set<RolePermission>()
-                .Where(rp => rp.RoleId == ur.RoleId && rp.TenantId == tenantId)
+                .Where(rp => rp.RoleId == ur.RoleId && rp.TenantId == tenantId && !rp.IsDeleted && !rp.Role!.IsDeleted && !rp.Permission!.IsDeleted)
                 .Select(rp => rp.Permission!.Name))
             .AnyAsync(name => name == requirement.PermissionName);
 
