@@ -30,4 +30,12 @@ public class InventoryTransactionsTests
 
         Assert.Equal("Insufficient stock.", ex.Message);
     }
+
+    [Fact]
+    public void Unsupported_Transaction_Type_Throws()
+    {
+        var ex = Assert.Throws<NotSupportedException>(() => InventoryStockCalculator.Apply(0, TransactionType.Reservation, 1));
+
+        Assert.Contains("Reservation", ex.Message);
+    }
 }

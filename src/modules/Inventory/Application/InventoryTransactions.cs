@@ -91,28 +91,40 @@ public abstract class InventoryTransactionHandlerBase
         if (quantity <= 0)
             throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
 
-        var part = await Db.Set<Part>()
-            .FirstOrDefaultAsync(p => p.Id == partId && p.TenantId == Db.CurrentTenantId && !p.IsDeleted, ct)
-            ?? throw new KeyNotFoundException($"Part {partId} not found.");
+        await using var dbTransaction = await Db.Database.BeginTransactionAsync(ct);
+        try
+        {
+            var part = await Db.Set<Part>()
+                .FromSqlInterpolated($@"SELECT * FROM ""Parts"" WHERE ""Id"" = {partId} AND ""TenantId"" = {Db.CurrentTenantId} AND ""IsDeleted"" = FALSE FOR UPDATE")
+                .AsTracking()
+                .FirstOrDefaultAsync(ct)
+                ?? throw new KeyNotFoundException($"Part {partId} not found.");
 
-        var currentStock = await GetCurrentStockAsync(partId, ct);
-        var nextStock = InventoryStockCalculator.Apply(currentStock, type, quantity);
+            var currentStock = await GetCurrentStockAsync(partId, ct);
+            var nextStock = InventoryStockCalculator.Apply(currentStock, type, quantity);
 
-        var transaction = InventoryTransaction.Create(
-            Db.CurrentTenantId,
-            partId,
-            binId,
-            type,
-            quantity,
-            part.UnitOfMeasure,
-            relatedWorkOrderId,
-            null,
-            notes);
+            var transaction = InventoryTransaction.Create(
+                Db.CurrentTenantId,
+                partId,
+                binId,
+                type,
+                quantity,
+                part.UnitOfMeasure,
+                relatedWorkOrderId,
+                null,
+                notes);
 
-        Db.Set<InventoryTransaction>().Add(transaction);
-        await Db.SaveChangesAsync(ct);
+            Db.Set<InventoryTransaction>().Add(transaction);
+            await Db.SaveChangesAsync(ct);
+            await dbTransaction.CommitAsync(ct);
 
-        return InventoryTransactionMapper.ToDto(transaction, part, nextStock);
+            return InventoryTransactionMapper.ToDto(transaction, part, nextStock);
+        }
+        catch
+        {
+            await dbTransaction.RollbackAsync(ct);
+            throw;
+        }
     }
 
     protected async Task<int> GetCurrentStockAsync(Guid partId, CancellationToken ct)
@@ -132,7 +144,7 @@ public abstract class InventoryTransactionHandlerBase
                 TransactionType.Receiving => checked(stock + tx.Quantity),
                 TransactionType.Return => checked(stock + tx.Quantity),
                 TransactionType.Issue => InventoryStockCalculator.Issue(stock, tx.Quantity),
-                _ => stock
+                _ => throw new NotSupportedException($"Transaction type {tx.Type} is not supported.")
             };
         }
 
