@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Maintenance.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,13 +31,9 @@ public class GetWorkOrdersHandler : IRequestHandler<GetWorkOrdersQuery, IReadOnl
 
     public async Task<IReadOnlyList<WorkOrderListItem>> Handle(GetWorkOrdersQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
-
         return await _db.Set<WorkOrder>()
             .OrderByDescending(e => e.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .Select(e => new WorkOrderListItem(e.Id, e.AssetId, e.Description, e.Status.ToString()))
             .ToListAsync(ct);
     }

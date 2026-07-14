@@ -13,7 +13,10 @@ public static class TestAuthHelper
     public static async Task<AuthenticatedClient> GetAuthenticatedClientAsync(TestContainerFixture fx)
     {
         var app = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
-            b.UseSetting("ConnectionStrings:Postgres", fx.ConnectionString));
+        {
+            b.UseSetting("ConnectionStrings:Postgres", fx.ConnectionString);
+            b.UseSetting("Jwt:Secret", "integration-test-secret-key-at-least-32-bytes-long");
+        });
 
         var migrationOptions = new DbContextOptionsBuilder<BingehOS.Infrastructure.AppDbContext>()
             .UseNpgsql(fx.AdminConnectionString)

@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Inventory.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,16 +31,13 @@ public class GetPartsHandler : IRequestHandler<GetPartsQuery, IReadOnlyList<Part
 
     public async Task<IReadOnlyList<PartListItem>> Handle(GetPartsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<Part>().AsQueryable();
 
         if (q.activeOnly.HasValue) query = query.Where(e => e.IsActive == q.activeOnly.Value);
 
         return await query
             .OrderByDescending(e => e.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .Select(e => new PartListItem(e.Id, e.PartNumber, e.Name, e.UnitOfMeasure, e.IsActive))
             .ToListAsync(ct);
     }

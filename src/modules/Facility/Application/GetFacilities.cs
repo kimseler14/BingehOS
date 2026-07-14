@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Facility.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,13 +31,9 @@ public class GetFacilitiesHandler : IRequestHandler<GetFacilitiesQuery, IReadOnl
 
     public async Task<IReadOnlyList<FacilityListItem>> Handle(GetFacilitiesQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
-
         return await _db.Set<Domain.Facility>()
             .OrderByDescending(e => e.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .Select(e => new FacilityListItem(e.Id, e.Name, e.Code, e.TimeZone))
             .ToListAsync(ct);
     }
