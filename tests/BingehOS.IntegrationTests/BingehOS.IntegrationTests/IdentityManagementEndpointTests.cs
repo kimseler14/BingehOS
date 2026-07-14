@@ -82,6 +82,15 @@ public class IdentityManagementEndpointTests : IClassFixture<TestContainerFixtur
                 "Bearer",
                 await admin.CreateBearerTokenAsync(Guid.Parse("11111111-1111-1111-1111-111111111111"), userId));
 
+        var forbiddenUsers = await userClient.GetAsync("/v1/users");
+        Assert.Equal(HttpStatusCode.Forbidden, forbiddenUsers.StatusCode);
+
+        var forbiddenRoles = await userClient.GetAsync("/v1/roles");
+        Assert.Equal(HttpStatusCode.Forbidden, forbiddenRoles.StatusCode);
+
+        var forbiddenPermissions = await userClient.GetAsync("/v1/permissions");
+        Assert.Equal(HttpStatusCode.Forbidden, forbiddenPermissions.StatusCode);
+
         var forbidden = await userClient.PostAsJsonAsync(
             "/v1/roles",
             new CreateRoleCommand("ShouldFail", "Should not be allowed"));

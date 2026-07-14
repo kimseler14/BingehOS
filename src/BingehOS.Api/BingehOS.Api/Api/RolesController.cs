@@ -22,6 +22,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet]
+    [HasPermission("admin.access")]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         var items = await _mediator.Send(new GetRolesQuery(skip, take));
@@ -29,6 +30,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [HasPermission("admin.access")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetRoleQuery(id));

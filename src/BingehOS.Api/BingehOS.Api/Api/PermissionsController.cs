@@ -22,6 +22,7 @@ public class PermissionsController : ControllerBase
     }
 
     [HttpGet]
+    [HasPermission("admin.access")]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         var items = await _mediator.Send(new GetPermissionsQuery(skip, take));
@@ -29,6 +30,7 @@ public class PermissionsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [HasPermission("admin.access")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetPermissionQuery(id));

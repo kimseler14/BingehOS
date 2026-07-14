@@ -174,7 +174,7 @@ public class RemovePermissionFromRoleHandler : IRequestHandler<RemovePermissionF
         if (link == null)
             throw new KeyNotFoundException("Permission assignment not found.");
 
-        _db.Remove(link);
+        link.SoftDelete();
         await _db.SaveChangesAsync(ct);
         return Unit.Value;
     }

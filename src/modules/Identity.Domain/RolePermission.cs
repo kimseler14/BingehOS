@@ -19,4 +19,6 @@ public class RolePermission : BaseEntity
             PermissionId = permissionId,
             AssignedAt = DateTimeOffset.UtcNow
         };
+
+    public void SoftDelete() => IsDeleted = true;
 }

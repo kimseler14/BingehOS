@@ -14,6 +14,7 @@ public class UsersController : ControllerBase
     public UsersController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
+    [HasPermission("admin.access")]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         var items = await _mediator.Send(new GetUsersQuery(skip, take));
@@ -21,6 +22,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [HasPermission("admin.access")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetUserQuery(id));
