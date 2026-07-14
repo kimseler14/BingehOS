@@ -20,6 +20,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.*" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +39,7 @@
     <ProjectReference Include="..\..\src\modules\Identity.Domain\BingehOS.Modules.Identity.Domain.csproj" />
     <ProjectReference Include="..\..\src\modules\Audit.Domain\BingehOS.Modules.Audit.Domain.csproj" />
     <ProjectReference Include="..\..\src\BingehOS.Infrastructure\BingehOS.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\BingehOS.Api\BingehOS.Api\BingehOS.Api.csproj" />
   </ItemGroup>
 
 </Project>
