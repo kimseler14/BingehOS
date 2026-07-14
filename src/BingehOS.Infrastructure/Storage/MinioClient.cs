@@ -33,6 +33,10 @@ public sealed class MinioClient : IAsyncDisposable
             var result = await _client.BucketExistsAsync(args, ct);
             return result;
         }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to check bucket {Bucket}", bucketName);
@@ -54,6 +58,37 @@ public sealed class MinioClient : IAsyncDisposable
             var args = new MakeBucketArgs().WithBucket(bucketName);
             await _client.MakeBucketAsync(args, ct);
             _logger.LogInformation("Created bucket {Bucket}", bucketName);
+        }
+        catch (ArgumentException ex)
+        {
+            ct.ThrowIfCancellationRequested();
+
+            try
+            {
+                if (await BucketExistsAsync(bucketName, ct))
+                {
+                    _logger.LogInformation("Bucket {Bucket} already exists", bucketName);
+                    return;
+                }
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception verificationException)
+            {
+                _logger.LogWarning(
+                    verificationException,
+                    "Failed to verify bucket {Bucket} after creation failed",
+                    bucketName);
+            }
+
+            _logger.LogError(ex, "Failed to create bucket {Bucket}", bucketName);
+            throw;
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {

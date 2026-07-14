@@ -94,7 +94,7 @@ if (Encoding.UTF8.GetByteCount(jwtSecret) < 32)
 }
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BingehOS";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BingehOS.Client";
-builder.Services.Configure<JwtSettings>(opt =>
+builder.Services.Configure<BingehOS.Infrastructure.Security.JwtSettings>(opt =>
 {
     opt.Secret = jwtSecret;
     opt.Issuer = jwtIssuer;
