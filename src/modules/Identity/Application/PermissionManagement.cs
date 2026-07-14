@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Identity.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,10 @@ public class GetPermissionsHandler : IRequestHandler<GetPermissionsQuery, IReadO
 
     public async Task<IReadOnlyList<PermissionDto>> Handle(GetPermissionsQuery q, CancellationToken ct)
     {
-        var skip = Math.Max(0, q.Skip);
-        var take = q.Take > 0 ? q.Take : 20;
-
         return await _db.Set<Permission>()
             .Where(p => p.TenantId == _db.CurrentTenantId && !p.IsDeleted)
             .OrderByDescending(p => p.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .Select(p => new PermissionDto(p.Id, p.Name, p.Description))
             .ToListAsync(ct);
     }

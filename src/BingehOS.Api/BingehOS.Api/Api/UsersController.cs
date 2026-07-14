@@ -1,3 +1,4 @@
+using BingehOS.Infrastructure.Authorization;
 using BingehOS.Modules.Identity.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,24 +17,23 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         var items = await _mediator.Send(new GetUsersQuery(skip, take));
-        return Ok(new { success = true, data = items });
+        return this.OkWithData(items);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetUserQuery(id));
-        if (item == null) return NotFound(new { success = false, error = "not found" });
-        return Ok(new { success = true, data = item });
+        return this.OkOrNotFound(item);
     }
 
     [HttpPatch("{id}")]
     [HasPermission("admin.access")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserCommand cmd)
     {
-        if (cmd.Id != id) return BadRequest(new { error = "id mismatch" });
+        if (cmd.Id != id) return this.IdMismatch();
         var dto = await _mediator.Send(cmd);
-        return Ok(new { success = true, data = dto });
+        return this.OkWithData(dto);
     }
 
     [HttpDelete("{id}")]

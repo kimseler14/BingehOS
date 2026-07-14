@@ -1,3 +1,4 @@
+using BingehOS.Infrastructure.Authorization;
 using BingehOS.Modules.Identity.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,21 +18,20 @@ public class PermissionsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreatePermissionCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
+        return this.CreatedWithId(nameof(Get), id);
     }
 
     [HttpGet]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         var items = await _mediator.Send(new GetPermissionsQuery(skip, take));
-        return Ok(new { success = true, data = items });
+        return this.OkWithData(items);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetPermissionQuery(id));
-        if (item == null) return NotFound(new { success = false, error = "not found" });
-        return Ok(new { success = true, data = item });
+        return this.OkOrNotFound(item);
     }
 }

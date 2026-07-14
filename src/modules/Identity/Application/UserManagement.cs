@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Identity.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +18,12 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, IReadOnlyList<User
 
     public async Task<IReadOnlyList<UserDto>> Handle(GetUsersQuery q, CancellationToken ct)
     {
-        var skip = Math.Max(0, q.Skip);
-        var take = q.Take > 0 ? q.Take : 20;
-
         var users = await _db.Set<User>()
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
             .Where(u => u.TenantId == _db.CurrentTenantId && !u.IsDeleted)
             .OrderByDescending(u => u.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .ToListAsync(ct);
 
         return users.Select(ToDto).ToList();

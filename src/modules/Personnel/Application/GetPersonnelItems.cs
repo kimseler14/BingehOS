@@ -63,12 +63,10 @@ public class GetWorkersHandler : IRequestHandler<GetWorkersQuery, IReadOnlyList<
 
     public async Task<IReadOnlyList<WorkerListItem>> Handle(GetWorkersQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<Worker>().AsQueryable();
         if (q.activeOnly.HasValue) query = query.Where(e => e.IsActive == q.activeOnly.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new WorkerListItem(
                 e.Id,
                 e.FirstName,

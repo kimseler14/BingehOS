@@ -1,3 +1,4 @@
+using BingehOS.Infrastructure.Authorization;
 using BingehOS.Modules.Identity.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -17,31 +18,30 @@ public class RolesController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateRoleCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
+        return this.CreatedWithId(nameof(Get), id);
     }
 
     [HttpGet]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
     {
         var items = await _mediator.Send(new GetRolesQuery(skip, take));
-        return Ok(new { success = true, data = items });
+        return this.OkWithData(items);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetRoleQuery(id));
-        if (item == null) return NotFound(new { success = false, error = "not found" });
-        return Ok(new { success = true, data = item });
+        return this.OkOrNotFound(item);
     }
 
     [HttpPatch("{id}")]
     [HasPermission("admin.access")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRoleCommand cmd)
     {
-        if (cmd.Id != id) return BadRequest(new { error = "id mismatch" });
+        if (cmd.Id != id) return this.IdMismatch();
         var dto = await _mediator.Send(cmd);
-        return Ok(new { success = true, data = dto });
+        return this.OkWithData(dto);
     }
 
     [HttpDelete("{id}")]

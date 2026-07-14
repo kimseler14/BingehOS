@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Identity.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,16 +23,12 @@ public class GetRolesHandler : IRequestHandler<GetRolesQuery, IReadOnlyList<Role
 
     public async Task<IReadOnlyList<RoleDto>> Handle(GetRolesQuery q, CancellationToken ct)
     {
-        var skip = Math.Max(0, q.Skip);
-        var take = q.Take > 0 ? q.Take : 20;
-
         var roles = await _db.Set<Role>()
             .Include(r => r.RolePermissions)
             .ThenInclude(rp => rp.Permission)
             .Where(r => r.TenantId == _db.CurrentTenantId && !r.IsDeleted)
             .OrderByDescending(r => r.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .ToListAsync(ct);
 
         return roles.Select(Map).ToList();
