@@ -13,6 +13,7 @@ public class WorkOrder : BaseEntity
     public Guid AssetId { get; private set; }
     public string Description { get; private set; } = string.Empty;
     public WorkOrderStatus Status { get; private set; } = WorkOrderStatus.Draft;
+    public int Priority { get; private set; }
     public bool PermitApproved { get; private set; }
     public bool ESignatureCaptured { get; private set; }
 
@@ -21,6 +22,7 @@ public class WorkOrder : BaseEntity
 
     public void ApprovePermit() => PermitApproved = true;
     public void CaptureESignature() => ESignatureCaptured = true;
+    public void SetPriority(int priority) => Priority = priority;
 
     private static readonly HashSet<(WorkOrderStatus, WorkOrderStatus)> _allowed = new()
     {

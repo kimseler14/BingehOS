@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BingehOS.Modules.Maintenance.Application;
 
-public record WorkOrderListItem(Guid Id, Guid AssetId, string Description, string Status);
+public record WorkOrderListItem(Guid Id, Guid AssetId, string Description, string Status, int Priority = 0);
 
 public record GetWorkOrderQuery(Guid Id) : IRequest<WorkOrderListItem?>;
 public record GetWorkOrdersQuery(int Skip = 0, int Take = 20) : IRequest<IReadOnlyList<WorkOrderListItem>>;
@@ -20,7 +20,7 @@ public class GetWorkOrderHandler : IRequestHandler<GetWorkOrderQuery, WorkOrderL
     {
         var wo = await _db.Set<WorkOrder>().FirstOrDefaultAsync(e => e.Id == q.Id, ct);
         if (wo == null) return null;
-        return new WorkOrderListItem(wo.Id, wo.AssetId, wo.Description, wo.Status.ToString());
+        return new WorkOrderListItem(wo.Id, wo.AssetId, wo.Description, wo.Status.ToString(), wo.Priority);
     }
 }
 
@@ -34,7 +34,7 @@ public class GetWorkOrdersHandler : IRequestHandler<GetWorkOrdersQuery, IReadOnl
         return await _db.Set<WorkOrder>()
             .OrderByDescending(e => e.CreatedAt)
             .ApplyPaging(q.Skip, q.Take)
-            .Select(e => new WorkOrderListItem(e.Id, e.AssetId, e.Description, e.Status.ToString()))
+            .Select(e => new WorkOrderListItem(e.Id, e.AssetId, e.Description, e.Status.ToString(), e.Priority))
             .ToListAsync(ct);
     }
 }

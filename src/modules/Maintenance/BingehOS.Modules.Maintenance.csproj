@@ -4,6 +4,7 @@
     <ProjectReference Include="..\..\BingehOS.Shared\BingehOS.Shared.csproj" />
     <ProjectReference Include="..\..\BingehOS.Infrastructure\BingehOS.Infrastructure.csproj" />
     <ProjectReference Include="..\Maintenance.Domain\BingehOS.Modules.Maintenance.Domain.csproj" />
+    <ProjectReference Include="..\Automation\BingehOS.Modules.Automation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,7 @@
 using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Queries;
+using BingehOS.Modules.Automation.Application;
+using BingehOS.Modules.Automation.Domain;
 using BingehOS.Modules.Inventory.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -76,8 +78,13 @@ internal static class InventoryTransactionMapper
 public abstract class InventoryTransactionHandlerBase
 {
     protected readonly AppDbContext Db;
+    private readonly IPublisher _publisher;
 
-    protected InventoryTransactionHandlerBase(AppDbContext db) => Db = db;
+    protected InventoryTransactionHandlerBase(AppDbContext db, IPublisher publisher)
+    {
+        Db = db;
+        _publisher = publisher;
+    }
 
     protected async Task<InventoryTransactionDto> CreateAsync(
         Guid partId,
@@ -92,6 +99,8 @@ public abstract class InventoryTransactionHandlerBase
             throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
 
         await using var dbTransaction = await Db.Database.BeginTransactionAsync(ct);
+        InventoryTransactionDto result;
+        string partNumber;
         try
         {
             var part = await Db.Set<Part>()
@@ -117,14 +126,28 @@ public abstract class InventoryTransactionHandlerBase
             Db.Set<InventoryTransaction>().Add(transaction);
             await Db.SaveChangesAsync(ct);
             await dbTransaction.CommitAsync(ct);
-
-            return InventoryTransactionMapper.ToDto(transaction, part, nextStock);
+            partNumber = part.PartNumber;
+            result = InventoryTransactionMapper.ToDto(transaction, part, nextStock);
         }
         catch
         {
             await dbTransaction.RollbackAsync(ct);
             throw;
         }
+
+        await _publisher.Publish(new AutomationTriggerNotification(
+            Db.CurrentTenantId,
+            AutomationTriggerType.InventoryStockLow,
+            new Dictionary<string, object?>
+            {
+                ["partId"] = partId,
+                ["partNumber"] = partNumber,
+                ["currentStock"] = result.CurrentStock,
+                ["quantity"] = quantity,
+                ["transactionType"] = type.ToString()
+            }), ct);
+
+        return result;
     }
 
     protected async Task<int> GetCurrentStockAsync(Guid partId, CancellationToken ct)
@@ -180,7 +203,7 @@ public class GetInventoryTransactionsHandler : IRequestHandler<GetInventoryTrans
 
 public class ReceivePartHandler : InventoryTransactionHandlerBase, IRequestHandler<ReceivePartCommand, InventoryTransactionDto>
 {
-    public ReceivePartHandler(AppDbContext db) : base(db) { }
+    public ReceivePartHandler(AppDbContext db, IPublisher publisher) : base(db, publisher) { }
 
     public Task<InventoryTransactionDto> Handle(ReceivePartCommand cmd, CancellationToken ct) =>
         CreateAsync(cmd.PartId, TransactionType.Receiving, cmd.Quantity, cmd.BinId, cmd.RelatedWorkOrderId, cmd.Notes, ct);
@@ -188,7 +211,7 @@ public class ReceivePartHandler : InventoryTransactionHandlerBase, IRequestHandl
 
 public class IssuePartHandler : InventoryTransactionHandlerBase, IRequestHandler<IssuePartCommand, InventoryTransactionDto>
 {
-    public IssuePartHandler(AppDbContext db) : base(db) { }
+    public IssuePartHandler(AppDbContext db, IPublisher publisher) : base(db, publisher) { }
 
     public Task<InventoryTransactionDto> Handle(IssuePartCommand cmd, CancellationToken ct) =>
         CreateAsync(cmd.PartId, TransactionType.Issue, cmd.Quantity, cmd.BinId, cmd.RelatedWorkOrderId, cmd.Notes, ct);
@@ -196,7 +219,7 @@ public class IssuePartHandler : InventoryTransactionHandlerBase, IRequestHandler
 
 public class ReturnPartHandler : InventoryTransactionHandlerBase, IRequestHandler<ReturnPartCommand, InventoryTransactionDto>
 {
-    public ReturnPartHandler(AppDbContext db) : base(db) { }
+    public ReturnPartHandler(AppDbContext db, IPublisher publisher) : base(db, publisher) { }
 
     public Task<InventoryTransactionDto> Handle(ReturnPartCommand cmd, CancellationToken ct) =>
         CreateAsync(cmd.PartId, TransactionType.Return, cmd.Quantity, cmd.BinId, cmd.RelatedWorkOrderId, cmd.Notes, ct);
