@@ -28,7 +28,11 @@ public class TenantConnectionInterceptor : DbConnectionInterceptor
             return;
 
         using var cmd = connection.CreateCommand();
-        cmd.CommandText = $"SET app.current_tenant_id = '{_ctx.CurrentTenantId}';";
+        cmd.CommandText = "SELECT set_config('app.current_tenant_id', @tenant, false);";
+        var param = cmd.CreateParameter();
+        param.ParameterName = "tenant";
+        param.Value = _ctx.CurrentTenantId.ToString();
+        cmd.Parameters.Add(param);
         cmd.ExecuteNonQuery();
     }
 }

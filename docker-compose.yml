@@ -78,6 +78,8 @@ services:
     restart: unless-stopped
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      # Local/dev value only. Override with a strong, secret value (>=32 bytes) in production.
+      Jwt__Secret: "local-dev-jwt-secret-key-at-least-32-bytes-long"
       ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=bingehos;Username=postgres;Password=postgres"
       Redis__ConnectionString: "redis:6379"
       RabbitMq__ConnectionString: "amqp://admin:admin@rabbitmq:5672"

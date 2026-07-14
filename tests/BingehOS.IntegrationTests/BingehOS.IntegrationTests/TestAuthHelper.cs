@@ -13,7 +13,10 @@ public static class TestAuthHelper
     public static async Task<HttpClient> GetAuthenticatedClientAsync(TestContainerFixture fx)
     {
         var app = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
-            b.UseSetting("ConnectionStrings:Postgres", fx.ConnectionString));
+        {
+            b.UseSetting("ConnectionStrings:Postgres", fx.ConnectionString);
+            b.UseSetting("Jwt:Secret", "integration-test-secret-key-at-least-32-bytes-long");
+        });
         await using var _ = app;
 
         using (var scope = app.Services.CreateScope())
