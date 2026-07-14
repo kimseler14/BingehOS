@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <Compile Include="..\Personnel\Domain\Employee.cs" />
+    <Compile Include="..\Personnel\Domain\Worker.cs" />
     <Compile Include="..\Personnel\Domain\SgkRecord.cs" />
     <Compile Include="..\Personnel\Domain\Subcontractor.cs" />
     <Compile Include="..\Personnel\Domain\Events\EmployeeCreatedEvent.cs" />
+    <Compile Include="..\Personnel\Domain\Events\WorkerCreatedEvent.cs" />
   </ItemGroup>
 
   <ItemGroup>

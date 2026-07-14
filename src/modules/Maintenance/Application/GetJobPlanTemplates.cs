@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Maintenance.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,12 +31,10 @@ public class GetJobPlanTemplatesHandler : IRequestHandler<GetJobPlanTemplatesQue
 
     public async Task<IReadOnlyList<JobPlanTemplateListItem>> Handle(GetJobPlanTemplatesQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<JobPlanTemplate>().AsQueryable();
         if (!string.IsNullOrWhiteSpace(q.assetType)) query = query.Where(e => e.AssetType == q.assetType);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new JobPlanTemplateListItem(e.Id, e.Name, e.AssetType, e.EstimatedDurationMinutes, e.RequiredPermitType))
             .ToListAsync(ct);
     }

@@ -23,7 +23,13 @@ public class User : BaseEntity
             AuthProvider = AuthProvider.Local
         };
 
+    public void Update(string fullName) => FullName = fullName;
     public void Deactivate() => IsActive = false;
     public void Activate() => IsActive = true;
+    public void SoftDelete()
+    {
+        IsDeleted = true;
+        IsActive = false;
+    }
     public void SetPasswordHash(string hash) => PasswordHash = hash;
 }

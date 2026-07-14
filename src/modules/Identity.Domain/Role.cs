@@ -19,4 +19,12 @@ public class Role : BaseEntity
             Description = description,
             IsSystem = isSystem
         };
+
+    public void Update(string name, string? description)
+    {
+        Name = name;
+        Description = description;
+    }
+
+    public void SoftDelete() => IsDeleted = true;
 }

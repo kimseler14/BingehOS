@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
     public record AssignRoleReq(Guid UserId, Guid RoleId);
 
     [HttpPost("register")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SystemAdmin")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest req, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(req.Email) || string.IsNullOrWhiteSpace(req.Password))
@@ -38,7 +38,7 @@ public class AuthController : ControllerBase
         try
         {
             var result = await _mediator.Send(new LoginQuery(new LoginRequest(req.Email, req.Password)), ct);
-            return Ok(new { success = true, data = result });
+            return this.OkWithData(result);
         }
         catch (UnauthorizedAccessException)
         {
@@ -47,13 +47,13 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("assign-role")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SystemAdmin")]
     public async Task<IActionResult> AssignRole([FromBody] AssignRoleReq req, CancellationToken ct)
     {
         var assignedBy = User.GetUserId();
         var result = await _mediator.Send(new AssignRoleCommand(
             new AssignRoleRequest(req.UserId, req.RoleId), assignedBy), ct);
 
-        return Ok(new { success = true, data = result });
+        return this.OkWithData(result);
     }
 }

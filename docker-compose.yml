@@ -1,44 +1,28 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: bingehos
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-bingehos}
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./scripts/postgres-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d bingehos"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-bingehos}"]
       interval: 5s
       timeout: 5s
       retries: 10
-
-  redis:
-    image: redis:7-alpine
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    command: redis-server --appendonly yes
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
     restart: unless-stopped
     environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:-admin}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -55,8 +39,8 @@ services:
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -77,20 +61,19 @@ services:
       dockerfile: src/BingehOS.Api/Dockerfile
     restart: unless-stopped
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=bingehos;Username=postgres;Password=postgres"
-      Redis__ConnectionString: "redis:6379"
-      RabbitMq__ConnectionString: "amqp://admin:admin@rabbitmq:5672"
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      # Local/dev default only. Set JWT_SECRET (>=32 bytes) in .env / your environment for production.
+      Jwt__Secret: ${JWT_SECRET:-local-dev-jwt-secret-key-at-least-32-bytes-long}
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=${POSTGRES_DB:-bingehos};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
+      RabbitMq__ConnectionString: "amqp://${RABBITMQ_DEFAULT_USER:-admin}:${RABBITMQ_DEFAULT_PASS:-admin}@rabbitmq:5672"
       Minio__Endpoint: "http://minio:9000"
-      Minio__AccessKey: minioadmin
-      Minio__SecretKey: minioadmin
+      Minio__AccessKey: ${MINIO_ROOT_USER:-minioadmin}
+      Minio__SecretKey: ${MINIO_ROOT_PASSWORD:-minioadmin}
     ports:
       - "8080:8080"
       - "8081:8081"
     depends_on:
       postgres:
-        condition: service_healthy
-      redis:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
@@ -99,6 +82,5 @@ services:
 
 volumes:
   postgres-data:
-  redis-data:
   rabbitmq-data:
   minio-data:

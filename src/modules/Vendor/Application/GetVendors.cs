@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Vendor.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,16 +31,13 @@ public class GetVendorsHandler : IRequestHandler<GetVendorsQuery, IReadOnlyList<
 
     public async Task<IReadOnlyList<VendorListItem>> Handle(GetVendorsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<Domain.Vendor>().AsQueryable();
 
         if (q.activeOnly.HasValue) query = query.Where(e => e.IsActive == q.activeOnly.Value);
 
         return await query
             .OrderByDescending(e => e.CreatedAt)
-            .Skip(skip)
-            .Take(take)
+            .ApplyPaging(q.Skip, q.Take)
             .Select(e => new VendorListItem(e.Id, e.Name, e.ContactEmail, e.Phone, e.IsActive))
             .ToListAsync(ct);
     }

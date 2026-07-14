@@ -15,6 +15,6 @@ public class PluginsController : ControllerBase
     public IActionResult GetAll()
     {
         var plugins = _pluginLoader.Plugins.Select(p => new { p.Name, p.Version });
-        return Ok(new { success = true, data = plugins });
+        return this.OkWithData(plugins);
     }
 }

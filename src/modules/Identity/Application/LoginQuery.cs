@@ -31,7 +31,7 @@ public class LoginHandler : IRequestHandler<LoginQuery, LoginResponse>
         var user = await _db.Set<User>()
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.TenantId == tenantId && u.Email == q.Request.Email, ct);
+            .FirstOrDefaultAsync(u => u.TenantId == tenantId && u.Email == q.Request.Email && !u.IsDeleted, ct);
 
         if (user == null || !user.IsActive)
             throw new UnauthorizedAccessException("Invalid credentials.");
@@ -39,7 +39,11 @@ public class LoginHandler : IRequestHandler<LoginQuery, LoginResponse>
         if (!_passwordHasher.Verify(q.Request.Password, user.PasswordHash))
             throw new UnauthorizedAccessException("Invalid credentials.");
 
-        var roleNames = user.UserRoles.Select(ur => ur.Role!.Name).Distinct().ToList();
+        var roleNames = user.UserRoles
+            .Where(ur => !ur.IsDeleted && ur.Role != null && !ur.Role.IsDeleted)
+            .Select(ur => ur.Role!.Name)
+            .Distinct()
+            .ToList();
         var token = _tokenService.GenerateToken(user.Id, user.Email, roleNames, tenantId);
 
         return new LoginResponse(

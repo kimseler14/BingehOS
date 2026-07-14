@@ -40,7 +40,7 @@ public sealed class MinioClient : IAsyncDisposable
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to check bucket {Bucket}", bucketName);
-            throw;
+            return false;
         }
     }
 
@@ -93,7 +93,6 @@ public sealed class MinioClient : IAsyncDisposable
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to create bucket {Bucket}", bucketName);
-            throw;
         }
     }
 

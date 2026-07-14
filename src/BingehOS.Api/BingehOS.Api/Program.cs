@@ -1,11 +1,12 @@
-using BingehOS.Api.Auth;
+using BingehOS.Api.Authorization;
 using BingehOS.Api.Filters;
-using BingehOS.Api.Middleware;
 using BingehOS.Api.Health;
+using BingehOS.Api.Middleware;
 using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Plugins;
 using BingehOS.Infrastructure.Storage;
 using BingehOS.Infrastructure.Messaging;
+using BingehOS.Infrastructure.Security;
 using BingehOS.Modules.Asset.Application;
 using BingehOS.Modules.Asset.Domain;
 using BingehOS.Modules.Compliance.Application;
@@ -72,7 +73,25 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
 
-var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "dev-secret-change-me-in-production-please-32chars";
+var jwtSecret = builder.Configuration["Jwt:Secret"];
+if (string.IsNullOrWhiteSpace(jwtSecret))
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        // Development-only fallback so the app can boot locally without extra setup.
+        // Production/staging MUST supply Jwt:Secret (e.g. the Jwt__Secret env var).
+        jwtSecret = "dev-only-insecure-secret-do-not-use-in-production-32chars";
+    }
+    else
+    {
+        throw new InvalidOperationException(
+            "Jwt:Secret is not configured. Set it via configuration or the Jwt__Secret environment variable.");
+    }
+}
+if (Encoding.UTF8.GetByteCount(jwtSecret) < 32)
+{
+    throw new InvalidOperationException("Jwt:Secret must be at least 32 bytes for HMAC-SHA256 signing.");
+}
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BingehOS";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BingehOS.Client";
 builder.Services.Configure<BingehOS.Infrastructure.Security.JwtSettings>(opt =>
@@ -105,13 +124,11 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("HasPermission", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.Requirements.Add(new PermissionRequirement(string.Empty));
-    });
 });
-builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<
+    Microsoft.AspNetCore.Authorization.IAuthorizationHandler,
+    BingehOS.Infrastructure.Authorization.PermissionAuthorizationHandler>();
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
            ?? "Host=localhost;Port=5432;Database=bingehos;Username=postgres;Password=postgres";
@@ -193,8 +210,11 @@ builder.Services.AddHealthChecks()
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+if (!app.Environment.IsProduction())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseAuthentication();
 app.UseMiddleware<TenantResolutionMiddleware>();
 app.UseAuthorization();

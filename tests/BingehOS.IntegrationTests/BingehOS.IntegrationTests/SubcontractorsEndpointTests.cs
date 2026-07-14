@@ -15,7 +15,8 @@ public class SubcontractorsEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_Update_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/subcontractors",
             new CreateSubcontractorCommand("Acme Ltd", "TAX-123", "John Doe", "+90 555 000 00 00", true));

@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Compliance.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,12 +35,10 @@ public class GetComplianceRecordsHandler : IRequestHandler<GetComplianceRecordsQ
 
     public async Task<IReadOnlyList<ComplianceRecordListItem>> Handle(GetComplianceRecordsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<ComplianceRecord>().AsQueryable();
         if (!string.IsNullOrWhiteSpace(q.status)) query = query.Where(e => e.Status == q.status);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new ComplianceRecordListItem(e.Id, e.Title, e.Status, e.DueDate))
             .ToListAsync(ct);
     }
@@ -65,12 +64,10 @@ public class GetKvkkConsentsHandler : IRequestHandler<GetKvkkConsentsQuery, IRea
 
     public async Task<IReadOnlyList<KvkkConsentListItem>> Handle(GetKvkkConsentsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<KvkkConsent>().AsQueryable();
         if (q.userId.HasValue) query = query.Where(e => e.UserId == q.userId.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new KvkkConsentListItem(e.Id, e.UserId, e.ConsentType, e.Version, e.GrantedAt, e.RevokedAt))
             .ToListAsync(ct);
     }
