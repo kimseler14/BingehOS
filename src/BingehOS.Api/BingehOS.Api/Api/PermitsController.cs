@@ -16,37 +16,36 @@ public class PermitsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreatePermitToWorkCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
+        return this.CreatedWithId(nameof(Get), id);
     }
 
     [HttpPatch("{id}/approve")]
     public async Task<IActionResult> Approve(Guid id, [FromBody] ApprovePermitToWorkCommand cmd)
     {
-        if (cmd.Id != id) return BadRequest(new { error = "id mismatch" });
+        if (cmd.Id != id) return this.IdMismatch();
         var dto = await _mediator.Send(cmd);
-        return Ok(new { success = true, data = dto });
+        return this.OkWithData(dto);
     }
 
     [HttpPatch("{id}/reject")]
     public async Task<IActionResult> Reject(Guid id, [FromBody] RejectPermitToWorkCommand cmd)
     {
-        if (cmd.Id != id) return BadRequest(new { error = "id mismatch" });
+        if (cmd.Id != id) return this.IdMismatch();
         var dto = await _mediator.Send(cmd);
-        return Ok(new { success = true, data = dto });
+        return this.OkWithData(dto);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetPermitToWorkQuery(id));
-        if (item == null) return NotFound(new { success = false, error = "not found" });
-        return Ok(new { success = true, data = item });
+        return this.OkOrNotFound(item);
     }
 
     [HttpGet]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20, [FromQuery] string? status = null)
     {
         var items = await _mediator.Send(new GetPermitsToWorkQuery(skip, take, status));
-        return Ok(new { success = true, data = items });
+        return this.OkWithData(items);
     }
 }

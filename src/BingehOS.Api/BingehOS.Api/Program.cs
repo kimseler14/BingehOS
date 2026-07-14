@@ -1,4 +1,3 @@
-using BingehOS.Api.Auth;
 using BingehOS.Api.Filters;
 using BingehOS.Api.Middleware;
 using BingehOS.Api.Health;
@@ -6,6 +5,7 @@ using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Plugins;
 using BingehOS.Infrastructure.Storage;
 using BingehOS.Infrastructure.Messaging;
+using BingehOS.Infrastructure.Security;
 using BingehOS.Modules.Asset.Application;
 using BingehOS.Modules.Asset.Domain;
 using BingehOS.Modules.Compliance.Application;

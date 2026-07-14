@@ -16,29 +16,28 @@ public class ComplianceRecordsController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateComplianceRecordCommand cmd)
     {
         var id = await _mediator.Send(cmd);
-        return CreatedAtAction(nameof(Get), new { id }, new { success = true, data = new { id } });
+        return this.CreatedWithId(nameof(Get), id);
     }
 
     [HttpPatch("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateComplianceRecordCommand cmd)
     {
-        if (cmd.Id != id) return BadRequest(new { error = "id mismatch" });
+        if (cmd.Id != id) return this.IdMismatch();
         var dto = await _mediator.Send(cmd);
-        return Ok(new { success = true, data = dto });
+        return this.OkWithData(dto);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
         var item = await _mediator.Send(new GetComplianceRecordQuery(id));
-        if (item == null) return NotFound(new { success = false, error = "not found" });
-        return Ok(new { success = true, data = item });
+        return this.OkOrNotFound(item);
     }
 
     [HttpGet]
     public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20, [FromQuery] string? status = null)
     {
         var items = await _mediator.Send(new GetComplianceRecordsQuery(skip, take, status));
-        return Ok(new { success = true, data = items });
+        return this.OkWithData(items);
     }
 }
