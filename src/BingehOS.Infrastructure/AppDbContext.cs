@@ -50,6 +50,18 @@ public class AppDbContext : DbContext
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<Campus> Campuses => Set<Campus>();
+    public DbSet<Building> Buildings => Set<Building>();
+    public DbSet<Floor> Floors => Set<Floor>();
+    public DbSet<Zone> Zones => Set<Zone>();
+    public DbSet<Room> Rooms => Set<Room>();
+    public DbSet<AssetClass> AssetClasses => Set<AssetClass>();
+    public DbSet<AssetType> AssetTypes => Set<AssetType>();
+    public DbSet<AssetTemplate> AssetTemplates => Set<AssetTemplate>();
+    public DbSet<Meter> Meters => Set<Meter>();
+    public DbSet<AssetRelationship> AssetRelationships => Set<AssetRelationship>();
+    public DbSet<AssetHealthScore> AssetHealthScores => Set<AssetHealthScore>();
+    public DbSet<Warranty> Warranties => Set<Warranty>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
