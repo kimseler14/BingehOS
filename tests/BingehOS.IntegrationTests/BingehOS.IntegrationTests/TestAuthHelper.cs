@@ -15,11 +15,16 @@ public static class TestAuthHelper
         var app = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
             b.UseSetting("ConnectionStrings:Postgres", fx.ConnectionString));
 
-        using (var scope = app.Services.CreateScope())
+        var migrationOptions = new DbContextOptionsBuilder<BingehOS.Infrastructure.AppDbContext>()
+            .UseNpgsql(fx.AdminConnectionString)
+            .Options;
+        await using (var db = new BingehOS.Infrastructure.AppDbContext(
+                         migrationOptions,
+                         new FixedTenantProvider(Guid.Empty)))
         {
-            var db = scope.ServiceProvider.GetRequiredService<BingehOS.Infrastructure.AppDbContext>();
             await db.Database.MigrateAsync();
         }
+        await fx.GrantApplicationRoleAsync();
 
         var client = app.CreateClient();
         client.DefaultRequestHeaders.Add("x-tenant-id", "11111111-1111-1111-1111-111111111111");
@@ -34,6 +39,11 @@ public static class TestAuthHelper
 
         return new AuthenticatedClient(client, app);
     }
+
+    private sealed class FixedTenantProvider(Guid tenantId) : BingehOS.Infrastructure.ITenantProvider
+    {
+        public Guid CurrentTenantId { get; } = tenantId;
+    }
 }
 
 public class AuthenticatedClient : IAsyncDisposable
@@ -45,6 +55,36 @@ public class AuthenticatedClient : IAsyncDisposable
     {
         Client = client;
         _factory = factory;
+    }
+
+    public HttpClient CreateClient(Guid tenantId)
+    {
+        var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Add("x-tenant-id", tenantId.ToString());
+        return client;
+    }
+
+    public async Task SeedUserAsync(Guid tenantId, string email, string password, string fullName)
+    {
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BingehOS.Infrastructure.AppDbContext>();
+        var hasher = scope.ServiceProvider.GetRequiredService<BingehOS.Infrastructure.Security.IPasswordHasher>();
+        db.CurrentTenantId = tenantId;
+
+        var role = BingehOS.Modules.Identity.Domain.Role.Create(tenantId, "User", "Standard user");
+        var user = BingehOS.Modules.Identity.Domain.User.Create(
+            tenantId,
+            email,
+            hasher.Hash(password),
+            fullName);
+        db.Roles.Add(role);
+        db.Users.Add(user);
+        db.UserRoles.Add(BingehOS.Modules.Identity.Domain.UserRole.Create(
+            tenantId,
+            user.Id,
+            role.Id,
+            user.Id));
+        await db.SaveChangesAsync();
     }
 
     public ValueTask DisposeAsync()

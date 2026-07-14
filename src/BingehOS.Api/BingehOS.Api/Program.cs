@@ -73,7 +73,13 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
 
-var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "dev-secret-change-me-in-production-please-32chars";
+var configuredJwtSecret = builder.Configuration["Jwt:Secret"];
+if (builder.Environment.IsProduction() && string.IsNullOrWhiteSpace(configuredJwtSecret))
+{
+    throw new InvalidOperationException("Jwt:Secret must be configured in Production.");
+}
+
+var jwtSecret = configuredJwtSecret ?? "dev-secret-change-me-in-production-please-32chars";
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BingehOS";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BingehOS.Client";
 builder.Services.Configure<JwtSettings>(opt =>
@@ -108,7 +114,9 @@ builder.Services.AddAuthorization(options =>
 {
 });
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddScoped<
+    Microsoft.AspNetCore.Authorization.IAuthorizationHandler,
+    BingehOS.Infrastructure.Authorization.PermissionAuthorizationHandler>();
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
            ?? "Host=localhost;Port=5432;Database=bingehos;Username=postgres;Password=postgres";
