@@ -1,4 +1,3 @@
-using BingehOS.Api.Auth;
 using BingehOS.Api.Authorization;
 using BingehOS.Api.Filters;
 using BingehOS.Api.Health;
@@ -7,6 +6,7 @@ using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Plugins;
 using BingehOS.Infrastructure.Storage;
 using BingehOS.Infrastructure.Messaging;
+using BingehOS.Infrastructure.Security;
 using BingehOS.Modules.Asset.Application;
 using BingehOS.Modules.Asset.Domain;
 using BingehOS.Modules.Compliance.Application;
@@ -83,13 +83,6 @@ var jwtSecret = configuredJwtSecret ?? "dev-secret-change-me-in-production-pleas
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BingehOS";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BingehOS.Client";
 builder.Services.Configure<JwtSettings>(opt =>
-{
-    opt.Secret = jwtSecret;
-    opt.Issuer = jwtIssuer;
-    opt.Audience = jwtAudience;
-    opt.ExpiresInSeconds = 3600;
-});
-builder.Services.Configure<BingehOS.Infrastructure.Security.JwtSettings>(opt =>
 {
     opt.Secret = jwtSecret;
     opt.Issuer = jwtIssuer;

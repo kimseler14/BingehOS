@@ -38,7 +38,7 @@ public class AuthController : ControllerBase
         try
         {
             var result = await _mediator.Send(new LoginQuery(new LoginRequest(req.Email, req.Password)), ct);
-            return Ok(new { success = true, data = result });
+            return this.OkWithData(result);
         }
         catch (UnauthorizedAccessException)
         {
@@ -54,6 +54,6 @@ public class AuthController : ControllerBase
         var result = await _mediator.Send(new AssignRoleCommand(
             new AssignRoleRequest(req.UserId, req.RoleId), assignedBy), ct);
 
-        return Ok(new { success = true, data = result });
+        return this.OkWithData(result);
     }
 }

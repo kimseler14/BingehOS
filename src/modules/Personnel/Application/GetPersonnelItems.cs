@@ -1,4 +1,5 @@
 using BingehOS.Infrastructure;
+using BingehOS.Infrastructure.Queries;
 using BingehOS.Modules.Personnel.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,12 +39,10 @@ public class GetEmployeesHandler : IRequestHandler<GetEmployeesQuery, IReadOnlyL
 
     public async Task<IReadOnlyList<EmployeeListItem>> Handle(GetEmployeesQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<Employee>().AsQueryable();
         if (q.activeOnly.HasValue) query = query.Where(e => e.IsActive == q.activeOnly.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new EmployeeListItem(e.Id, e.FirstName, e.LastName, e.EmployeeNumber, e.Department, e.IsActive))
             .ToListAsync(ct);
     }
@@ -69,12 +68,10 @@ public class GetSubcontractorsHandler : IRequestHandler<GetSubcontractorsQuery, 
 
     public async Task<IReadOnlyList<SubcontractorListItem>> Handle(GetSubcontractorsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<Subcontractor>().AsQueryable();
         if (q.activeOnly.HasValue) query = query.Where(e => e.IsActive == q.activeOnly.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new SubcontractorListItem(e.Id, e.CompanyName, e.TaxNumber, e.ContactPerson, e.Phone, e.IsActive))
             .ToListAsync(ct);
     }
@@ -100,12 +97,10 @@ public class GetSgkRecordsHandler : IRequestHandler<GetSgkRecordsQuery, IReadOnl
 
     public async Task<IReadOnlyList<SgkRecordListItem>> Handle(GetSgkRecordsQuery q, CancellationToken ct)
     {
-        var take = q.Take <= 0 ? 20 : q.Take;
-        var skip = q.Skip < 0 ? 0 : q.Skip;
         var query = _db.Set<SgkRecord>().AsQueryable();
         if (q.employeeId.HasValue) query = query.Where(e => e.EmployeeId == q.employeeId.Value);
 
-        return await query.OrderByDescending(e => e.CreatedAt).Skip(skip).Take(take)
+        return await query.OrderByDescending(e => e.CreatedAt).ApplyPaging(q.Skip, q.Take)
             .Select(e => new SgkRecordListItem(e.Id, e.EmployeeId, e.SgkNumber, e.ProfessionCode, e.NaceCode, e.RegistrationDate, e.TerminationDate))
             .ToListAsync(ct);
     }
