@@ -15,7 +15,8 @@ public class FacilityEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_Update_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/facilities",
             new CreateFacilityCommand("HQ", "HQ-1", "Istanbul", "Europe/Istanbul", null));
