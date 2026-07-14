@@ -15,7 +15,8 @@ public class EmployeesEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_Update_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/employees",
             new CreateEmployeeCommand("Ali", "Veli", "EMP-1", "Maintenance", "+90 555 000 00 00", true));

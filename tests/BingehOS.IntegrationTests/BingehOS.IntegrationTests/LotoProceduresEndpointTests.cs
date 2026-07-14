@@ -14,7 +14,8 @@ public class LotoProceduresEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_Verify_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/loto-procedures",
             new CreateLotoProcedureCommand("[\"Lock\", \"Tag\"]", Guid.NewGuid()));

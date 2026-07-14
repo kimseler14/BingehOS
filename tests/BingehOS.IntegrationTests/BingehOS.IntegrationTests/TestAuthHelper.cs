@@ -10,14 +10,13 @@ namespace BingehOS.IntegrationTests;
 
 public static class TestAuthHelper
 {
-    public static async Task<HttpClient> GetAuthenticatedClientAsync(TestContainerFixture fx)
+    public static async Task<AuthenticatedClient> GetAuthenticatedClientAsync(TestContainerFixture fx)
     {
         var app = new WebApplicationFactory<Program>().WithWebHostBuilder(b =>
         {
             b.UseSetting("ConnectionStrings:Postgres", fx.ConnectionString);
             b.UseSetting("Jwt:Secret", "integration-test-secret-key-at-least-32-bytes-long");
         });
-        await using var _ = app;
 
         using (var scope = app.Services.CreateScope())
         {
@@ -26,9 +25,6 @@ public static class TestAuthHelper
         }
 
         var client = app.CreateClient();
-        // The login request is unauthenticated, so the tenant must be supplied via the
-        // x-tenant-id header. The seeded SystemAdmin lives under this system tenant, and
-        // the JWT claim derived from it drives tenant resolution on later requests.
         client.DefaultRequestHeaders.Add("x-tenant-id", "11111111-1111-1111-1111-111111111111");
 
         var login = await client.PostAsJsonAsync("/v1/auth/login", new { Email = "admin@system", Password = "admin" });
@@ -38,6 +34,25 @@ public static class TestAuthHelper
         var body = await login.Content.ReadFromJsonAsync<JsonElement>();
         var token = body.GetProperty("data").GetProperty("accessToken").GetString()!;
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        return client;
+
+        return new AuthenticatedClient(client, app);
+    }
+}
+
+public class AuthenticatedClient : IAsyncDisposable
+{
+    public HttpClient Client { get; }
+    private readonly WebApplicationFactory<Program> _factory;
+
+    public AuthenticatedClient(HttpClient client, WebApplicationFactory<Program> factory)
+    {
+        Client = client;
+        _factory = factory;
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        Client.Dispose();
+        return _factory.DisposeAsync();
     }
 }
