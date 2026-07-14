@@ -71,19 +71,76 @@ components:
       description: Dönen cevabın dil formatı (i18n çevirileri için)
 ```
 
-## 3. Phase 2 Endpoint Kategorileri (Backlog)
-Aşağıdaki route kategorileri, Doküman 07'deki yeni bounded context'ler (HSE, HR & Personnel/SGK, Finance & Tax, Compliance) ve Türkiye'ye özgü hazır iş planı şablonu SEED VERİSİ için Phase 2 kapsamında detaylandırılacaktır. Bu bölüm yalnızca kategori/route listesidir; tam şema (request/response tanımları) henüz belirlenmemiştir. (Not: Job Plan Template mekanizması MVP'dir; bkz. aşağıdaki Not.)
+## 3. Implemented MVP Endpoints
 
-| Route Kategorisi | İlgili Bounded Context | Açıklama |
+The following routes are implemented in the current API. All routes are under the `/v1` prefix and require an authenticated tenant context unless stated otherwise.
+
+### Personnel / Workers
+
+| Method | Route | Notes |
 |---|---|---|
-| `/permits` | HSE (PermitToWork, LotoProcedure) | Çalışma izinleri ve LOTO yönetimi |
-| `/employees` | HR & Personnel/SGK (Employee, SgkRecord, Subcontractor) | Personel, SGK sicili ve alt işveren yönetimi |
-| `/invoices` | Finance & Tax (Invoice, TaxRecord) | e-Fatura/e-Arşiv ve vergi kayıtları |
-| `/cost-centers` | Finance & Tax (CostCenter, MonetaryAmount) | Masraf merkezi ve mali birim yönetimi |
-| `/kvkk-consents` | Compliance (KvkkConsent) | KVKK açık rıza ve aydınlatma yönetimi |
-| `/calibrations` | Compliance (CalibrationRecord) | Kalibrasyon geçerlilik takibi |
-| `/compliance-records` | Compliance (ComplianceRecord) | ISO 55001/41001/9001/45001 sertifikasyon kayıtları |
+| GET | `/workers` | Paginated list; optional `activeOnly` filter |
+| GET | `/workers/{id}` | Get a worker |
+| POST | `/workers` | Create a worker; requires `employees.write` |
+| PATCH | `/workers/{id}` | Update worker details and active status |
 
-> **Not (Job Plan Template / Standart Job Library):** `/job-plan-templates` endpoint'inin **MEKANİZMASI (genel şablon altyapısı) MVP'dir** ve Doküman 01-16 kapsamında yer alır; bu nedenle yukarıdaki Phase 2 tablosundan çıkarılmıştır. Yalnızca **Türkiye'ye özgü önceden doldurulmuş (pre-seeded) ekipman şablonlarının SEED VERİSİ** (Asansör/Yangın/Jeneratör/HVAC) **Phase 2 / Turkey Compliance Pack (Doküman 17)** kapsamındadır.
+### Identity administration
+
+All user, role, and permission management endpoints require the `admin.access` permission. Deletes are soft deletes.
+
+| Method | Route | Notes |
+|---|---|---|
+| GET | `/users` | Paginated user list |
+| GET | `/users/{id}` | Get a user |
+| PATCH | `/users/{id}` | Update full name and active status |
+| DELETE | `/users/{id}` | Soft-delete a user |
+| GET | `/roles` | Paginated role list |
+| GET | `/roles/{id}` | Get a role and its permissions |
+| POST | `/roles` | Create a role |
+| PATCH | `/roles/{id}` | Update a role |
+| DELETE | `/roles/{id}` | Soft-delete a role |
+| POST | `/roles/{id}/permissions/{permissionId}` | Assign a permission to a role |
+| DELETE | `/roles/{id}/permissions/{permissionId}` | Soft-delete a role-permission assignment |
+| GET | `/permissions` | Paginated permission list |
+| GET | `/permissions/{id}` | Get a permission |
+| POST | `/permissions` | Create a permission |
+
+### Inventory transactions
+
+| Method | Route | Notes |
+|---|---|---|
+| POST | `/parts/{id}/receive` | Increase stock; requires `inventory-transactions.write` |
+| POST | `/parts/{id}/issue` | Decrease stock; rejects negative resulting stock; requires `inventory-transactions.write` |
+| POST | `/parts/{id}/return` | Increase stock; requires `inventory-transactions.write` |
+| GET | `/inventory/transactions` | Paginated transaction list with optional `partId`; requires `inventory-transactions.read` |
+
+The inventory balance is derived from the transaction ledger: receiving and return add quantity, while issue subtracts quantity.
+
+## 4. Route Category Status
+
+Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.
+
+| Route Kategorisi | İlgili Bounded Context | Durum |
+|---|---|---|
+| `/permits` | HSE (PermitToWork, LotoProcedure) | Implemented API slice |
+| `/employees` | HR & Personnel/SGK (Employee, SgkRecord, Subcontractor) | Implemented API slice |
+| `/invoices` | Finance & Tax (Invoice, TaxRecord) | Implemented API slice |
+| `/cost-centers` | Finance & Tax (CostCenter, MonetaryAmount) | Implemented API slice |
+| `/kvkk-consents` | Compliance (KvkkConsent) | Implemented API slice |
+| `/calibrations` | Compliance (CalibrationRecord) | Deferred; no current controller |
+| `/compliance-records` | Compliance (ComplianceRecord) | Implemented API slice |
+
+> **Not (Job Plan Template / Standart Job Library):** `/job-plan-templates` endpoint'inin **MEKANİZMASI (genel şablon altyapısı) MVP'dir** ve Doküman 01-16 kapsamında yer alır. Yalnızca **Türkiye'ye özgü önceden doldurulmuş (pre-seeded) ekipman şablonlarının SEED VERİSİ** (Asansör/Yangın/Jeneratör/HVAC) **Phase 2 / Turkey Compliance Pack (Doküman 17)** kapsamındadır.
 >
-> Yukarıdaki `/permits`, `/employees`, `/invoices`, `/cost-centers`, `/kvkk-consents`, `/calibrations` ve `/compliance-records` endpoint'leri Phase 2 (Doküman 17) kapsamında tam OpenAPI tanımıyla belirlenecektir; MVP (Doküman 01-16) kapsamı dışındadır.
+> Yukarıdaki implemented route'lar için tam request/response OpenAPI şemaları ayrıca genişletilebilir; route'ların kendileri artık mevcut MVP API yüzeyinin parçasıdır. `/calibrations` ve Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.
+
+## 5. Explicitly Deferred Roadmap Features
+
+The following remain deferred and are not marked as implemented:
+
+- Turkey Compliance Pack and its Turkey-specific integrations
+- AI features (Copilot, predictive maintenance, report generation, spare-part recommendations)
+- Digital Twin / BIM / IFC live overlays
+- Automation Studio, workflow designer, and rule-engine UI
+- Plugin marketplace
+- Mobile offline support

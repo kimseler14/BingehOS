@@ -6,7 +6,7 @@ Tüm "Acaba?" soruları ortadan kaldırılmış, teknoloji yığını kesinleşm
 * **Mimari:** Modüler Monolit
 * **Backend:** C# / .NET 8
 * **Veritabanları:** PostgreSQL 16 (Primary), TimescaleDB (Time-Series)
-* **Önbellek & Mesajlaşma:** Redis, RabbitMQ
+* **Mesajlaşma:** RabbitMQ (şu anda runtime önbellek bağımlılığı yoktur)
 * **Depolama & Loglama:** MinIO, Grafana Loki, Elasticsearch
 * **Arayüz:** Next.js (Web), React Native (Mobil)
 
@@ -51,4 +51,3 @@ Tüm "Acaba?" soruları ortadan kaldırılmış, teknoloji yığını kesinleşm
 
 ## 11. Uygulama Stratejisi (Kodlama Öncesi)
 - [x] [18_Implementation_Strategy_and_MVP_Scope.md](./18_Implementation_Strategy_and_MVP_Scope.md) (Solution yapısı, 10 öneri, MVP kesimi, ilk sprint hedefi)
-
