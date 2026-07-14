@@ -30,7 +30,7 @@ public static class TestAuthHelper
 
         var login = await client.PostAsJsonAsync("/v1/auth/login", new { Email = "admin@system", Password = "admin" });
         var loginBody = await login.Content.ReadAsStringAsync();
-        Assert.Equal(HttpStatusCode.OK, login.StatusCode, loginBody);
+        Assert.Equal(HttpStatusCode.OK, login.StatusCode);
 
         var body = await login.Content.ReadFromJsonAsync<JsonElement>();
         var token = body.GetProperty("data").GetProperty("accessToken").GetString()!;
