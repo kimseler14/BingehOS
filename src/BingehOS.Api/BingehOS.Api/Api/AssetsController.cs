@@ -1,5 +1,5 @@
+using BingehOS.Infrastructure.Authorization;
 using BingehOS.Modules.Asset.Application;
-using BingehOS.Modules.Identity.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
