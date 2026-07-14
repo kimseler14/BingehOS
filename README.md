@@ -37,8 +37,12 @@ docker-compose up --build
 
 | Method | Path                             | Description                        |
 |--------|----------------------------------|------------------------------------|
-| GET    | /v1/health                       | Health check                       |
+| GET    | /health                          | Overall health check               |
+| GET    | /health/live                     | Liveness check                     |
+| GET    | /health/ready                    | Readiness check                    |
+| POST   | /v1/auth/register                | Register a user (admin only)       |
 | POST   | /v1/auth/login                   | Login (JWT)                        |
+| POST   | /v1/auth/assign-role             | Assign a role (admin only)         |
 | GET    | /v1/facilities                  | List facilities                    |
 | GET    | /v1/facilities/{id}              | Get facility                       |
 | POST   | /v1/facilities                   | Create facility                    |
@@ -51,6 +55,28 @@ docker-compose up --build
 | GET    | /v1/parts/{id}                   | Get part                           |
 | POST   | /v1/parts                        | Create part                        |
 | PATCH  | /v1/parts/{id}                   | Update part                        |
+| POST   | /v1/parts/{id}/receive           | Receive stock for a part           |
+| POST   | /v1/parts/{id}/issue             | Issue stock for a part             |
+| POST   | /v1/parts/{id}/return            | Return stock for a part            |
+| GET    | /v1/inventory/transactions       | List inventory transactions        |
+| GET    | /v1/workers                     | List workers                       |
+| GET    | /v1/workers/{id}                 | Get worker                         |
+| POST   | /v1/workers                      | Create worker                      |
+| PATCH  | /v1/workers/{id}                 | Update worker                      |
+| GET    | /v1/users                        | List users (admin permission)      |
+| GET    | /v1/users/{id}                   | Get user (admin permission)        |
+| PATCH  | /v1/users/{id}                   | Update user (admin permission)     |
+| DELETE | /v1/users/{id}                   | Soft-delete user (admin permission)|
+| GET    | /v1/roles                        | List roles (admin permission)      |
+| GET    | /v1/roles/{id}                   | Get role (admin permission)        |
+| POST   | /v1/roles                        | Create role (admin permission)     |
+| PATCH  | /v1/roles/{id}                   | Update role (admin permission)     |
+| DELETE | /v1/roles/{id}                   | Soft-delete role (admin permission)|
+| POST   | /v1/roles/{id}/permissions/{permissionId} | Assign role permission      |
+| DELETE | /v1/roles/{id}/permissions/{permissionId} | Remove role permission      |
+| GET    | /v1/permissions                  | List permissions (admin permission)|
+| GET    | /v1/permissions/{id}              | Get permission (admin permission)  |
+| POST   | /v1/permissions                  | Create permission (admin permission)|
 | GET    | /v1/vendors                     | List vendors                       |
 | GET    | /v1/vendors/{id}                 | Get vendor                         |
 | POST   | /v1/vendors                      | Create vendor                      |

@@ -3,7 +3,7 @@
 ## 1. Veritabanı Mimarisi (Kesinleşen Stack)
 * **Primary Relational DB:** `PostgreSQL 16` (Tenant izolasyonu RLS ile).
 * **Time-Series DB:** `TimescaleDB` (PostgreSQL eklentisi).
-* **Caching:** `Redis`.
+* **Caching:** Şu anda runtime önbellek bağımlılığı provision edilmemiştir.
 * **Object Storage:** `MinIO`.
 
 ## 2. Kapsamlı ER Diyagramı
