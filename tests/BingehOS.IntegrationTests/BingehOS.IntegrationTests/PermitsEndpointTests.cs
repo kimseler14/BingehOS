@@ -15,7 +15,8 @@ public class PermitsEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_Approve_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/permits",
             new CreatePermitToWorkCommand("Hot Work", "Welding permit", null, null));

@@ -15,7 +15,8 @@ public class PartsEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_And_Update_ReturnsOk()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/parts",
             new CreatePartCommand("PN-1", "Bearing", "6001-2RS", "pcs", true));

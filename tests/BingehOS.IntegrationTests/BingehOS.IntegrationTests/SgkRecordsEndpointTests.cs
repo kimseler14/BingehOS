@@ -15,7 +15,8 @@ public class SgkRecordsEndpointTests : IClassFixture<TestContainerFixture>
     [Fact]
     public async Task Create_ReturnsCreated()
     {
-        using var client = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        await using var auth = await TestAuthHelper.GetAuthenticatedClientAsync(_fx);
+        var client = auth.Client;
 
         var create = await client.PostAsJsonAsync("/v1/sgk-records",
             new CreateSgkRecordCommand(Guid.NewGuid(), "SGK-123", "PRF-001", "NACE-01", DateTime.UtcNow));
