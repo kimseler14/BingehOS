@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using BingehOS.Modules.Audit.Domain;
 using BingehOS.Modules.Asset.Domain;
+using BingehOS.Modules.Automation.Domain;
 using BingehOS.Modules.Compliance.Domain;
 using BingehOS.Modules.Facility.Domain;
 using BingehOS.Modules.Finance.Domain;
@@ -28,6 +29,8 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
+    public DbSet<AutomationRule> AutomationRules => Set<AutomationRule>();
+    public DbSet<AutomationRuleExecution> AutomationRuleExecutions => Set<AutomationRuleExecution>();
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<Facility> Facilities => Set<Facility>();
     public DbSet<Part> Parts => Set<Part>();

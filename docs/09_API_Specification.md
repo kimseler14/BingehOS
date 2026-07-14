@@ -123,6 +123,27 @@ All user, role, and permission management endpoints require the `admin.access` p
 
 The inventory balance is derived from the transaction ledger: receiving and return add quantity, while issue subtracts quantity.
 
+### Automation Studio
+
+Automation rules are tenant-scoped and require `automation-rules.read` for reads or
+`automation-rules.write` for mutations. Conditions are JSON objects with
+`field`, `operator` (`equals`, `not-equals`, `greater`, or `less`), and `value`.
+
+| Method | Route | Notes |
+|---|---|---|
+| GET | `/v1/automation-rules` | Paginated rule list |
+| GET | `/v1/automation-rules/{id}` | Get a rule |
+| POST | `/v1/automation-rules` | Create a rule |
+| PATCH | `/v1/automation-rules/{id}` | Update or enable/disable a rule |
+| DELETE | `/v1/automation-rules/{id}` | Soft-delete a rule |
+| GET | `/v1/automation-rules/{id}/executions` | Rule execution history |
+
+Supported triggers are `WorkOrderCreated`, `WorkOrderStatusChanged`,
+`InventoryStockLow`, and `CalibrationDue`. Supported actions are
+`SendNotification`, `CreateWorkOrder`, and `AdjustPriority`. Work-order and
+inventory command completion publishes local MediatR notifications for the
+corresponding triggers.
+
 ## 4. Route Category Status
 
 Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.
@@ -148,6 +169,6 @@ The following remain deferred and are not marked as implemented:
 - Turkey Compliance Pack and its Turkey-specific integrations
 - AI features (Copilot, predictive maintenance, report generation, spare-part recommendations)
 - Digital Twin / BIM / IFC live overlays
-- Automation Studio, workflow designer, and rule-engine UI
+- Turkey-specific integrations (e-Fatura, SGK, MERSİS/e-Devlet, and ERP)
 - Plugin marketplace
 - Mobile offline support

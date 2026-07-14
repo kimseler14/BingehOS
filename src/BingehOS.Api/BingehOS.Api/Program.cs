@@ -9,6 +9,8 @@ using BingehOS.Infrastructure.Messaging;
 using BingehOS.Infrastructure.Security;
 using BingehOS.Modules.Asset.Application;
 using BingehOS.Modules.Asset.Domain;
+using BingehOS.Modules.Automation.Application;
+using BingehOS.Modules.Automation.Domain;
 using BingehOS.Modules.Compliance.Application;
 using BingehOS.Modules.Compliance.Domain;
 using BingehOS.Modules.Facility.Application;
@@ -169,6 +171,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateKvkkConsentCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(JobPlanTemplate).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateJobPlanTemplateCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(AutomationRule).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateAutomationRuleCommand).Assembly);
 });
 builder.Services.AddIdentityModule();
 builder.Services.AddSingleton<PluginLoader>();
