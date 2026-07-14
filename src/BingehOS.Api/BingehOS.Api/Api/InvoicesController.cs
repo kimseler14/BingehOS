@@ -28,5 +28,17 @@ public class InvoicesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id) => Ok(new { success = true, data = new { id } });
+    public async Task<IActionResult> Get(Guid id)
+    {
+        var item = await _mediator.Send(new GetInvoiceQuery(id));
+        if (item == null) return NotFound(new { success = false, error = "not found" });
+        return Ok(new { success = true, data = item });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> List([FromQuery] int skip = 0, [FromQuery] int take = 20)
+    {
+        var items = await _mediator.Send(new GetInvoicesQuery(skip, take));
+        return Ok(new { success = true, data = items });
+    }
 }
