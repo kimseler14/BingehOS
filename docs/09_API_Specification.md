@@ -73,23 +73,23 @@ components:
 
 ## 3. Implemented MVP Endpoints
 
-The following routes are implemented in the current API. All API routes are under the `/v1` prefix and require an authenticated tenant context unless stated otherwise. Health endpoints are versionless exceptions: `/health`, `/health/live`, and `/health/ready`.
+The following routes are implemented in the current API and require an authenticated tenant context unless stated otherwise. Health endpoints are versionless: `/health`, `/health/live`, and `/health/ready`.
 
 ### Authentication
 
 | Method | Route | Notes |
 |---|---|---|
-| POST | `/auth/register` | Register a user; admin-only |
-| POST | `/auth/assign-role` | Assign a role to a user; admin-only |
+| POST | `/v1/auth/register` | Register a user; admin-only |
+| POST | `/v1/auth/assign-role` | Assign a role to a user; admin-only |
 
 ### Personnel / Workers
 
 | Method | Route | Notes |
 |---|---|---|
-| GET | `/workers` | Paginated list; optional `activeOnly` filter |
-| GET | `/workers/{id}` | Get a worker |
-| POST | `/workers` | Create a worker; requires `employees.write` |
-| PATCH | `/workers/{id}` | Update worker details and active status |
+| GET | `/v1/workers` | Paginated list; optional `activeOnly` filter |
+| GET | `/v1/workers/{id}` | Get a worker |
+| POST | `/v1/workers` | Create a worker; requires `employees.write` |
+| PATCH | `/v1/workers/{id}` | Update worker details and active status |
 
 ### Identity administration
 
@@ -97,29 +97,29 @@ All user, role, and permission management endpoints require the `admin.access` p
 
 | Method | Route | Notes |
 |---|---|---|
-| GET | `/users` | Paginated user list |
-| GET | `/users/{id}` | Get a user |
-| PATCH | `/users/{id}` | Update full name and active status |
-| DELETE | `/users/{id}` | Soft-delete a user |
-| GET | `/roles` | Paginated role list |
-| GET | `/roles/{id}` | Get a role and its permissions |
-| POST | `/roles` | Create a role |
-| PATCH | `/roles/{id}` | Update a role |
-| DELETE | `/roles/{id}` | Soft-delete a role |
-| POST | `/roles/{id}/permissions/{permissionId}` | Assign a permission to a role |
-| DELETE | `/roles/{id}/permissions/{permissionId}` | Soft-delete a role-permission assignment |
-| GET | `/permissions` | Paginated permission list |
-| GET | `/permissions/{id}` | Get a permission |
-| POST | `/permissions` | Create a permission |
+| GET | `/v1/users` | Paginated user list |
+| GET | `/v1/users/{id}` | Get a user |
+| PATCH | `/v1/users/{id}` | Update full name and active status |
+| DELETE | `/v1/users/{id}` | Soft-delete a user |
+| GET | `/v1/roles` | Paginated role list |
+| GET | `/v1/roles/{id}` | Get a role and its permissions |
+| POST | `/v1/roles` | Create a role |
+| PATCH | `/v1/roles/{id}` | Update a role |
+| DELETE | `/v1/roles/{id}` | Soft-delete a role |
+| POST | `/v1/roles/{id}/permissions/{permissionId}` | Assign a permission to a role |
+| DELETE | `/v1/roles/{id}/permissions/{permissionId}` | Soft-delete a role-permission assignment |
+| GET | `/v1/permissions` | Paginated permission list |
+| GET | `/v1/permissions/{id}` | Get a permission |
+| POST | `/v1/permissions` | Create a permission |
 
 ### Inventory transactions
 
 | Method | Route | Notes |
 |---|---|---|
-| POST | `/parts/{id}/receive` | Increase stock; requires `inventory-transactions.write` |
-| POST | `/parts/{id}/issue` | Decrease stock; rejects negative resulting stock; requires `inventory-transactions.write` |
-| POST | `/parts/{id}/return` | Increase stock; requires `inventory-transactions.write` |
-| GET | `/inventory/transactions` | Paginated transaction list with optional `partId`; requires `inventory-transactions.read` |
+| POST | `/v1/parts/{id}/receive` | Increase stock; requires `inventory-transactions.write` |
+| POST | `/v1/parts/{id}/issue` | Decrease stock; rejects negative resulting stock; requires `inventory-transactions.write` |
+| POST | `/v1/parts/{id}/return` | Increase stock; requires `inventory-transactions.write` |
+| GET | `/v1/inventory/transactions` | Paginated transaction list with optional `partId`; requires `inventory-transactions.read` |
 
 The inventory balance is derived from the transaction ledger: receiving and return add quantity, while issue subtracts quantity.
 
