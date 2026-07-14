@@ -1,7 +1,8 @@
 using BingehOS.Api.Auth;
+using BingehOS.Api.Authorization;
 using BingehOS.Api.Filters;
-using BingehOS.Api.Middleware;
 using BingehOS.Api.Health;
+using BingehOS.Api.Middleware;
 using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Plugins;
 using BingehOS.Infrastructure.Storage;
@@ -112,12 +113,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("HasPermission", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.Requirements.Add(new PermissionRequirement(string.Empty));
-    });
 });
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
