@@ -133,7 +133,9 @@ builder.Services.AddAuthorization(options =>
 {
 });
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-builder.Services.AddScoped<Microsoft.AspNetCore.Authorization.IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddScoped<
+    Microsoft.AspNetCore.Authorization.IAuthorizationHandler,
+    BingehOS.Infrastructure.Authorization.PermissionAuthorizationHandler>();
 
 var conn = builder.Configuration.GetConnectionString("Postgres")
            ?? "Host=localhost;Port=5432;Database=bingehos;Username=postgres;Password=postgres";
