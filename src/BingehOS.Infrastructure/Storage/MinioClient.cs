@@ -59,6 +59,11 @@ public sealed class MinioClient : IAsyncDisposable
             await _client.MakeBucketAsync(args, ct);
             _logger.LogInformation("Created bucket {Bucket}", bucketName);
         }
+        catch (ArgumentException ex) when (ex.ParamName == "response" &&
+            ex.Message.StartsWith("Bucket already owned by you", StringComparison.Ordinal))
+        {
+            _logger.LogInformation("Bucket {Bucket} already exists", bucketName);
+        }
         catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
             throw;

@@ -75,7 +75,7 @@ builder.Services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "dev-secret-change-me-in-production-please-32chars";
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BingehOS";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BingehOS.Client";
-builder.Services.Configure<JwtSettings>(opt =>
+builder.Services.Configure<BingehOS.Infrastructure.Security.JwtSettings>(opt =>
 {
     opt.Secret = jwtSecret;
     opt.Issuer = jwtIssuer;
