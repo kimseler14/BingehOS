@@ -2,6 +2,7 @@
 using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Messaging;
 using BingehOS.Modules.Maintenance.Domain;
+using BingehOS.Shared.Telemetry;
 using MediatR;
 
 namespace BingehOS.Modules.Maintenance.Application;
@@ -19,6 +20,10 @@ public class CreateWorkOrderHandler : IRequestHandler<CreateWorkOrderCommand, Gu
 
     public async Task<Guid> Handle(CreateWorkOrderCommand cmd, CancellationToken ct)
     {
+        using var activity = BingehOSActivitySource.Source.StartActivity("WorkOrder.Create");
+        activity?.SetTag("workorder.asset_id", cmd.AssetId.ToString());
+        activity?.SetTag("tenant.id", _db.CurrentTenantId.ToString());
+
         var wo = WorkOrder.Create(_db.CurrentTenantId, cmd.AssetId, cmd.Description);
         _db.Set<WorkOrder>().Add(wo);
         await _db.SaveChangesAsync(ct);

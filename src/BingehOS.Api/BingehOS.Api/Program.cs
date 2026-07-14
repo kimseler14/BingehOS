@@ -1,6 +1,7 @@
 using BingehOS.Api.Auth;
 using BingehOS.Api.Filters;
 using BingehOS.Api.Middleware;
+using BingehOS.Api.Health;
 using BingehOS.Infrastructure;
 using BingehOS.Infrastructure.Plugins;
 using BingehOS.Infrastructure.Storage;
@@ -24,14 +25,30 @@ using BingehOS.Modules.Personnel.Domain;
 using BingehOS.Modules.Vendor.Application;
 using BingehOS.Modules.Vendor.Domain;
 using BingehOS.Modules.Identity.Application;
+using BingehOS.Shared.Telemetry;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Instrumentation.Runtime;
+using Prometheus;
+using MediatR;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Structured logging via Serilog (console sink in dev; bridge to Loki via OTLP in prod).
+builder.Host.UseSerilog((context, services, config) => config
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .Enrich.WithProperty("Service", "BingehOS.Api"));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -146,6 +163,34 @@ builder.Services.AddHostedService<BucketInitializer>();
 builder.Services.AddSingleton<IEventPublisher, RabbitMqEventPublisher>();
 builder.Services.AddHostedService(sp => (RabbitMqEventPublisher)sp.GetRequiredService<IEventPublisher>());
 
+// ----- OpenTelemetry (single consolidated configuration) -----
+var otelEndpoint = builder.Configuration["Otel:Endpoint"] ?? "http://localhost:4317";
+var serviceVersion = typeof(Program).Assembly.GetName().Version?.ToString() ?? "1.0.0";
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource
+        .AddService("BingehOS.Api", serviceVersion)
+        .AddAttributes(new KeyValuePair<string, object>[] { new("deployment.environment", builder.Environment.EnvironmentName) }))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddSource(BingehOSActivitySource.SourceName)
+        .AddOtlpExporter(options => options.Endpoint = new Uri(otelEndpoint)))
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddOtlpExporter(options => options.Endpoint = new Uri(otelEndpoint)))
+    .WithLogging(logging => logging
+        .AddOtlpExporter(options => options.Endpoint = new Uri(otelEndpoint)));
+
+builder.Services.AddHealthChecks()
+    .AddCheck<BingehOSHealthCheck>("postgres", tags: new[] { "ready", "db" })
+    .AddCheck<SelfHealthCheck>("self", tags: new[] { "live" });
+
+// Prometheus HTTP metrics are exposed via UseHttpMetrics()/MapMetrics() below
+// (no separate metric-server registration needed in prometheus-net 8.x).
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -153,6 +198,11 @@ app.UseSwaggerUI();
 app.UseMiddleware<TenantResolutionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpMetrics();
+app.MapMetrics();
+app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = HealthResponseWriter.Write });
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = r => r.Tags.Contains("live"), ResponseWriter = HealthResponseWriter.Write });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = r => r.Tags.Contains("ready"), ResponseWriter = HealthResponseWriter.Write });
 app.MapControllers();
 
 app.Run();
