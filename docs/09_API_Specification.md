@@ -73,7 +73,14 @@ components:
 
 ## 3. Implemented MVP Endpoints
 
-The following routes are implemented in the current API. All routes are under the `/v1` prefix and require an authenticated tenant context unless stated otherwise.
+The following routes are implemented in the current API. All API routes are under the `/v1` prefix and require an authenticated tenant context unless stated otherwise. Health endpoints are versionless exceptions: `/health`, `/health/live`, and `/health/ready`.
+
+### Authentication
+
+| Method | Route | Notes |
+|---|---|---|
+| POST | `/auth/register` | Register a user; admin-only |
+| POST | `/auth/assign-role` | Assign a role to a user; admin-only |
 
 ### Personnel / Workers
 
