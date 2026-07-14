@@ -71,6 +71,10 @@ public class AppDbContext : DbContext
     public DbSet<PurchaseRequest> PurchaseRequests => Set<PurchaseRequest>();
     public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
     public DbSet<Contract> Contracts => Set<Contract>();
+    public DbSet<Budget> Budgets => Set<Budget>();
+    public DbSet<DowntimeCost> DowntimeCosts => Set<DowntimeCost>();
+    public DbSet<EnergyCost> EnergyCosts => Set<EnergyCost>();
+    public DbSet<CostAllocation> CostAllocations => Set<CostAllocation>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
