@@ -63,6 +63,15 @@ public class AppDbContext : DbContext
     public DbSet<AssetHealthScore> AssetHealthScores => Set<AssetHealthScore>();
     public DbSet<Warranty> Warranties => Set<Warranty>();
 
+    public DbSet<Warehouse> Warehouses => Set<Warehouse>();
+    public DbSet<Location> Locations => Set<Location>();
+    public DbSet<Shelf> Shelves => Set<Shelf>();
+    public DbSet<Bin> Bins => Set<Bin>();
+    public DbSet<InventoryTransaction> InventoryTransactions => Set<InventoryTransaction>();
+    public DbSet<PurchaseRequest> PurchaseRequests => Set<PurchaseRequest>();
+    public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
+    public DbSet<Contract> Contracts => Set<Contract>();
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(new TenantInterceptor(this), new TenantConnectionInterceptor(this), new AuditInterceptor(this));
