@@ -82,6 +82,13 @@ builder.Services.Configure<JwtSettings>(opt =>
     opt.Audience = jwtAudience;
     opt.ExpiresInSeconds = 3600;
 });
+builder.Services.Configure<BingehOS.Infrastructure.Security.JwtSettings>(opt =>
+{
+    opt.Secret = jwtSecret;
+    opt.Issuer = jwtIssuer;
+    opt.Audience = jwtAudience;
+    opt.ExpiresInSeconds = 3600;
+});
 
 builder.Services.AddAuthentication(options =>
 {
