@@ -44,6 +44,7 @@ public class AppDbContext : DbContext
     public DbSet<CostCenter> CostCenters => Set<CostCenter>();
     public DbSet<ComplianceRecord> ComplianceRecords => Set<ComplianceRecord>();
     public DbSet<KvkkConsent> KvkkConsents => Set<KvkkConsent>();
+    public DbSet<CalibrationRecord> CalibrationRecords => Set<CalibrationRecord>();
     public DbSet<JobPlanTemplate> JobPlanTemplates => Set<JobPlanTemplate>();
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
