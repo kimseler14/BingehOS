@@ -152,33 +152,33 @@ namespace BingehOS.Infrastructure.Migrations
 
             migrationBuilder.Sql(@"
                 INSERT INTO ""Roles"" (""Id"", ""TenantId"", ""Name"", ""Description"", ""IsSystem"", ""CreatedAt"", ""UpdatedAt"", ""IsDeleted"")
-                VALUES ('11111111-1111-1111-1111-111111111111', '00000000-0000-0000-0000-000000000000', 'SystemAdmin', 'System-wide administrator', true, NOW(), NOW(), false)
+                VALUES ('11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', 'SystemAdmin', 'System-wide administrator', true, NOW(), NOW(), false)
                 ON CONFLICT DO NOTHING;");
 
             migrationBuilder.Sql(@"
                 INSERT INTO ""Permissions"" (""Id"", ""TenantId"", ""Name"", ""Description"", ""CreatedAt"", ""UpdatedAt"", ""IsDeleted"")
                 VALUES
-                    ('22222222-2222-2222-2222-222222222221', '00000000-0000-0000-0000-000000000000', 'admin.access', 'Access admin panel', NOW(), NOW(), false),
-                    ('22222222-2222-2222-2222-222222222222', '00000000-0000-0000-0000-000000000000', 'assets.read', 'Read assets', NOW(), NOW(), false),
-                    ('22222222-2222-2222-2222-222222222223', '00000000-0000-0000-0000-000000000000', 'assets.write', 'Write assets', NOW(), NOW(), false)
+                    ('22222222-2222-2222-2222-222222222221', '11111111-1111-1111-1111-111111111111', 'admin.access', 'Access admin panel', NOW(), NOW(), false),
+                    ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111', 'assets.read', 'Read assets', NOW(), NOW(), false),
+                    ('22222222-2222-2222-2222-222222222223', '11111111-1111-1111-1111-111111111111', 'assets.write', 'Write assets', NOW(), NOW(), false)
                 ON CONFLICT DO NOTHING;");
 
             migrationBuilder.Sql(@"
                 INSERT INTO ""RolePermissions"" (""Id"", ""TenantId"", ""RoleId"", ""PermissionId"", ""AssignedAt"", ""CreatedAt"", ""UpdatedAt"", ""IsDeleted"")
                 VALUES
-                    ('33333333-3333-3333-3333-333333333331', '00000000-0000-0000-0000-000000000000', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222221', NOW(), NOW(), NOW(), false),
-                    ('33333333-3333-3333-3333-333333333332', '00000000-0000-0000-0000-000000000000', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', NOW(), NOW(), NOW(), false),
-                    ('33333333-3333-3333-3333-333333333333', '00000000-0000-0000-0000-000000000000', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222223', NOW(), NOW(), NOW(), false)
+                    ('33333333-3333-3333-3333-333333333331', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222221', NOW(), NOW(), NOW(), false),
+                    ('33333333-3333-3333-3333-333333333332', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', NOW(), NOW(), NOW(), false),
+                    ('33333333-3333-3333-3333-333333333333', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222223', NOW(), NOW(), NOW(), false)
                 ON CONFLICT DO NOTHING;");
 
             migrationBuilder.Sql(@"
                 INSERT INTO ""Users"" (""Id"", ""TenantId"", ""Email"", ""PasswordHash"", ""FullName"", ""IsActive"", ""AuthProvider"", ""CreatedAt"", ""UpdatedAt"", ""IsDeleted"")
-                VALUES ('44444444-4444-4444-4444-444444444444', '00000000-0000-0000-0000-000000000000', 'admin@system', '$2a$11$KIXz9eH7qH7qH7qH7qH7qO', 'System Admin', true, 0, NOW(), NOW(), false)
+                 VALUES ('44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', 'admin@system', '$2a$11$qmSMcSD.dKSuejhVIC2t1eDhKvCT./.YqhEVR5yW5Y9AayOaJQ3mu', 'System Admin', true, 0, NOW(), NOW(), false)
                 ON CONFLICT DO NOTHING;");
 
             migrationBuilder.Sql(@"
                 INSERT INTO ""UserRoles"" (""Id"", ""TenantId"", ""UserId"", ""RoleId"", ""AssignedAt"", ""AssignedByUserId"", ""CreatedAt"", ""UpdatedAt"", ""IsDeleted"")
-                VALUES ('55555555-5555-5555-5555-555555555555', '00000000-0000-0000-0000-000000000000', '44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', NOW(), '44444444-4444-4444-4444-444444444444', NOW(), NOW(), false)
+                VALUES ('55555555-5555-5555-5555-555555555555', '11111111-1111-1111-1111-111111111111', '44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', NOW(), '44444444-4444-4444-4444-444444444444', NOW(), NOW(), false)
                 ON CONFLICT DO NOTHING;");
         }
 

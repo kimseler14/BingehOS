@@ -23,13 +23,17 @@ public static class TestAuthHelper
         }
 
         var client = app.CreateClient();
-        var login = await client.PostAsJsonAsync("/v1/auth/login", new { username = "admin", password = "admin" });
+        // The login request is unauthenticated, so the tenant must be supplied via the
+        // x-tenant-id header. The seeded SystemAdmin lives under this system tenant, and
+        // the JWT claim derived from it drives tenant resolution on later requests.
+        client.DefaultRequestHeaders.Add("x-tenant-id", "11111111-1111-1111-1111-111111111111");
+
+        var login = await client.PostAsJsonAsync("/v1/auth/login", new { email = "admin@system", password = "admin" });
         Assert.Equal(HttpStatusCode.OK, login.StatusCode);
 
         var body = await login.Content.ReadFromJsonAsync<JsonElement>();
-        var token = body.GetProperty("accessToken").GetString()!;
+        var token = body.GetProperty("data").GetProperty("accessToken").GetString()!;
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        client.DefaultRequestHeaders.Add("x-tenant-id", "11111111-1111-1111-1111-111111111111");
         return client;
     }
 }
