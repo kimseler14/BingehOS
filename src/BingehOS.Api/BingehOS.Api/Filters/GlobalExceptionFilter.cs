@@ -25,13 +25,7 @@ public class GlobalExceptionFilter : IExceptionFilter
         };
 
         if (code == StatusCodes.Status500InternalServerError)
-        {
-            _logger.LogError(
-                ctx.Exception,
-                "Unhandled exception processing {Method} {Path}",
-                ctx.HttpContext.Request.Method,
-                ctx.HttpContext.Request.Path);
-        }
+            _logger.LogError(ctx.Exception, "Unhandled exception processing request");
 
         ctx.Result = new ObjectResult(new { success = false, error = msg })
         {
