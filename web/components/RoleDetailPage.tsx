@@ -29,7 +29,7 @@ export function RoleDetailPage({ id }: { id: string }) {
       try {
         const [role, permissions] = await Promise.all([
           apiFetch<Role>(`/v1/roles/${id}`),
-          apiFetch<Permission[]>("/v1/permissions"),
+          apiFetch<Permission[]>("/v1/permissions?skip=0&take=100"),
         ]);
         if (active) {
           setRole(role);
