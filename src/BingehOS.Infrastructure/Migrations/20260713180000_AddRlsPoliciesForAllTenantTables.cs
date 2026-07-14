@@ -22,6 +22,7 @@ namespace BingehOS.Infrastructure.Migrations
             migrationBuilder.Sql(@"ALTER TABLE ""Parts"" FORCE ROW LEVEL SECURITY;");
             migrationBuilder.Sql(@"ALTER TABLE ""Vendors"" FORCE ROW LEVEL SECURITY;");
             migrationBuilder.Sql(@"ALTER TABLE ""ComplianceRecords"" FORCE ROW LEVEL SECURITY;");
+            migrationBuilder.Sql(@"ALTER TABLE ""WorkOrders"" FORCE ROW LEVEL SECURITY;");
 
             migrationBuilder.Sql(@"CREATE POLICY ""tenant_isolation"" ON ""Assets"" USING (""TenantId"" = current_setting('app.current_tenant_id', true)::uuid);");
             migrationBuilder.Sql(@"CREATE POLICY ""tenant_isolation"" ON ""Facilities"" USING (""TenantId"" = current_setting('app.current_tenant_id', true)::uuid);");
@@ -49,6 +50,7 @@ namespace BingehOS.Infrastructure.Migrations
             migrationBuilder.Sql(@"ALTER TABLE ""Parts"" NO FORCE ROW LEVEL SECURITY;");
             migrationBuilder.Sql(@"ALTER TABLE ""Vendors"" NO FORCE ROW LEVEL SECURITY;");
             migrationBuilder.Sql(@"ALTER TABLE ""ComplianceRecords"" NO FORCE ROW LEVEL SECURITY;");
+            migrationBuilder.Sql(@"ALTER TABLE ""WorkOrders"" NO FORCE ROW LEVEL SECURITY;");
         }
     }
 }

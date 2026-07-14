@@ -44,6 +44,10 @@ public class TestContainerFixture : IAsyncLifetime
             GRANT USAGE ON SCHEMA public TO bingehos_app;
             GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO bingehos_app;
             GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO bingehos_app;
+            ALTER DEFAULT PRIVILEGES IN SCHEMA public
+                GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO bingehos_app;
+            ALTER DEFAULT PRIVILEGES IN SCHEMA public
+                GRANT USAGE, SELECT ON SEQUENCES TO bingehos_app;
             """;
         await command.ExecuteNonQueryAsync();
     }
