@@ -24,13 +24,13 @@ public class AssignRoleHandler : IRequestHandler<AssignRoleCommand, AssignRoleRe
         var tenantId = _db.CurrentTenantId;
 
         var user = await _db.Set<User>()
-            .FirstOrDefaultAsync(u => u.Id == cmd.Request.UserId && u.TenantId == tenantId, ct);
+            .FirstOrDefaultAsync(u => u.Id == cmd.Request.UserId && u.TenantId == tenantId && !u.IsDeleted, ct);
 
         if (user == null)
             throw new KeyNotFoundException("User not found.");
 
         var role = await _db.Set<Role>()
-            .FirstOrDefaultAsync(r => r.Id == cmd.Request.RoleId && r.TenantId == tenantId, ct);
+            .FirstOrDefaultAsync(r => r.Id == cmd.Request.RoleId && r.TenantId == tenantId && !r.IsDeleted, ct);
 
         if (role == null)
             throw new KeyNotFoundException("Role not found.");
