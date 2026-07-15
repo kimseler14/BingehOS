@@ -42,6 +42,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       logout: () => {
         window.localStorage.removeItem("bingehos.accessToken");
         window.localStorage.removeItem("bingehos.user");
+        if ("caches" in window) {
+          void window.caches.delete("bingehos-api-v1");
+        }
         setUser(null);
         window.location.assign("/login");
       },
