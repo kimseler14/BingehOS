@@ -23,7 +23,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, ready, logout } = useAuth();
 
-  if (pathname === "/login" || pathname === "/offline") {
+  if (pathname.endsWith("/login") || pathname.endsWith("/offline")) {
     return <>{children}</>;
   }
 
@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
-    if (typeof window !== "undefined" && pathname !== "/login") window.location.assign(`${window.location.pathname.match(/^(\/[^/]+)/)?.[1] || ""}/login`);
+    if (typeof window !== "undefined" && !pathname.endsWith("/login")) window.location.assign(`${window.location.pathname.match(/^(\/[^/]+)/)?.[1] || ""}/login`);
     return null;
   }
 
