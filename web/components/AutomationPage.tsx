@@ -184,7 +184,7 @@ export function AutomationPage() {
         body: JSON.stringify({
           id: rule.id,
           name: rule.name,
-          description: rule.description,
+          description: rule.description ?? null,
           isEnabled: !rule.isEnabled,
           triggerType: rule.triggerType,
           conditionJson: rule.conditionJson,
