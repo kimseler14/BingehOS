@@ -38,9 +38,14 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IHostedService, ID
             await _channel.ExchangeDeclareAsync("bingehos.events", ExchangeType.Topic, durable: true, cancellationToken: cancellationToken);
             _logger.LogInformation("Connected to RabbitMQ");
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to connect to RabbitMQ");
+            throw;
         }
     }
 
@@ -53,10 +58,8 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IHostedService, ID
     public async Task Publish<TEvent>(TEvent @event, CancellationToken ct = default) where TEvent : notnull
     {
         if (_channel == null)
-        {
-            _logger.LogWarning("RabbitMQ channel not available. Event {Event} was not published.", typeof(TEvent).Name);
-            return;
-        }
+            throw new EventPublishingException(
+                $"RabbitMQ channel is unavailable. Event {typeof(TEvent).Name} was not published.");
 
         try
         {
@@ -66,9 +69,14 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IHostedService, ID
             await _channel.BasicPublishAsync(exchange: "bingehos.events", routingKey: routingKey, mandatory: false, body: body, cancellationToken: ct);
             _logger.LogInformation("Published event {Event}", typeof(TEvent).Name);
         }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to publish event {Event}", typeof(TEvent).Name);
+            throw;
         }
     }
 
@@ -76,5 +84,12 @@ public sealed class RabbitMqEventPublisher : IEventPublisher, IHostedService, ID
     {
         _channel?.Dispose();
         _connection?.Dispose();
+    }
+}
+
+public sealed class EventPublishingException : Exception
+{
+    public EventPublishingException(string message) : base(message)
+    {
     }
 }

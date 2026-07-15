@@ -13,8 +13,14 @@ public class BingehOSHealthCheck : IHealthCheck
     {
         try
         {
-            await _db.Database.CanConnectAsync(ct);
-            return HealthCheckResult.Healthy("Database connection successful");
+            var canConnect = await _db.Database.CanConnectAsync(ct);
+            return canConnect
+                ? HealthCheckResult.Healthy("Database connection successful")
+                : HealthCheckResult.Unhealthy("Database connection failed");
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception ex)
         {
