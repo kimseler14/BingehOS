@@ -154,6 +154,7 @@ public sealed class ReplaceAssetPositionsHandler(AppDbContext db)
         var existing = await db.AssetPositions
             .Where(position => position.FloorPlanId == command.FloorPlanId && position.TenantId == db.CurrentTenantId)
             .ToListAsync(cancellationToken);
+        var existingAssetIds = existing.Select(position => position.AssetId).ToHashSet();
         var requested = command.Positions.ToDictionary(position => position.AssetId);
         foreach (var position in existing)
         {
@@ -163,7 +164,7 @@ public sealed class ReplaceAssetPositionsHandler(AppDbContext db)
                 position.SoftDelete();
         }
 
-        foreach (var input in command.Positions.Where(input => existing.All(position => position.AssetId != input.AssetId)))
+        foreach (var input in command.Positions.Where(input => !existingAssetIds.Contains(input.AssetId)))
             db.AssetPositions.Add(AssetPosition.Create(
                 db.CurrentTenantId,
                 input.AssetId,

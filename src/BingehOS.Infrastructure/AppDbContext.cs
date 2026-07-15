@@ -109,6 +109,21 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<AssetPosition>()
             .HasIndex(position => new { position.TenantId, position.FloorPlanId, position.AssetId })
             .IsUnique();
+        modelBuilder.Entity<FloorPlan>()
+            .HasOne<Facility>()
+            .WithMany()
+            .HasForeignKey(plan => plan.FacilityId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<AssetPosition>()
+            .HasOne<Asset>()
+            .WithMany()
+            .HasForeignKey(position => position.AssetId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<AssetPosition>()
+            .HasOne<FloorPlan>()
+            .WithMany()
+            .HasForeignKey(position => position.FloorPlanId)
+            .OnDelete(DeleteBehavior.NoAction);
         base.OnModelCreating(modelBuilder);
     }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { apiFetch } from "../lib/api";
 import type { FloorPlan } from "../lib/types";
@@ -25,8 +25,9 @@ export function DigitalTwinPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true);
+    setError("");
     try {
       setPlans(await apiFetch<FloorPlan[]>("/v1/floor-plans?skip=0&take=100"));
     } catch (cause) {
@@ -34,24 +35,11 @@ export function DigitalTwinPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    let active = true;
-    void (async () => {
-      try {
-        const data = await apiFetch<FloorPlan[]>("/v1/floor-plans?skip=0&take=100");
-        if (active) setPlans(data);
-      } catch (cause) {
-        if (active) setError(cause instanceof Error ? cause.message : "Kat planları yüklenemedi.");
-      } finally {
-        if (active) setLoading(false);
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, []);
+    void load();
+  }, [load]);
 
   async function create(event: React.FormEvent) {
     event.preventDefault();
