@@ -157,6 +157,17 @@ registration and lifecycle changes require `plugins.write`.
 | PATCH | `/v1/plugins/{id}` | Update metadata or set `Available`, `Enabled`, or `Disabled` status |
 | DELETE | `/v1/plugins/{id}` | Soft-delete a registration |
 
+### Statistical maintenance insights
+
+Both read-only endpoints require `insights.read`. Results are tenant-scoped and
+computed from work-order and inventory transaction history; no external AI API
+is called.
+
+| Method | Route | Notes |
+|---|---|---|
+| GET | `/v1/insights/assets` | Risk-ranked asset failure frequency, MTBF, trend, and rationale |
+| GET | `/v1/insights/parts` | Parts below a transaction-history-derived reorder threshold |
+
 ## 4. Route Category Status
 
 Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.

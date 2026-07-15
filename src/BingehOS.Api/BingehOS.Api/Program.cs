@@ -179,6 +179,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreatePluginRegistrationCommand).Assembly);
 });
 builder.Services.AddIdentityModule();
+builder.Services.AddScoped<MaintenanceInsightService>();
 builder.Services.AddSingleton<PluginLoader>();
 builder.Services.AddHostedService<PluginLoaderHostedService>();
 builder.Services.AddHttpContextAccessor();

@@ -5,6 +5,8 @@
     <ProjectReference Include="..\..\BingehOS.Infrastructure\BingehOS.Infrastructure.csproj" />
     <ProjectReference Include="..\Maintenance.Domain\BingehOS.Modules.Maintenance.Domain.csproj" />
     <ProjectReference Include="..\Automation\BingehOS.Modules.Automation.csproj" />
+    <ProjectReference Include="..\Inventory.Domain\BingehOS.Modules.Inventory.Domain.csproj" />
+    <ProjectReference Include="..\Asset.Domain\BingehOS.Modules.Asset.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
