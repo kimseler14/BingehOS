@@ -63,10 +63,14 @@ Modüller arası iletişim `MediatR` `INotification`/`INotificationHandler` (Dom
   Eklentiler yönetim ekranı uygulanmıştır. Mevcut loader başlangıçta dosya sistemi
   üzerinden assembly taradığı için kayıt durumu yönetim/metadata katmanı olarak
   çalışır; tenant bazlı runtime assembly yükleme sonraki iterasyona bırakılmıştır.
+- İstatistiksel bakım öngörüleri: `/v1/insights/assets` ve
+  `/v1/insights/parts` uçları; iş emri arıza sıklığı, MTBF, trend ve işlem
+  geçmişinden yeniden sipariş eşiği hesaplarıyla uygulanmıştır. Harici AI API,
+  Copilot ve makine öğrenimi özellikleri ertelenmiştir.
 
 ### Ertelenen (Phase 2 / Plugin / Turkey Pack)
 - Turkey Compliance Pack tamamı (KVKK rıza UI, SGK, e-Fatura/e-Arşiv/e-İrsaliye, MERSİS, Türk Takvimi mesai)
-- AI özellikleri (Copilot, Predictive Maintenance, AI Report Generator, Spare Part Recommendation)
+- AI özellikleri (Copilot, makine öğrenimi, AI Report Generator ve harici AI entegrasyonları)
 - Digital Twin (BIM/IFC canlı overlay)
 - Turkey-specific external integrations (e-Fatura/e-Arşiv/e-İrsaliye, SGK, MERSİS/e-Devlet)
 - Mobile offline (React Native + WatermelonDB)
