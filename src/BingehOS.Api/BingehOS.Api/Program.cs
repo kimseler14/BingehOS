@@ -25,6 +25,8 @@ using BingehOS.Modules.Maintenance.Application;
 using BingehOS.Modules.Maintenance.Domain;
 using BingehOS.Modules.Personnel.Application;
 using BingehOS.Modules.Personnel.Domain;
+using BingehOS.Modules.Plugin.Application;
+using BingehOS.Modules.Plugin.Domain;
 using BingehOS.Modules.Vendor.Application;
 using BingehOS.Modules.Vendor.Domain;
 using BingehOS.Modules.Identity.Application;
@@ -173,6 +175,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateJobPlanTemplateCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(AutomationRule).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateAutomationRuleCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(PluginRegistration).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreatePluginRegistrationCommand).Assembly);
 });
 builder.Services.AddIdentityModule();
 builder.Services.AddSingleton<PluginLoader>();
