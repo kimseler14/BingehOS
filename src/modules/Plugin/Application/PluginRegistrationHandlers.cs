@@ -13,6 +13,8 @@ public sealed class CreatePluginRegistrationHandler(AppDbContext db)
         CreatePluginRegistrationCommand command,
         CancellationToken cancellationToken)
     {
+        PluginRegistrationValidation.ValidateRequired(command.Name, nameof(command.Name));
+        PluginRegistrationValidation.ValidateRequired(command.Version, nameof(command.Version));
         var plugin = PluginRegistration.Register(
             db.CurrentTenantId,
             command.Name,
@@ -34,6 +36,8 @@ public sealed class UpdatePluginRegistrationHandler(AppDbContext db)
         UpdatePluginRegistrationCommand command,
         CancellationToken cancellationToken)
     {
+        PluginRegistrationValidation.ValidateRequired(command.Name, nameof(command.Name));
+        PluginRegistrationValidation.ValidateRequired(command.Version, nameof(command.Version));
         var plugin = await db.PluginRegistrations
             .SingleOrDefaultAsync(
                 p => p.Id == command.Id && p.TenantId == db.CurrentTenantId,
@@ -131,4 +135,13 @@ internal static class PluginRegistrationMappings
             plugin.SourceUrl,
             plugin.StoragePath,
             plugin.InstalledAt);
+}
+
+internal static class PluginRegistrationValidation
+{
+    public static void ValidateRequired(string? value, string name)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException($"{name} cannot be null or whitespace.", name);
+    }
 }
