@@ -35,6 +35,18 @@ namespace BingehOS.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-        }
+            migrationBuilder.Sql("""
+                DELETE FROM "RolePermissions"
+                WHERE "TenantId" = '11111111-1111-1111-1111-111111111111'
+                  AND "PermissionId" = (
+                      SELECT "Id"
+                      FROM "Permissions"
+                      WHERE "TenantId" = '11111111-1111-1111-1111-111111111111'
+                        AND "Name" = 'insights.read'
+                  );
+                DELETE FROM "Permissions"
+                WHERE "TenantId" = '11111111-1111-1111-1111-111111111111'
+                  AND "Name" = 'insights.read';
+                """);
     }
 }
