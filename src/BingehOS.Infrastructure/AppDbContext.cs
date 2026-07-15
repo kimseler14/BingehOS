@@ -10,6 +10,7 @@ using BingehOS.Modules.Inventory.Domain;
 using BingehOS.Modules.Identity.Domain;
 using BingehOS.Modules.Maintenance.Domain;
 using BingehOS.Modules.Personnel.Domain;
+using BingehOS.Modules.Plugin.Domain;
 using BingehOS.Modules.Vendor.Domain;
 using BingehOS.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ public class AppDbContext : DbContext
     public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
     public DbSet<AutomationRule> AutomationRules => Set<AutomationRule>();
     public DbSet<AutomationRuleExecution> AutomationRuleExecutions => Set<AutomationRuleExecution>();
+    public DbSet<PluginRegistration> PluginRegistrations => Set<PluginRegistration>();
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<Facility> Facilities => Set<Facility>();
     public DbSet<Part> Parts => Set<Part>();
@@ -101,6 +103,8 @@ public class AppDbContext : DbContext
                     .HasQueryFilter(ConvertFilter(entityType.ClrType));
             }
         }
+        modelBuilder.Entity<PluginRegistration>()
+            .HasIndex(plugin => new { plugin.TenantId, plugin.Status });
         base.OnModelCreating(modelBuilder);
     }
 

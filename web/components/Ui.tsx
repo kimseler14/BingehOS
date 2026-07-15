@@ -87,6 +87,6 @@ export function ErrorNotice({ message }: { message: string }) {
 
 export function StatusPill({ value }: { value: string | boolean }) {
   const text = typeof value === "boolean" ? (value ? "Aktif" : "Pasif") : value;
-  const positive = ["Active", "Aktif", "Completed", "Verified", "Closed", "Approved", "InProgress"].includes(text);
+  const positive = ["Active", "Aktif", "Etkin", "Hazır", "Completed", "Verified", "Closed", "Approved", "InProgress"].includes(text);
   return <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${positive ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>{text}</span>;
 }

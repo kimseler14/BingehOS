@@ -116,3 +116,15 @@ export type AutomationRuleExecution = {
   success: boolean;
   detail: string;
 };
+
+export type PluginRegistration = {
+  id: string;
+  name: string;
+  version: string;
+  description?: string | null;
+  author?: string | null;
+  status: "Available" | "Enabled" | "Disabled" | string;
+  sourceUrl?: string | null;
+  storagePath?: string | null;
+  installedAt?: string | null;
+};

@@ -154,6 +154,19 @@ Supported triggers are `WorkOrderCreated`, `WorkOrderStatusChanged`,
 inventory command completion publishes local MediatR notifications for the
 corresponding triggers.
 
+### Plugin marketplace
+
+Plugin registration metadata is tenant-scoped. Reads require `plugins.read`;
+registration and lifecycle changes require `plugins.write`.
+
+| Method | Route | Notes |
+|---|---|---|
+| GET | `/v1/plugins` | Paginated plugin registration list |
+| GET | `/v1/plugins/{id}` | Get a plugin registration |
+| POST | `/v1/plugins` | Register plugin metadata |
+| PATCH | `/v1/plugins/{id}` | Update metadata or set `Available`, `Enabled`, or `Disabled` status |
+| DELETE | `/v1/plugins/{id}` | Soft-delete a registration |
+
 ## 4. Route Category Status
 
 Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü dört önceden doldurulmuş seed şablonu Turkey Compliance Pack içinde uygulanmıştır.
@@ -180,5 +193,4 @@ The following remain deferred and are not marked as implemented:
 - AI features (Copilot, predictive maintenance, report generation, spare-part recommendations)
 - Digital Twin / BIM / IFC live overlays
 - Turkey-specific integrations (e-Fatura, SGK, MERSİS/e-Devlet, and ERP)
-- Plugin marketplace
 - Mobile offline support
