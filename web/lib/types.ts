@@ -128,3 +128,26 @@ export type PluginRegistration = {
   storagePath?: string | null;
   installedAt?: string | null;
 };
+
+
+export type AssetMaintenanceInsight = {
+  assetId: string;
+  assetName: string;
+  failureCount: number;
+  failureFrequencyPerMonth: number;
+  meanTimeBetweenFailuresDays?: number | null;
+  trend: string;
+  elevatedRecentFailureRate: boolean;
+  risk: string;
+  rationale: string;
+};
+
+export type PartReorderInsight = {
+  partId: string;
+  partNumber: string;
+  partName: string;
+  currentStock: number;
+  suggestedReorderThreshold: number;
+  averageMonthlyIssueQuantity: number;
+  rationale: string;
+};

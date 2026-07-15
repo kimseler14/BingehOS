@@ -12,6 +12,7 @@ const navigation = [
   { href: "/inventory", label: "Envanter", icon: "▦" },
   { href: "/automation", label: "Otomasyon", icon: "⚡" },
   { href: "/plugins", label: "Eklentiler", icon: "✦" },
+  { href: "/insights", label: "Analiz / Öngörüler", icon: "◉" },
   { href: "/workers", label: "Personel", icon: "♙" },
   { href: "/vendors", label: "Tedarikçiler", icon: "◇" },
   { href: "/admin/users", label: "Yönetim", icon: "⚙" },

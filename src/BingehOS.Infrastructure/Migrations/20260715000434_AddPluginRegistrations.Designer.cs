@@ -500,6 +500,7 @@ namespace BingehOS.Infrastructure.Migrations
                     b.ToTable("CalibrationRecords");
                 });
 
+
             modelBuilder.Entity("BingehOS.Modules.Compliance.Domain.ComplianceRecord", b =>
                 {
                     b.Property<Guid>("Id")

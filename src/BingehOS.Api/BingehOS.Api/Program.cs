@@ -182,6 +182,7 @@ builder.Services.AddMediatR(cfg =>
 });
 builder.Services.AddSingleton<TurkishWorkCalendar>();
 builder.Services.AddIdentityModule();
+builder.Services.AddScoped<MaintenanceInsightService>();
 builder.Services.AddSingleton<PluginLoader>();
 builder.Services.AddHostedService<PluginLoaderHostedService>();
 builder.Services.AddHttpContextAccessor();
