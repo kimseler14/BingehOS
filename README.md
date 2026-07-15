@@ -131,6 +131,35 @@ docker-compose up --build
 | GET    | /v1/kvkk-consents/{id}           | Get KVKK consent                   |
 | POST   | /v1/kvkk-consents                | Grant KVKK consent                 |
 | PATCH  | /v1/kvkk-consents/{id}/revoke    | Revoke KVKK consent                |
+| GET    | /v1/automation-rules            | List automation rules              |
+| GET    | /v1/automation-rules/{id}        | Get automation rule                |
+| POST   | /v1/automation-rules             | Create automation rule             |
+| PATCH  | /v1/automation-rules/{id}        | Update or enable/disable rule      |
+| DELETE | /v1/automation-rules/{id}        | Soft-delete automation rule        |
+| GET    | /v1/automation-rules/{id}/executions | Rule execution history         |
+| GET    | /v1/plugins                     | List plugin registrations          |
+| GET    | /v1/plugins/{id}                 | Get plugin registration            |
+| POST   | /v1/plugins                      | Register plugin metadata           |
+| PATCH  | /v1/plugins/{id}                 | Update plugin metadata             |
+| DELETE | /v1/plugins/{id}                 | Soft-delete plugin registration    |
+| GET    | /v1/insights/assets             | Risk-ranked asset failure insights |
+| GET    | /v1/insights/parts              | Parts reorder threshold insights   |
+| GET    | /v1/floor-plans                 | List floor plans                   |
+| GET    | /v1/floor-plans/{id}             | Get floor plan                     |
+| POST   | /v1/floor-plans                  | Create floor plan                  |
+| PATCH  | /v1/floor-plans/{id}             | Update floor plan                  |
+| DELETE | /v1/floor-plans/{id}             | Soft-delete floor plan             |
+| GET    | /v1/floor-plans/{id}/positions   | List asset positions on plan       |
+| PUT    | /v1/floor-plans/{id}/positions   | Replace asset positions on plan    |
+| GET    | /v1/calibrations                | List calibration records           |
+| GET    | /v1/calibrations/{id}            | Get calibration record             |
+| POST   | /v1/calibrations                 | Create calibration record          |
+| PATCH  | /v1/calibrations/{id}            | Update calibration record          |
+| GET    | /v1/calendar/holidays?year=     | Turkish public holidays            |
+
+## PWA Support
+
+The web app is installable as a Turkish PWA with offline fallback. Full offline data sync is deferred.
 
 ## Testing
 
