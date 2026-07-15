@@ -18,6 +18,7 @@ public sealed class AutomationRuleTriggerHandler(AppDbContext db)
         var rules = await db.AutomationRules
             .Where(e =>
                 e.TenantId == notification.TenantId &&
+                !e.IsDeleted &&
                 e.IsEnabled &&
                 e.TriggerType == notification.TriggerType)
             .ToListAsync(cancellationToken);
