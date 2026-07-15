@@ -86,6 +86,19 @@ namespace BingehOS.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("""
+                DELETE FROM "RolePermissions"
+                WHERE "TenantId" = '11111111-1111-1111-1111-111111111111'
+                  AND "PermissionId" IN (
+                      SELECT "Id"
+                      FROM "Permissions"
+                      WHERE "TenantId" = '11111111-1111-1111-1111-111111111111'
+                        AND "Name" IN ('plugins.read', 'plugins.write')
+                  );
+                DELETE FROM "Permissions"
+                WHERE "TenantId" = '11111111-1111-1111-1111-111111111111'
+                  AND "Name" IN ('plugins.read', 'plugins.write');
+                """);
             migrationBuilder.Sql(@"DROP POLICY IF EXISTS ""tenant_isolation"" ON ""PluginRegistrations"";");
             migrationBuilder.Sql(@"ALTER TABLE ""PluginRegistrations"" DISABLE ROW LEVEL SECURITY;");
             migrationBuilder.Sql(@"ALTER TABLE ""PluginRegistrations"" NO FORCE ROW LEVEL SECURITY;");

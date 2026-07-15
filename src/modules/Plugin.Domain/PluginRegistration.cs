@@ -58,7 +58,6 @@ public sealed class PluginRegistration : BaseEntity
         SourceUrl = sourceUrl;
         StoragePath = storagePath;
         SetStatus(status);
-        UpdatedAt = DateTimeOffset.UtcNow;
     }
 
     public void SetStatus(PluginStatus status)
