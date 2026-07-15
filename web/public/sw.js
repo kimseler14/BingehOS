@@ -26,7 +26,7 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (url.pathname.startsWith("/api/")) {
-    if (url.pathname.includes("/v1/auth/")) return;
+    if (url.pathname.startsWith("/api/v1/auth/")) return;
     event.respondWith(networkFirstApi(request));
     return;
   }
