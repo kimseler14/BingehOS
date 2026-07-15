@@ -123,9 +123,19 @@ All user, role, and permission management endpoints require the `admin.access` p
 
 The inventory balance is derived from the transaction ledger: receiving and return add quantity, while issue subtracts quantity.
 
+### Compliance and Turkish calendar
+
+| Method | Route | Notes |
+|---|---|---|
+| GET | `/v1/calibrations` | Paginated calibration records; optional `assetId`; requires `calibration-records.read` |
+| GET | `/v1/calibrations/{id}` | Get a calibration record; requires `calibration-records.read` |
+| POST | `/v1/calibrations` | Create a calibration record; requires `calibration-records.write` |
+| PATCH | `/v1/calibrations/{id}` | Update a calibration record; requires `calibration-records.write` |
+| GET | `/v1/calendar/holidays?year=2026` | Turkish fixed and religious public holidays |
+
 ## 4. Route Category Status
 
-Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.
+Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü dört önceden doldurulmuş seed şablonu Turkey Compliance Pack içinde uygulanmıştır.
 
 | Route Kategorisi | İlgili Bounded Context | Durum |
 |---|---|---|
@@ -134,18 +144,18 @@ Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda
 | `/invoices` | Finance & Tax (Invoice, TaxRecord) | Implemented API slice |
 | `/cost-centers` | Finance & Tax (CostCenter, MonetaryAmount) | Implemented API slice |
 | `/kvkk-consents` | Compliance (KvkkConsent) | Implemented API slice |
-| `/calibrations` | Compliance (CalibrationRecord) | Deferred; no current controller |
+| `/calibrations` | Compliance (CalibrationRecord) | Implemented API slice |
 | `/compliance-records` | Compliance (ComplianceRecord) | Implemented API slice |
 
-> **Not (Job Plan Template / Standart Job Library):** `/job-plan-templates` endpoint'inin **MEKANİZMASI (genel şablon altyapısı) MVP'dir** ve Doküman 01-16 kapsamında yer alır. Yalnızca **Türkiye'ye özgü önceden doldurulmuş (pre-seeded) ekipman şablonlarının SEED VERİSİ** (Asansör/Yangın/Jeneratör/HVAC) **Phase 2 / Turkey Compliance Pack (Doküman 17)** kapsamındadır.
+> **Not (Job Plan Template / Standart Job Library):** `/job-plan-templates` endpoint'inin **MEKANİZMASI (genel şablon altyapısı) MVP'dir** ve Doküman 01-16 kapsamında yer alır. Türkiye'ye özgü önceden doldurulmuş ekipman şablonlarının seed verisi (Asansör/Yangın/Jeneratör/HVAC) Turkey Compliance Pack içinde uygulanmıştır.
 >
-> Yukarıdaki implemented route'lar için tam request/response OpenAPI şemaları ayrıca genişletilebilir; route'ların kendileri artık mevcut MVP API yüzeyinin parçasıdır. `/calibrations` ve Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.
+> Yukarıdaki implemented route'lar için tam request/response OpenAPI şemaları ayrıca genişletilebilir; route'ların kendileri artık mevcut MVP API yüzeyinin parçasıdır. Türkçe kalibrasyon CRUD, resmi tatil takvimi ve dört bakım şablonu Turkey Compliance Pack kapsamında uygulanmıştır.
 
 ## 5. Explicitly Deferred Roadmap Features
 
 The following remain deferred and are not marked as implemented:
 
-- Turkey Compliance Pack and its Turkey-specific integrations
+- Remaining Turkey Compliance Pack integrations and payroll features (e-Fatura, e-Arşiv, e-İrsaliye, e-Mutabakat, SGK, MERSİS/e-Devlet, ERP and SMS connectors)
 - AI features (Copilot, predictive maintenance, report generation, spare-part recommendations)
 - Digital Twin / BIM / IFC live overlays
 - Automation Studio, workflow designer, and rule-engine UI
