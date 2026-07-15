@@ -98,7 +98,7 @@ if (Encoding.UTF8.GetByteCount(jwtSecret) < 32)
 }
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "BingehOS";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "BingehOS.Client";
-builder.Services.Configure<JwtSettings>(opt =>
+builder.Services.Configure<BingehOS.Infrastructure.Security.JwtSettings>(opt =>
 {
     opt.Secret = jwtSecret;
     opt.Issuer = jwtIssuer;
@@ -169,6 +169,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateCostCenterCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(ComplianceRecord).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateComplianceRecordCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CalibrationRecord).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateCalibrationRecordCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(KvkkConsent).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateKvkkConsentCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(JobPlanTemplate).Assembly);
@@ -178,6 +180,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(PluginRegistration).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreatePluginRegistrationCommand).Assembly);
 });
+builder.Services.AddSingleton<TurkishWorkCalendar>();
 builder.Services.AddIdentityModule();
 builder.Services.AddScoped<MaintenanceInsightService>();
 builder.Services.AddSingleton<PluginLoader>();

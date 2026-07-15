@@ -129,6 +129,7 @@ export type PluginRegistration = {
   installedAt?: string | null;
 };
 
+
 export type AssetMaintenanceInsight = {
   assetId: string;
   assetName: string;
