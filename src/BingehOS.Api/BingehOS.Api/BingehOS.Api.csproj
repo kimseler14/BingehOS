@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\BingehOS.Shared\BingehOS.Shared.csproj" />
     <ProjectReference Include="..\..\BingehOS.Infrastructure\BingehOS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\modules\Maintenance\BingehOS.Modules.Maintenance.csproj" />
+    <ProjectReference Include="..\..\modules\Automation\BingehOS.Modules.Automation.csproj" />
     <ProjectReference Include="..\..\modules\Asset\BingehOS.Modules.Asset.csproj" />
     <ProjectReference Include="..\..\modules\Facility\BingehOS.Modules.Facility.csproj" />
     <ProjectReference Include="..\..\modules\Inventory\BingehOS.Modules.Inventory.csproj" />

@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\BingehOS.Shared\BingehOS.Shared.csproj" />
     <ProjectReference Include="..\..\src\modules\Maintenance\BingehOS.Modules.Maintenance.csproj" />
+    <ProjectReference Include="..\..\src\modules\Automation\BingehOS.Modules.Automation.csproj" />
     <ProjectReference Include="..\..\src\modules\Asset.Domain\BingehOS.Modules.Asset.Domain.csproj" />
     <ProjectReference Include="..\..\src\modules\Facility.Domain\BingehOS.Modules.Facility.Domain.csproj" />
     <ProjectReference Include="..\..\src\modules\Inventory.Domain\BingehOS.Modules.Inventory.Domain.csproj" />

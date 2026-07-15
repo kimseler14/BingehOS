@@ -56,12 +56,15 @@ Modüller arası iletişim `MediatR` `INotification`/`INotificationHandler` (Dom
 - Workers: `/v1/workers` listeleme, detay, oluşturma ve güncelleme uçları uygulanmıştır.
 - Identity yönetimi: `/v1/users`, `/v1/roles` ve `/v1/permissions` yönetimi ile rol-izin atama/kaldırma uçları uygulanmıştır; yönetim uçları `admin.access` ile korunur.
 - Inventory: parça receiving, issue ve return akışları ile `/v1/inventory/transactions` listeleme ucu uygulanmıştır; stok negatif değerlere düşürülemez.
+- Automation Studio: `/v1/automation-rules` CRUD ve execution log uçları, koşul değerlendirme motoru ve
+  `WorkOrderCreated`, `WorkOrderStatusChanged` ve stok hareketi MediatR tetikleyicileri uygulanmıştır.
+  Web arayüzünde Türkçe Otomasyon bölümü ile kural oluşturma/düzenleme ve execution geçmişi vardır.
 
 ### Ertelenen (Phase 2 / Plugin / Turkey Pack)
 - Turkey Compliance Pack tamamı (KVKK rıza UI, SGK, e-Fatura/e-Arşiv/e-İrsaliye, MERSİS, Türk Takvimi mesai)
 - AI özellikleri (Copilot, Predictive Maintenance, AI Report Generator, Spare Part Recommendation)
 - Digital Twin (BIM/IFC canlı overlay)
-- Automation Studio / Workflow Designer / Rule Engine UI
+- Turkey-specific external integrations (e-Fatura/e-Arşiv/e-İrsaliye, SGK, MERSİS/e-Devlet)
 - Plugin Marketplace (isteğe bağlı ilk release)
 - Mobile offline (React Native + WatermelonDB)
 
