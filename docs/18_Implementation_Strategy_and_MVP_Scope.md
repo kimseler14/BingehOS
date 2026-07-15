@@ -71,6 +71,10 @@ Modüller arası iletişim `MediatR` `INotification`/`INotificationHandler` (Dom
   0-1 göreli koordinatlarla plan üzerine yerleştirilmesi uygulanmıştır. Web
   üzerinde şematik/görsel plan overlay'i vardır; BIM/IFC parsing ve canlı 3B
   model entegrasyonu ertelenmiştir.
+- Web PWA ilk adımı uygulanmıştır: Türkçe manifest, placeholder ikonlar,
+  statik dosyalar için cache-first, salt GET API istekleri için network-first
+  servis çalışanı ve çevrimdışı ekranı. Tam çevrimdışı veri senkronizasyonu ve
+  React Native mobil uygulaması ertelenmiştir.
 
 ### Ertelenen (Phase 2 / Plugin / Turkey Pack)
 - Turkey Compliance Pack tamamı (KVKK rıza UI, SGK, e-Fatura/e-Arşiv/e-İrsaliye, MERSİS, Türk Takvimi mesai)
