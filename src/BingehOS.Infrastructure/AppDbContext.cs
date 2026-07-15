@@ -11,6 +11,7 @@ using BingehOS.Modules.Identity.Domain;
 using BingehOS.Modules.Maintenance.Domain;
 using BingehOS.Modules.Personnel.Domain;
 using BingehOS.Modules.Plugin.Domain;
+using BingehOS.Modules.DigitalTwin.Domain;
 using BingehOS.Modules.Vendor.Domain;
 using BingehOS.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,8 @@ public class AppDbContext : DbContext
     public DbSet<AutomationRule> AutomationRules => Set<AutomationRule>();
     public DbSet<AutomationRuleExecution> AutomationRuleExecutions => Set<AutomationRuleExecution>();
     public DbSet<PluginRegistration> PluginRegistrations => Set<PluginRegistration>();
+    public DbSet<FloorPlan> FloorPlans => Set<FloorPlan>();
+    public DbSet<AssetPosition> AssetPositions => Set<AssetPosition>();
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<Facility> Facilities => Set<Facility>();
     public DbSet<Part> Parts => Set<Part>();
@@ -101,6 +104,11 @@ public class AppDbContext : DbContext
         }
         modelBuilder.Entity<PluginRegistration>()
             .HasIndex(plugin => new { plugin.TenantId, plugin.Status });
+        modelBuilder.Entity<FloorPlan>()
+            .HasIndex(plan => new { plan.TenantId, plan.FacilityId });
+        modelBuilder.Entity<AssetPosition>()
+            .HasIndex(position => new { position.TenantId, position.FloorPlanId, position.AssetId })
+            .IsUnique();
         base.OnModelCreating(modelBuilder);
     }
 

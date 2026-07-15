@@ -168,6 +168,23 @@ is called.
 | GET | `/v1/insights/assets` | Risk-ranked asset failure frequency, MTBF, trend, and rationale |
 | GET | `/v1/insights/parts` | Parts below a transaction-history-derived reorder threshold |
 
+### Digital Twin floor plans
+
+Basic digital-twin overlays are tenant-scoped and require `floor-plans.read`;
+creation, changes, deletion, and position updates require `floor-plans.write`.
+Coordinates are relative values between `0` and `1`. BIM/IFC parsing remains
+deferred.
+
+| Method | Route | Notes |
+|---|---|---|
+| GET | `/v1/floor-plans` | Paginated floor-plan list |
+| GET | `/v1/floor-plans/{id}` | Get floor-plan metadata |
+| POST | `/v1/floor-plans` | Create a plan with dimensions and optional image URL |
+| PATCH | `/v1/floor-plans/{id}` | Update plan metadata |
+| DELETE | `/v1/floor-plans/{id}` | Soft-delete a plan |
+| GET | `/v1/floor-plans/{id}/positions` | List positioned tenant assets |
+| PUT | `/v1/floor-plans/{id}/positions` | Replace relative asset positions |
+
 ## 4. Route Category Status
 
 Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda güncellenmiştir. Job Plan Template mekanizması MVP'dir; Türkiye'ye özgü önceden doldurulmuş seed verileri Phase 2 kapsamındadır.
@@ -179,7 +196,8 @@ Aşağıdaki route kategorileri için mevcut durum ve kapsam notları aşağıda
 | `/invoices` | Finance & Tax (Invoice, TaxRecord) | Implemented API slice |
 | `/cost-centers` | Finance & Tax (CostCenter, MonetaryAmount) | Implemented API slice |
 | `/kvkk-consents` | Compliance (KvkkConsent) | Implemented API slice |
-| `/calibrations` | Compliance (CalibrationRecord) | Deferred; no current controller |
+| `/calibrations` | Compliance (CalibrationRecord) | Implemented |
+| `/floor-plans` | Digital Twin (basic overlays) | Implemented; BIM/IFC deferred |
 | `/compliance-records` | Compliance (ComplianceRecord) | Implemented API slice |
 
 > **Not (Job Plan Template / Standart Job Library):** `/job-plan-templates` endpoint'inin **MEKANİZMASI (genel şablon altyapısı) MVP'dir** ve Doküman 01-16 kapsamında yer alır. Yalnızca **Türkiye'ye özgü önceden doldurulmuş (pre-seeded) ekipman şablonlarının SEED VERİSİ** (Asansör/Yangın/Jeneratör/HVAC) **Phase 2 / Turkey Compliance Pack (Doküman 17)** kapsamındadır.
@@ -192,6 +210,6 @@ The following remain deferred and are not marked as implemented:
 
 - Turkey Compliance Pack and its Turkey-specific integrations
 - AI features (Copilot, predictive maintenance, report generation, spare-part recommendations)
-- Digital Twin / BIM / IFC live overlays
+- Digital Twin / BIM / IFC parsing and live model overlays
 - Turkey-specific integrations (e-Fatura, SGK, MERSİS/e-Devlet, and ERP)
 - Mobile offline support

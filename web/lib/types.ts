@@ -150,3 +150,22 @@ export type PartReorderInsight = {
   averageMonthlyIssueQuantity: number;
   rationale: string;
 };
+
+export type FloorPlan = {
+  id: string;
+  name: string;
+  facilityId?: string | null;
+  imageUrl?: string | null;
+  width: number;
+  height: number;
+};
+
+export type AssetPosition = {
+  id: string;
+  assetId: string;
+  floorPlanId: string;
+  x: number;
+  y: number;
+  assetName: string;
+  criticality: string;
+};

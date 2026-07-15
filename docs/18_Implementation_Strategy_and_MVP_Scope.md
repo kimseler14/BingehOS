@@ -67,11 +67,15 @@ Modüller arası iletişim `MediatR` `INotification`/`INotificationHandler` (Dom
   `/v1/insights/parts` uçları; iş emri arıza sıklığı, MTBF, trend ve işlem
   geçmişinden yeniden sipariş eşiği hesaplarıyla uygulanmıştır. Harici AI API,
   Copilot ve makine öğrenimi özellikleri ertelenmiştir.
+- Temel Digital Twin: tenant kapsamlı `/v1/floor-plans` CRUD ve varlıkların
+  0-1 göreli koordinatlarla plan üzerine yerleştirilmesi uygulanmıştır. Web
+  üzerinde şematik/görsel plan overlay'i vardır; BIM/IFC parsing ve canlı 3B
+  model entegrasyonu ertelenmiştir.
 
 ### Ertelenen (Phase 2 / Plugin / Turkey Pack)
 - Turkey Compliance Pack tamamı (KVKK rıza UI, SGK, e-Fatura/e-Arşiv/e-İrsaliye, MERSİS, Türk Takvimi mesai)
 - AI özellikleri (Copilot, makine öğrenimi, AI Report Generator ve harici AI entegrasyonları)
-- Digital Twin (BIM/IFC canlı overlay)
+- Digital Twin'in BIM/IFC parsing, 3B model ve canlı senkronizasyon özellikleri
 - Turkey-specific external integrations (e-Fatura/e-Arşiv/e-İrsaliye, SGK, MERSİS/e-Devlet)
 - Mobile offline (React Native + WatermelonDB)
 

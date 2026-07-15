@@ -27,6 +27,8 @@ using BingehOS.Modules.Personnel.Application;
 using BingehOS.Modules.Personnel.Domain;
 using BingehOS.Modules.Plugin.Application;
 using BingehOS.Modules.Plugin.Domain;
+using BingehOS.Modules.DigitalTwin.Application;
+using BingehOS.Modules.DigitalTwin.Domain;
 using BingehOS.Modules.Vendor.Application;
 using BingehOS.Modules.Vendor.Domain;
 using BingehOS.Modules.Identity.Application;
@@ -177,6 +179,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateAutomationRuleCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(PluginRegistration).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreatePluginRegistrationCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(FloorPlan).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateFloorPlanCommand).Assembly);
 });
 builder.Services.AddIdentityModule();
 builder.Services.AddScoped<MaintenanceInsightService>();
