@@ -462,6 +462,44 @@ namespace BingehOS.Infrastructure.Migrations
                     b.ToTable("AutomationRuleExecutions");
                 });
 
+            modelBuilder.Entity("BingehOS.Modules.Compliance.Domain.CalibrationRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AssetId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CalibratedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("NextDueAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "AssetId");
+
+                    b.ToTable("CalibrationRecords");
+                });
+
             modelBuilder.Entity("BingehOS.Modules.Compliance.Domain.ComplianceRecord", b =>
                 {
                     b.Property<Guid>("Id")
