@@ -29,6 +29,7 @@
     <ProjectReference Include="..\modules\Maintenance.Domain\BingehOS.Modules.Maintenance.Domain.csproj" />
     <ProjectReference Include="..\modules\Asset.Domain\BingehOS.Modules.Asset.Domain.csproj" />
     <ProjectReference Include="..\modules\Automation.Domain\BingehOS.Modules.Automation.Domain.csproj" />
+    <ProjectReference Include="..\modules\Plugin.Domain\BingehOS.Modules.Plugin.Domain.csproj" />
     <ProjectReference Include="..\modules\Facility.Domain\BingehOS.Modules.Facility.Domain.csproj" />
     <ProjectReference Include="..\modules\Inventory.Domain\BingehOS.Modules.Inventory.Domain.csproj" />
     <ProjectReference Include="..\modules\Vendor.Domain\BingehOS.Modules.Vendor.Domain.csproj" />
