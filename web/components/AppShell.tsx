@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
-    if (typeof window !== "undefined" && pathname !== "/login") window.location.assign("/login");
+    if (typeof window !== "undefined" && pathname !== "/login") window.location.assign(`${window.location.pathname.match(/^(\/[^/]+)/)?.[1] || ""}/login`);
     return null;
   }
 

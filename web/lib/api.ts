@@ -1,3 +1,11 @@
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api";
+
+function basePath(): string {
+  if (typeof window === "undefined") return "";
+  const m = window.location.pathname.match(/^(\/[^/]+)/);
+  return m ? m[1] : "";
+}
+
 export type ApiEnvelope<T> = {
   success: boolean;
   data?: T;
@@ -25,7 +33,7 @@ export async function apiFetch<T>(
     if (token) headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(`/api${path}`, {
+  const response = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers,
   });
@@ -34,7 +42,7 @@ export async function apiFetch<T>(
   if (response.status === 401 && typeof window !== "undefined") {
     window.localStorage.removeItem("bingehos.accessToken");
     window.localStorage.removeItem("bingehos.user");
-    window.location.assign("/login");
+    window.location.assign(`${basePath()}/login`);
     return new Promise<T>(() => {});
   }
 

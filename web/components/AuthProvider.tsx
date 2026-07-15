@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           void window.caches.delete("bingehos-api-v1");
         }
         setUser(null);
-        window.location.assign("/login");
+        window.location.assign(`${window.location.pathname.match(/^(\/[^/]+)/)?.[1] || ""}/login`);
       },
     }),
     [ready, user],

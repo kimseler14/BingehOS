@@ -1,3 +1,5 @@
+"use client";
+
 import { EntityListPage, EntityConfig } from "../../components/EntityListPage";
 
 const config: EntityConfig = {
@@ -25,6 +27,13 @@ const config: EntityConfig = {
     { name: "phone", label: "Telefon" },
     { name: "isActive", label: "Aktif", type: "checkbox", defaultValue: true },
   ],
+  detail: {
+    title: "Personel detayı",
+    eyebrow: "Ekip yönetimi",
+    endpoint: (id: string) => `/v1/workers/${id}`,
+    backHref: "/workers",
+    labels: { firstName: "Ad", lastName: "Soyad", employeeNumber: "Sicil numarası", trade: "Uzmanlık", department: "Departman", phone: "Telefon", isActive: "Durum" },
+  },
 };
 
 export default function WorkersPage() {

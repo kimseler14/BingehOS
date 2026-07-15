@@ -6,7 +6,7 @@ import { ServiceWorkerRegistration } from "../components/ServiceWorkerRegistrati
 export const metadata = {
   title: "BingehOS Operasyon Merkezi",
   description: "BingehOS CMMS web arayüzü",
-  manifest: "/manifest.webmanifest",
+  manifest: "/BingehOS/manifest.webmanifest",
 };
 
 export const viewport = {

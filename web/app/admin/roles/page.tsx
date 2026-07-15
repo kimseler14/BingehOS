@@ -1,6 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { EntityListPage, EntityConfig } from "../../../components/EntityListPage";
+import { RoleDetailPage } from "../../../components/RoleDetailPage";
+import { Spinner } from "../../../components/Ui";
 
 const config: EntityConfig = {
   title: "Roller",
@@ -28,6 +32,17 @@ const config: EntityConfig = {
   ],
 };
 
-export default function RolesPage() {
+function RolesContent() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  if (id) return <RoleDetailPage id={id} />;
   return <EntityListPage config={config} />;
+}
+
+export default function RolesPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20 text-teal"><Spinner /></div>}>
+      <RolesContent />
+    </Suspense>
+  );
 }

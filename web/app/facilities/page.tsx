@@ -1,3 +1,5 @@
+"use client";
+
 import { EntityListPage, EntityConfig } from "../../components/EntityListPage";
 
 const config: EntityConfig = {
@@ -26,6 +28,13 @@ const config: EntityConfig = {
     { name: "timeZone", label: "Zaman dilimi" },
     { name: "parentFacilityId", label: "Üst tesis ID" },
   ],
+  detail: {
+    title: "Tesis detayı",
+    eyebrow: "Tesis yönetimi",
+    endpoint: (id: string) => `/v1/facilities/${id}`,
+    backHref: "/facilities",
+    labels: { name: "Tesis adı", code: "Kod", address: "Adres", timeZone: "Zaman dilimi", parentFacilityId: "Üst tesis" },
+  },
 };
 
 export default function FacilitiesPage() {

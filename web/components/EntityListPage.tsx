@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { apiFetch, queryPath } from "../lib/api";
 import { EmptyState, ErrorNotice, Modal, PageHeader, Spinner, StatusPill } from "./Ui";
+import { EntityDetailPage } from "./EntityDetailPage";
 
 export type FieldConfig = {
   name: string;
@@ -21,6 +22,14 @@ export type ColumnConfig = {
   type?: "status" | "date";
 };
 
+export type DetailConfig = {
+  title: string;
+  eyebrow: string;
+  endpoint: (id: string) => string;
+  backHref: string;
+  labels: Record<string, string>;
+};
+
 export type EntityConfig = {
   title: string;
   eyebrow: string;
@@ -35,6 +44,7 @@ export type EntityConfig = {
   deletable?: boolean;
   canCreate?: boolean;
   canDelete?: (item: Record<string, unknown>) => boolean;
+  detail?: DetailConfig;
 };
 
 type FormValue = string | number | boolean;
@@ -86,7 +96,21 @@ function cleanPayload(values: Record<string, FormValue>) {
 }
 
 export function EntityListPage({ config }: { config: EntityConfig }) {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20 text-teal"><Spinner /></div>}>
+      <EntityListPageInner config={config} />
+    </Suspense>
+  );
+}
+
+function EntityListPageInner({ config }: { config: EntityConfig }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  if (id && config.detail) {
+    return <EntityDetailPage title={config.detail.title} eyebrow={config.detail.eyebrow} endpoint={config.detail.endpoint(id)} backHref={config.detail.backHref} labels={config.detail.labels} />;
+  }
   const [items, setItems] = useState<Record<string, unknown>[]>([]);
   const [skip, setSkip] = useState(0);
   const [activeOnly, setActiveOnly] = useState(false);
@@ -202,7 +226,7 @@ export function EntityListPage({ config }: { config: EntityConfig }) {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {items.map((item) => (
-                  <tr key={String(item.id)} className="group cursor-pointer hover:bg-slate-50" onClick={() => router.push(`${config.basePath}/${item.id}`)}>
+                  <tr key={String(item.id)} className="group cursor-pointer hover:bg-slate-50" onClick={() => router.push(`${config.basePath}?id=${item.id}`)}>
                     {columns.map((column) => {
                       const value = item[column.key];
                       return <td key={column.key} className="max-w-xs truncate px-5 py-4 text-slate-600">{column.type === "status" ? <StatusPill value={value as string | boolean} /> : column.type === "date" ? new Date(String(value)).toLocaleDateString("tr-TR") : String(value ?? "—")}</td>;

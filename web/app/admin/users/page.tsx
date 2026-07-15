@@ -1,3 +1,5 @@
+"use client";
+
 import { EntityListPage, EntityConfig } from "../../../components/EntityListPage";
 
 const config: EntityConfig = {
@@ -24,6 +26,13 @@ const config: EntityConfig = {
     { name: "fullName", label: "Ad soyad", required: true },
     { name: "isActive", label: "Aktif", type: "checkbox", defaultValue: true },
   ],
+  detail: {
+    title: "Kullanıcı detayı",
+    eyebrow: "Yönetim · Identity",
+    endpoint: (id: string) => `/v1/users/${id}`,
+    backHref: "/admin/users",
+    labels: { fullName: "Ad soyad", email: "E-posta", roles: "Roller", isActive: "Durum" },
+  },
 };
 
 export default function UsersPage() {

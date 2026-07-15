@@ -1,3 +1,5 @@
+"use client";
+
 import { EntityListPage, EntityConfig } from "../../components/EntityListPage";
 
 const config: EntityConfig = {
@@ -24,6 +26,13 @@ const config: EntityConfig = {
     { name: "locationCode", label: "Konum kodu" },
     { name: "criticality", label: "Kritiklik", type: "select", required: true, options: ["Low", "Normal", "High", "Critical"] },
   ],
+  detail: {
+    title: "Varlık detayı",
+    eyebrow: "Varlık yönetimi",
+    endpoint: (id: string) => `/v1/assets/${id}`,
+    backHref: "/assets",
+    labels: { name: "Varlık adı", serialNumber: "Seri numarası", locationCode: "Konum kodu", criticality: "Kritiklik" },
+  },
 };
 
 export default function AssetsPage() {
