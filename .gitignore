@@ -6,3 +6,5 @@ TestResults/
 **/.directory
 
 .aider*
+.playwright-mcp/
+web/out/
