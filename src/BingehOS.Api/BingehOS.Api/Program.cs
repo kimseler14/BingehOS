@@ -184,6 +184,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreatePluginRegistrationCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(FloorPlan).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateFloorPlanCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateFloorPlanCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(BingehOS.Modules.Asset.Application.MeterListItem).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(BingehOS.Modules.Finance.Application.EnergyCostListItem).Assembly);
 });
 builder.Services.AddSingleton<TurkishWorkCalendar>();
 builder.Services.AddIdentityModule();

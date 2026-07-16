@@ -18,6 +18,7 @@ const navigation = [
   { href: "/vendors", label: "Tedarikçiler", icon: "◇" },
   { href: "/finance/invoices", label: "Faturalar", icon: "₺" },
   { href: "/finance/cost-centers", label: "Masraf Yerleri", icon: "◎" },
+  { href: "/energy", label: "Enerji / IoT", icon: "⚡" },
   { href: "/compliance", label: "Uygunluk", icon: "✓" },
   { href: "/calibrations", label: "Kalibrasyon", icon: "◈" },
   { href: "/kvkk", label: "KVKK", icon: "⚙" },
