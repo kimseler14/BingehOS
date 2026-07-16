@@ -16,6 +16,11 @@ const navigation = [
   { href: "/digital-twin", label: "Dijital İkiz", icon: "⬡" },
   { href: "/workers", label: "Personel", icon: "♙" },
   { href: "/vendors", label: "Tedarikçiler", icon: "◇" },
+  { href: "/finance/invoices", label: "Faturalar", icon: "₺" },
+  { href: "/finance/cost-centers", label: "Masraf Yerleri", icon: "◎" },
+  { href: "/compliance", label: "Uygunluk", icon: "✓" },
+  { href: "/calibrations", label: "Kalibrasyon", icon: "◈" },
+  { href: "/kvkk", label: "KVKK", icon: "⚙" },
   { href: "/admin/users", label: "Yönetim", icon: "⚙" },
 ];
 

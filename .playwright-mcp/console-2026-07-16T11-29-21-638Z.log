@@ -4,3 +4,19 @@
 [     849ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kimseler14.github.io/BingehOS/login/:0
 [     989ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://kimseler14.github.io/icons/icon-192.png:0
 [     990ms] [WARNING] Error while trying to use the following icon from the Manifest: https://kimseler14.github.io/icons/icon-192.png (Download error or resource isn't a valid image) @ https://kimseler14.github.io/BingehOS/login/:0
+[  188261ms] [ERROR] Failed to load resource: the server responded with a status of 405 () @ https://kimseler14.github.io/api/v1/auth/login:0
+[  201633ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kimseler14.github.io/BingehOS/login/:0
+[  201890ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://kimseler14.github.io/icons/icon-192.png:0
+[  201895ms] [WARNING] Error while trying to use the following icon from the Manifest: https://kimseler14.github.io/icons/icon-192.png (Download error or resource isn't a valid image) @ https://kimseler14.github.io/BingehOS/login/:0
+[  202234ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kimseler14.github.io/BingehOS/login/:0
+[  202345ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://kimseler14.github.io/icons/icon-192.png:0
+[  202351ms] [WARNING] Error while trying to use the following icon from the Manifest: https://kimseler14.github.io/icons/icon-192.png (Download error or resource isn't a valid image) @ https://kimseler14.github.io/BingehOS/login/:0
+[  239770ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kimseler14.github.io/BingehOS/login/:0
+[  239819ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://kimseler14.github.io/icons/icon-192.png:0
+[  239822ms] [WARNING] Error while trying to use the following icon from the Manifest: https://kimseler14.github.io/icons/icon-192.png (Download error or resource isn't a valid image) @ https://kimseler14.github.io/BingehOS/login/:0
+[  240035ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kimseler14.github.io/BingehOS/login/:0
+[  240108ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://kimseler14.github.io/icons/icon-192.png:0
+[  240110ms] [WARNING] Error while trying to use the following icon from the Manifest: https://kimseler14.github.io/icons/icon-192.png (Download error or resource isn't a valid image) @ https://kimseler14.github.io/BingehOS/login/:0
+[  240222ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kimseler14.github.io/BingehOS/login/:0
+[  240293ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://kimseler14.github.io/icons/icon-192.png:0
+[  240294ms] [WARNING] Error while trying to use the following icon from the Manifest: https://kimseler14.github.io/icons/icon-192.png (Download error or resource isn't a valid image) @ https://kimseler14.github.io/BingehOS/login/:0

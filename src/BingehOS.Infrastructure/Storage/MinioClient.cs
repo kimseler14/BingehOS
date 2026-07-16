@@ -13,10 +13,17 @@ public sealed class MinioClient : IAsyncDisposable
     public MinioClient(IConfiguration configuration, ILogger<MinioClient> logger)
     {
         _logger = logger;
-        var endpoint = configuration["Minio:Endpoint"] ?? "localhost:9000";
+        var endpointRaw = configuration["Minio:Endpoint"] ?? "localhost:9000";
         var accessKey = configuration["Minio:AccessKey"] ?? "minioadmin";
         var secretKey = configuration["Minio:SecretKey"] ?? "minioadmin";
         var secure = bool.Parse(configuration["Minio:Secure"] ?? "false");
+
+        var endpoint = endpointRaw;
+        if (Uri.TryCreate(endpointRaw, UriKind.Absolute, out var uri))
+        {
+            endpoint = uri.Host + ":" + uri.Port;
+            secure = string.Equals(uri.Scheme, "https", StringComparison.OrdinalIgnoreCase);
+        }
 
         _client = new Minio.MinioClient()
             .WithEndpoint(endpoint)

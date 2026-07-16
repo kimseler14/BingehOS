@@ -30,6 +30,11 @@ public class TenantResolutionMiddleware
         {
             ctx.Items["TenantId"] = tenantId;
         }
+        else if (ctx.Request.Path.StartsWithSegments("/v1/auth/login"))
+        {
+            // Dev/demo: default to seed tenant for login
+            ctx.Items["TenantId"] = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        }
 
         await _next(ctx);
     }

@@ -152,6 +152,62 @@ export type PartReorderInsight = {
   rationale: string;
 };
 
+export type Invoice = {
+  id: string;
+  invoiceNumber: string;
+  invoiceDate: string;
+  dueDate: string;
+  totalAmountMinor: number;
+  currency: string;
+  status: string;
+  type: string;
+};
+
+export type TaxRecord = {
+  id: string;
+  invoiceId: string;
+  taxType: string;
+  taxRate: number;
+  taxAmountMinor: number;
+  currency: string;
+};
+
+export type CostCenter = {
+  id: string;
+  code: string;
+  name: string;
+  parentCostCenterId?: string | null;
+  budgetMinor: number;
+  currency: string;
+  isActive: boolean;
+};
+
+export type ComplianceRecord = {
+  id: string;
+  title: string;
+  status: string;
+  dueDate: string;
+};
+
+export type KvkkConsent = {
+  id: string;
+  userId: string;
+  consentType: string;
+  version: string;
+  grantedAt: string;
+  revokedAt?: string | null;
+};
+
+export type CalibrationRecord = {
+  id: string;
+  assetId: string;
+  calibrationDate: string;
+  nextCalibrationDate: string;
+  result: string;
+  certifiedBy?: string | null;
+  notes?: string | null;
+};
+
 export type FloorPlan = {
   id: string;
   name: string;
