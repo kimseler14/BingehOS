@@ -39,7 +39,7 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ vars.API_URL || '/api' }}
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: web/out
 
